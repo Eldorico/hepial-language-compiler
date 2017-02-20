@@ -1,6 +1,47 @@
 
 
-### Architecture du programme
+# Méthode de compilation
+
+## Gestionnaire d'erreur
+
+Le fait d'avoir un gestionnaire d'erreur permet de poursuivre la détection de nouvelles erreurs sans arrêter la compilation dès la première erreur rencontrée. 
+
+## Table des symboles
+
+- Sorte de table où sont repertoriées les variables déclarées. Intégrer la notion de portée. 
+- On doit enregistrer les numéros de lignes
+- Un symbole contient donc: 
+  - numéro de ligne dans laquelle il est déclaré
+  - valeur, 
+  - l'entrée
+  - ​
+
+#### Opérations
+
+```java
+class TDS{ // doit être une instance unique (singleton pattern)
+  	// permet d'utiliser l'unique instance 
+  	static TDS getInstance();
+  
+  	// Peut retourner l'erreur double déclaration. 
+    int ajouter(table, entrée, valeur);
+
+    // retourne un symbole ou null
+    String identifier(table, entrée);
+
+    // permet d'entrer/sortir d'un bloc
+    void entreeBloc(table);
+    void sortieBloc(table);  
+}
+```
+
+#### Classe Entrée
+
+![Diagramme UML](ressources/entreesUML.svg)
+
+
+
+# Syntaxe du langage Hepial
 
 ```
 programme identifiant
@@ -99,7 +140,9 @@ ecrire maVar; // équivaut à print(maVar); ?
 ecrire "ceci est une chaine de caractères \" avec un guilllemet au milieu";
  ```
 
-### Questions:
+
+
+# Questions:
 
 - Tableaux?
 - CORPS: la grammaire empêche de déclarer des variables dans un corps. C'est juste non? Du coup la portée ne concerne que les affectations? 
