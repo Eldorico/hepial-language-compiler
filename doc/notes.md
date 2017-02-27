@@ -35,9 +35,15 @@ class TDS{ // doit être une instance unique (singleton pattern)
 }
 ```
 
-#### Classe Entrée
+#### Classes Entrée/Symboles
 
-![Diagramme UML](ressources/entreesUML.svg)
+__L'entrée__ correspond à l'identificateur de la dernière unité lexicale reconnue. Par ex dans: 
+
+booleen monBool = true;   // L'entrée serait "monBool", reconnue sous une unité lexicale booléenne. 
+
+
+
+![Diagramme UML](ressources/entreeSymbolesUML.svg)
 
 
 
