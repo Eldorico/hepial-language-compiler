@@ -1,0 +1,161 @@
+import java_cup.runtime.*;
+import java.util.AbstractMap.SimpleEntry;
+
+init with {:
+  //controller = new SyntaxController();
+:};
+
+parser code {:
+  //SyntaxController controller;
+:};
+
+
+terminal SimpleEntry<String, Integer>  ident;
+terminal SimpleEntry<String, Integer>  constanteEnt;
+terminal SimpleEntry<String, Integer>  constanteChaine;
+
+//non terminal AXIOME;
+non terminal PROGRAMME;
+non terminal ENTETE;
+non terminal DECLA;
+non terminal DECLAVAR;
+non terminal LIDENT;
+non terminal DECLACONST;
+non terminal DECLAFONCT;
+non terminal String TYPE;
+non terminal String TYPEBASE;
+non terminal String TABLEAU;
+non terminal String DIM;
+non terminal PARAM;
+non terminal INSTR;
+non terminal CORPS;
+non terminal LIRE;
+non terminal ECRIRE;
+non terminal AFFECTATION;
+non terminal RETOUR;
+non terminal CONDITION;
+non terminal TANTQUE;
+non terminal POUR;
+non terminal EXPR;
+non terminal ACCES;
+non terminal INDEX;
+non terminal OPERANDE;
+non terminal OPEBIN;
+non terminal OPEUN;
+non terminal APPELFCT;
+non terminal PAREFF
+
+
+/***************************
+ *        GRAMMAR          *
+ ***************************/
+
+ PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
+                  //System.out.printf("detecté programme\n");
+              :}
+              ;
+ ENTETE     ::= 'programme' ident:i {:
+                  //System.out.printf("nom du programme: %s\n", i.getKey());
+              :}
+              ;
+ DECLA      ::= DECLAVAR
+              | DECLACONST
+              | DECLAFONCT
+              ;
+ DECLAVAR   ::= TYPE:t ',' ident:i {:
+                  //System.out.printf("var %s (%s)\n", i, t.getKey());
+              :}
+              ;
+ LIDENT     ::= ident
+              | LIDENT ',' ident
+              ;
+ DECLACONST ::= 'constante' TYPE ident '=' EXPR ';';
+ DECLAFONCT ::= TYPE ident '(' PARAM ')' DECLA* 'debutfonc' CORPS 'finfonc'
+              | TYPE ident '(' ')' DECLA* 'debutfonc' CORPS 'finfonc'
+              ;
+ TYPE       ::= TYPEBASE:t {:
+                  //RESULT = t;
+              :}
+              | TABLEAU:t {:
+                  //RESULT = t;
+              :}
+              ;
+ TYPEBASE   ::= 'entier' {:
+                  //RESULT = new String("entier");
+              :}
+              |  'booleen' {:
+                  //RESULT = new String("boolen");
+              :}
+              ;
+ TABLEAU    ::= TYPEBASE:t '[' DIM:d ']' {:
+                  //RESULT = new String(t+"["+d+"]");
+              :}
+              ;
+ DIM        ::= EXPR:e1 '..' EXPR:e2 {:
+                  //RESULT = new String(e1+".."+e2);
+              :}
+              |  DIM:d ',' EXPR:e1 '..' EXPR:e2; {:
+                  RESULT = new String(d+","+e1+".."+e2);
+              :}
+ PARAM      ::= TYPE:t ident:i {:
+                  //RESULT = new String(t+" "i);
+              :}
+              |  PARAM:p ',' TYPE:t ident:i {:
+                  //RESULT = new String(p+", "+t+" "+i);
+              :}
+              ;
+ CORPS      ::= INSTR*;
+ INSTR      ::= AFFECTATION
+              | ECRIRE
+              | LIRE
+              | CONDITION
+              | RETOUR
+              | TANTQUE
+              | POUR
+              ;
+ LIRE       ::= 'lire' ident ';';
+ ECRIRE     ::= 'ecrire' EXPR ';'
+              | 'ecrire' constanteChaine ';'
+              ;
+ AFFECTATION ::= ACCES '=' EXPR ';';
+ RETOUR     ::= 'retourne' EXPR ';';
+ CONDITION  ::= 'si' EXPR 'alors' CORPS 'sinon' CORPS 'finsi';
+ TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
+ POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
+ EXPR       ::= EXPR OPEBIN EXPR
+              | OPEUN EXPR
+              | '(' EXPR ')'
+              | OPERANDE
+              ;
+ ACCES      ::= ident
+              | ident INDEX+
+              ;
+ INDEX      ::= '[' EXPR ']';
+ OPERANDE   ::= ACCES
+              | APPELFCT
+              | constanteEnt
+              | 'vrai'
+              | 'faux'
+              ;
+ OPEBIN     ::= '+'
+              | '-'
+              | '*'
+              | '/'
+              | '=='
+              | '<>'
+              | '<'
+              | '>'
+              | '<='
+              | '>='
+              | 'et'
+              | 'ou'
+              ;
+ OPEUN      ::= '~'
+              | 'non'
+              ;
+ APPELFCT   ::= ident '(' ')'
+              | ident '(' PAREFF')'
+              ;
+ PAREFF     ::= EXPR
+              | PAREFF ',' EXPR
+              ;

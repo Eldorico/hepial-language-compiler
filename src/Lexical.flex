@@ -1,6 +1,6 @@
 /*
  * @Description: Provides an lexical evaluator simple expressions of the hepial langage.
- *               Each expression is returned as a SimpleEntry<String:value, Integer: line>
+ *               Each expression is returned as a SimpleEntry< String:value, Integer:line>
  *
  */
 
@@ -14,7 +14,7 @@ import java.util.AbstractMap.SimpleEntry;
 %unicode
 %line
 %column
-%standalone
+%cup
 
 /* LEXEMES */
 ident = [a-zA-Z][a-zA-Z0-9_]*                     /*   asdf9_   */
@@ -27,15 +27,8 @@ any_thing_else = .? | \n
 /* RULES */
 
 // tags....
-/*   asdf9_   */
-{ident}          { System.out.printf("ident '%s' : ligne %d\n", yytext(), yyline);}
-/*return new Symbol(sym.ident, new SimpleEntry<String, Integer>(ytext(), yline));  }*/
-/*   1234     */
-{constanteEnt}   { System.out.printf("constanteEnt '%s' : ligne %d\n", yytext(), yyline); }
-/*return new Symbol(sym.constanteEnt, new SimpleEntry<String, Integer>(ytext(), yline));  }*/
-/* " as""df " */
-{constanteChaine} { System.out.printf("constanteChaine '%s' : ligne %d\n", yytext(), yyline); }
-/*return new Symbol(sym.constanteChaine, new SimpleEntry<String, Integer>(ytext(), yline));  }*/
-
-{comments} { System.out.printf("comments '%s' : ligne %d\n", yytext(), yyline); }
+/*   asdf9_   */  {ident}   { return new Symbol(sym.ident, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+/*   1234     */  {constanteEnt}   { return new Symbol(sym.constanteEnt, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+/* " as""df " */  {constanteChaine} { return new Symbol(sym.constanteChaine, new SimpleEntry<String, Integer>(yytext(), yyline)); }
+{comments} { ; }
 {any_thing_else} {;}
