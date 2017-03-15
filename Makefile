@@ -2,9 +2,6 @@ PROGRAMFILENAME=HepialCompilateur
 CUPFILENAME=syntax
 JFLEXFILENAME=Lexical
 
-# Program ...
-#bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLEXFILENAME}.class 
-#	javac -d bin -cp lib/java-cup-11a.jar:bin src/$(PROGRAMFILENAME).java 
 
 # Program ...
 bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLEXFILENAME}.class 
@@ -35,3 +32,9 @@ src/$(JFLEXFILENAME).flex:
 # Clean
 clean: 
 	rm -f -r bin
+
+# JFlex only
+jflex: 
+	mkdir -p bin
+	jflex src/$(JFLEXFILENAME).flex -d bin
+	javac -cp lib/java-cup-11a.jar:bin bin/$(JFLEXFILENAME).java 
