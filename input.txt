@@ -1,0 +1,12 @@
+//cible = valeur;
+//cible = fct1();
+//cible = fct2( 123, asdf, qwer);
+//cible = tab[asdf];
+//cible = tab[2][qwer];
+//cible = "asdf ! Wesh! ";  // ceci n'est pas prévu par hepial:
+//cible = 1234 + 1234;
+//cible = 1234 - ( 1234 + 893);
+//cible = 123 + tab[1234][1234] - fct(asdf, 1234);
+//cible = asdf * 4 + ftc(123-1532, tab[1234]);
+//oui = non faux;
+cible = vrai;

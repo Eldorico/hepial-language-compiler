@@ -9,12 +9,59 @@ parser code {:
   //SyntaxController controller;
 :};
 
-
 terminal SimpleEntry<String, Integer>  ident;
 terminal SimpleEntry<String, Integer>  constanteEnt;
 terminal SimpleEntry<String, Integer>  constanteChaine;
 
-//non terminal AXIOME;
+terminal SimpleEntry<String, Integer> keyword_debutprg;
+terminal SimpleEntry<String, Integer> keyword_finprg;
+terminal SimpleEntry<String, Integer> keyword_programme;
+terminal SimpleEntry<String, Integer> keyword_constante;
+terminal SimpleEntry<String, Integer> keyword_debutfonc;
+terminal SimpleEntry<String, Integer> keyword_finfonc;
+terminal SimpleEntry<String, Integer> keyword_entier;
+terminal SimpleEntry<String, Integer> keyword_booleen;
+terminal SimpleEntry<String, Integer> keyword_lire;
+terminal SimpleEntry<String, Integer> keyword_ecrire;
+terminal SimpleEntry<String, Integer> keyword_retourne;
+terminal SimpleEntry<String, Integer> keyword_si;
+terminal SimpleEntry<String, Integer> keyword_alors;
+terminal SimpleEntry<String, Integer> keyword_sinon;
+terminal SimpleEntry<String, Integer> keyword_finsi;
+terminal SimpleEntry<String, Integer> keyword_tantque;
+terminal SimpleEntry<String, Integer> keyword_faire;
+terminal SimpleEntry<String, Integer> keyword_fintantque;
+terminal SimpleEntry<String, Integer> keyword_pour;
+terminal SimpleEntry<String, Integer> keyword_allantde;
+terminal SimpleEntry<String, Integer> keyword_a;
+terminal SimpleEntry<String, Integer> keyword_finpour;
+terminal SimpleEntry<String, Integer> keyword_vrai;
+terminal SimpleEntry<String, Integer> keyword_faux;
+terminal SimpleEntry<String, Integer> keyword_et;
+terminal SimpleEntry<String, Integer> keyword_ou;
+terminal SimpleEntry<String, Integer> keyword_non;
+
+terminal SimpleEntry<String, Integer> char_plus;
+terminal SimpleEntry<String, Integer> char_moins;
+terminal SimpleEntry<String, Integer> char_fois;
+terminal SimpleEntry<String, Integer> char_div;
+terminal SimpleEntry<String, Integer> char_egal;
+terminal SimpleEntry<String, Integer> char_egal_egal;
+terminal SimpleEntry<String, Integer> char_ppetit;
+terminal SimpleEntry<String, Integer> char_pgrand;
+terminal SimpleEntry<String, Integer> char_ppetit_pgrand;
+terminal SimpleEntry<String, Integer> char_ppetit_egal;
+terminal SimpleEntry<String, Integer> char_pgrand_egal;
+terminal SimpleEntry<String, Integer> char_non;
+terminal SimpleEntry<String, Integer> char_par_ouvr;
+terminal SimpleEntry<String, Integer> char_par_ferm;
+terminal SimpleEntry<String, Integer> char_crochet_ouvr;
+terminal SimpleEntry<String, Integer> char_crochet_ferm;
+terminal SimpleEntry<String, Integer> char_virgule;
+terminal SimpleEntry<String, Integer> char_point_virgule;
+terminal SimpleEntry<String, Integer> char_point_point;
+
+non terminal AXIOME;
 non terminal PROGRAMME;
 non terminal ENTETE;
 non terminal DECLA;
@@ -22,10 +69,10 @@ non terminal DECLAVAR;
 non terminal LIDENT;
 non terminal DECLACONST;
 non terminal DECLAFONCT;
-non terminal String TYPE;
-non terminal String TYPEBASE;
-non terminal String TABLEAU;
-non terminal String DIM;
+non terminal TYPE;
+non terminal TYPEBASE;
+non terminal TABLEAU;
+non terminal DIM;
 non terminal PARAM;
 non terminal INSTR;
 non terminal CORPS;
@@ -36,32 +83,42 @@ non terminal RETOUR;
 non terminal CONDITION;
 non terminal TANTQUE;
 non terminal POUR;
-non terminal EXPR;
-non terminal ACCES;
-non terminal INDEX;
-non terminal OPERANDE;
-non terminal OPEBIN;
-non terminal OPEUN;
-non terminal APPELFCT;
-non terminal PAREFF
+non terminal String EXPR;
+non terminal String ACCES;
+non terminal String INDEX;
+non terminal String LISTE_INDEX;
+non terminal String OPERANDE;
+non terminal String OPEBIN;
+non terminal String OPEUN;
+non terminal String APPELFCT;
+non terminal String PAREFF;
+
+precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_div, char_egal_egal, char_ppetit, char_pgrand, char_ppetit_pgrand, char_ppetit_egal, char_pgrand_egal, char_fois;
 
 
 /***************************
  *        GRAMMAR          *
  ***************************/
 
+/*
+
  PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
                   //System.out.printf("detecté programme\n");
               :}
               ;
+
  ENTETE     ::= 'programme' ident:i {:
                   //System.out.printf("nom du programme: %s\n", i.getKey());
               :}
               ;
+*/
+/*
  DECLA      ::= DECLAVAR
               | DECLACONST
               | DECLAFONCT
               ;
+*/
+/*
  DECLAVAR   ::= TYPE:t ',' ident:i {:
                   //System.out.printf("var %s (%s)\n", i, t.getKey());
               :}
@@ -95,7 +152,7 @@ non terminal PAREFF
                   //RESULT = new String(e1+".."+e2);
               :}
               |  DIM:d ',' EXPR:e1 '..' EXPR:e2; {:
-                  RESULT = new String(d+","+e1+".."+e2);
+                  //RESULT = new String(d+","+e1+".."+e2);
               :}
  PARAM      ::= TYPE:t ident:i {:
                   //RESULT = new String(t+" "i);
@@ -117,45 +174,125 @@ non terminal PAREFF
  ECRIRE     ::= 'ecrire' EXPR ';'
               | 'ecrire' constanteChaine ';'
               ;
- AFFECTATION ::= ACCES '=' EXPR ';';
+*/
+
+AFFECTATION ::= ACCES:a char_egal EXPR:e char_point_virgule  {:
+                  System.out.printf("Affectation: %s<-%s\n", a, e);
+              :}
+              ;
+ /*
  RETOUR     ::= 'retourne' EXPR ';';
  CONDITION  ::= 'si' EXPR 'alors' CORPS 'sinon' CORPS 'finsi';
  TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
  POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
- EXPR       ::= EXPR OPEBIN EXPR
-              | OPEUN EXPR
-              | '(' EXPR ')'
-              | OPERANDE
+ */
+EXPR       ::= EXPR:e1 OPEBIN:o EXPR:e2 {:
+                  RESULT = new String(String.format("%s %s %s", e1, o, e2));
+              :}
+              | OPEUN:o EXPR:e {:
+                  RESULT = new String(String.format("%s %s", o, e));
+              :}
+              | char_par_ouvr EXPR:e char_par_ferm {:
+                  RESULT = new String(String.format("(%s)", e));
+              :}
+              | OPERANDE:o {:
+                  RESULT = o;
+              :}
               ;
- ACCES      ::= ident
-              | ident INDEX+
+
+ACCES      ::= ident:i{:
+                  RESULT = i.getKey();
+              :}
+              | ident:j LISTE_INDEX:k {:
+                  RESULT = new String(j.getKey()+k);
+              :}
               ;
- INDEX      ::= '[' EXPR ']';
- OPERANDE   ::= ACCES
-              | APPELFCT
-              | constanteEnt
-              | 'vrai'
-              | 'faux'
+
+LISTE_INDEX     ::= INDEX:i {:
+                  RESULT = i;
+              :}
+              | INDEX:i LISTE_INDEX:l {:
+                  RESULT = new String(i+" "+l);
+              :}
               ;
- OPEBIN     ::= '+'
-              | '-'
-              | '*'
-              | '/'
-              | '=='
-              | '<>'
-              | '<'
-              | '>'
-              | '<='
-              | '>='
-              | 'et'
-              | 'ou'
+INDEX      ::= char_crochet_ouvr EXPR:e char_crochet_ferm {:
+                  RESULT = new String(String.format("[%s]", e));
+              :}
               ;
- OPEUN      ::= '~'
-              | 'non'
+
+OPERANDE   ::= ACCES:a {:
+                  RESULT = a;
+              :}
+              | APPELFCT:a {:
+                  RESULT = a;
+              :}
+              | constanteEnt:c {:
+                  RESULT = c.getKey();
+              :}
+              | keyword_vrai:v {:
+                  RESULT = v.getKey();
+              :}
+              | keyword_faux:f {:
+                  RESULT = f.getKey();
+              :}
               ;
- APPELFCT   ::= ident '(' ')'
-              | ident '(' PAREFF')'
+OPEBIN     ::=  char_plus:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_moins:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_fois:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_div:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_egal_egal:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_ppetit_pgrand:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_ppetit:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_pgrand:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_ppetit_egal:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_pgrand_egal:c {:
+                  RESULT = c.getKey();
+              :}
+              | keyword_et:c {:
+                  RESULT = c.getKey();
+              :}
+              | keyword_ou:c {:
+                  RESULT = c.getKey();
+              :}
               ;
- PAREFF     ::= EXPR
-              | PAREFF ',' EXPR
+
+OPEUN      ::= char_non:c {:
+                  RESULT = c.getKey();
+              :}
+              | keyword_non:c {:
+                  RESULT = c.getKey();
+              :}
+              ;
+
+APPELFCT   ::= ident:i char_par_ouvr char_par_ferm {:
+                  RESULT = new String(String.format("%s()", i.getKey()));
+              :}
+              | ident:i char_par_ouvr PAREFF:p char_par_ferm {:
+                  RESULT = new String(String.format("%s(%s)", i.getKey(), p));
+              :}
+              ;
+PAREFF     ::= EXPR:e {:
+                  RESULT = new String(e);
+              :}
+              | PAREFF:p char_virgule EXPR:e {:
+                 RESULT = new String(p+", "+e);
+              :}
               ;

@@ -1,5 +1,6 @@
 /*
- * @Description: Provides an lexical evaluator simple expressions of the hepial langage.
+ * @Description: Provides an lexical evaluator simple expressions, keywords and
+ *               operators of the hepial langage.
  *               Each expression is returned as a SimpleEntry< String:value, Integer:line>
  *
  */
@@ -14,7 +15,7 @@ import java.util.AbstractMap.SimpleEntry;
 %unicode
 %line
 %column
-%standalone
+%cup
 
 /* LEXEMES */
 
@@ -28,59 +29,59 @@ any_thing_else = .? | \n
 %%
 /* RULES */
 
-// mots clefs
-debutprg    {System.out.println("Trouvé keyword_debutprg en ligne"+yyline);}
-finprg      {System.out.println("Trouvé keyword_finprg en ligne"+yyline);}
-programme   {System.out.println("Trouvé keyword_programme en ligne"+yyline);}
-constante   {System.out.println("Trouvé keyword_constante en ligne"+yyline);}
-debutfonc   {System.out.println("Trouvé keyword_debutfonc en ligne"+yyline);}
-finfonc     {System.out.println("Trouvé keyword_finfonc en ligne"+yyline);}
-entier      {System.out.println("Trouvé keyword_entier en ligne"+yyline);}
-booleen     {System.out.println("Trouvé keyword_booleen en ligne"+yyline);}
-lire        {System.out.println("Trouvé keyword_lire en ligne"+yyline);}
-ecrire      {System.out.println("Trouvé keyword_ecrire en ligne"+yyline);}
-retourne    {System.out.println("Trouvé keyword_retourne en ligne"+yyline);}
-si          {System.out.println("Trouvé keyword_si en ligne"+yyline);}
-alors       {System.out.println("Trouvé keyword_alors en ligne"+yyline);}
-sinon       {System.out.println("Trouvé keyword_sinon en ligne"+yyline);}
-finsi       {System.out.println("Trouvé keyword_finsi en ligne"+yyline);}
-tantque     {System.out.println("Trouvé keyword_tantque en ligne"+yyline);}
-faire       {System.out.println("Trouvé keyword_faire en ligne"+yyline);}
-fintantque  {System.out.println("Trouvé keyword_fintantque en ligne"+yyline);}
-pour        {System.out.println("Trouvé keyword_pour en ligne"+yyline);}
-allantde    {System.out.println("Trouvé keyword_allantde en ligne"+yyline);}
-a           {System.out.println("Trouvé keyword_a en ligne"+yyline);}
-finpour     {System.out.println("Trouvé keyword_finpour en ligne"+yyline);}
-vrai        {System.out.println("Trouvé keyword_vrai en ligne"+yyline);}
-faux        {System.out.println("Trouvé keyword_faux en ligne"+yyline);}
-et          {System.out.println("Trouvé keyword_et en ligne"+yyline);}
-ou          {System.out.println("Trouvé keyword_ou en ligne"+yyline);}
-non         {System.out.println("Trouvé keyword_non en ligne"+yyline);}
+// keywords
+debutprg    {return new Symbol(sym.keyword_debutprg, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+finprg      {return new Symbol(sym.keyword_finprg, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+programme   {return new Symbol(sym.keyword_programme, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+constante   {return new Symbol(sym.keyword_constante, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+debutfonc   {return new Symbol(sym.keyword_debutfonc, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+finfonc     {return new Symbol(sym.keyword_finfonc, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+entier      {return new Symbol(sym.keyword_entier, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+booleen     {return new Symbol(sym.keyword_booleen, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+lire        {return new Symbol(sym.keyword_lire, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+ecrire      {return new Symbol(sym.keyword_ecrire, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+retourne    {return new Symbol(sym.keyword_retourne, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+si          {return new Symbol(sym.keyword_si, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+alors       {return new Symbol(sym.keyword_alors, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+sinon       {return new Symbol(sym.keyword_sinon, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+finsi       {return new Symbol(sym.keyword_finsi, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+tantque     {return new Symbol(sym.keyword_tantque, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+faire       {return new Symbol(sym.keyword_faire, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+fintantque  {return new Symbol(sym.keyword_fintantque, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+pour        {return new Symbol(sym.keyword_pour, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+allantde    {return new Symbol(sym.keyword_allantde, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+a           {return new Symbol(sym.keyword_a, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+finpour     {return new Symbol(sym.keyword_finpour, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+vrai        {return new Symbol(sym.keyword_vrai, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+faux        {return new Symbol(sym.keyword_faux, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+et          {return new Symbol(sym.keyword_et, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+ou          {return new Symbol(sym.keyword_ou, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+non         {return new Symbol(sym.keyword_non, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 
-// caractères
-\+    {System.out.println("Trouvé char_plus en ligne"+yyline);}
--     {System.out.println("Trouvé char_moins en ligne"+yyline);}
-\*    {System.out.println("Trouvé char_fois en ligne"+yyline);}
-\/    {System.out.println("Trouvé char_div en ligne"+yyline);}
-\=    {System.out.println("Trouvé char_egual en ligne"+yyline);}
-\=\=    {System.out.println("Trouvé char_egual_egual en ligne"+yyline);}
-\<     {System.out.println("Trouvé char_ppetit en ligne"+yyline);}
-\>     {System.out.println("Trouvé char_pgrand en ligne"+yyline);}
-\<\>    {System.out.println("Trouvé char_ppetit_pgrand en ligne"+yyline);}
-\<\=    {System.out.println("Trouvé char_petit_egal en ligne"+yyline);}
-\>\=    {System.out.println("Trouvé char_grand_egal en ligne"+yyline);}
-\~    {System.out.println("Trouvé char_non en ligne"+yyline);}
-\(    {System.out.println("Trouvé char_par_ouvr en ligne"+yyline);}
-\)    {System.out.println("Trouvé char_par_ferm en ligne"+yyline);}
-\[    {System.out.println("Trouvé char_crochet_ouvr en ligne"+yyline);}
-\]    {System.out.println("Trouvé char_crochet_ferm en ligne"+yyline);}
-\,    {System.out.println("Trouvé char_virgule en ligne"+yyline);}
-\;    {System.out.println("Trouvé char_point_virgule en ligne"+yyline);}
-\.\.  {System.out.println("Trouvé char_point_point en ligne"+yyline);}
+// operators
+\+    {return new Symbol(sym.char_plus, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+-     {return new Symbol(sym.char_moins, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\*    {return new Symbol(sym.char_fois, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\/    {return new Symbol(sym.char_div, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\=    {return new Symbol(sym.char_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\=\=  {return new Symbol(sym.char_egal_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\<    {return new Symbol(sym.char_ppetit, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\>    {return new Symbol(sym.char_pgrand, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\<\>  {return new Symbol(sym.char_ppetit_pgrand, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\<\=  {return new Symbol(sym.char_ppetit_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\>\=  {return new Symbol(sym.char_pgrand_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\~    {return new Symbol(sym.char_non, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\(    {return new Symbol(sym.char_par_ouvr, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\)    {return new Symbol(sym.char_par_ferm, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\[    {return new Symbol(sym.char_crochet_ouvr, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\]    {return new Symbol(sym.char_crochet_ferm, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\,    {return new Symbol(sym.char_virgule, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\;    {return new Symbol(sym.char_point_virgule, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\.\.  {return new Symbol(sym.char_point_point, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 
-// autres
-/*   asdf9_   */  {ident} { System.out.println("ident: "+yytext());}   /*{return new Symbol(sym.ident, new SimpleEntry<String, Integer>(yytext(), yyline));  }*/
-/*   1234     */  {constanteEnt} { System.out.println("constanteEnt: "+yytext());}   /*{ return new Symbol(sym.constanteEnt, new SimpleEntry<String, Integer>(yytext(), yyline));  }*/
-/* " as""df " */  {constanteChaine} { System.out.println("constanteChaine: "+yytext());} /*{ return new Symbol(sym.constanteChaine, new SimpleEntry<String, Integer>(yytext(), yyline)); }*/
-{comments} {  System.out.println("comments: "+yytext()); }
+// other
+/*   asdf9_   */  {ident} {return new Symbol(sym.ident, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+/*   1234     */  {constanteEnt} {return new Symbol(sym.constanteEnt, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+/* " as""df " */  {constanteChaine} {return new Symbol(sym.constanteChaine, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+{comments} {;}
 {any_thing_else} {;}
