@@ -161,8 +161,12 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
                   //RESULT = new String(p+", "+t+" "+i);
               :}
               ;
- CORPS      ::= INSTR*;
- INSTR      ::= AFFECTATION
+*/
+CORPS      ::= INSTR
+              | INSTR CORPS
+              ;
+
+INSTR      ::= AFFECTATION
               | ECRIRE
               | LIRE
               | CONDITION
@@ -170,11 +174,18 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
               | TANTQUE
               | POUR
               ;
- LIRE       ::= 'lire' ident ';';
- ECRIRE     ::= 'ecrire' EXPR ';'
-              | 'ecrire' constanteChaine ';'
+
+ LIRE       ::= keyword_lire ident:i char_point_virgule {:
+                  System.out.printf("Lire: %s<-stdin\n", i.getKey());
+              :}
               ;
-*/
+ ECRIRE     ::= keyword_ecrire EXPR:e char_point_virgule {:
+                  System.out.printf("Ecrire: %s\n", e);
+              :}
+              | keyword_ecrire constanteChaine:c char_point_virgule {:
+                  System.out.printf("Ecrire: %s\n", c.getKey());
+              :}
+              ;
 
 AFFECTATION ::= ACCES:a char_egal EXPR:e char_point_virgule  {:
                   System.out.printf("Affectation: %s<-%s\n", a, e);
@@ -182,7 +193,12 @@ AFFECTATION ::= ACCES:a char_egal EXPR:e char_point_virgule  {:
               ;
  /*
  RETOUR     ::= 'retourne' EXPR ';';
- CONDITION  ::= 'si' EXPR 'alors' CORPS 'sinon' CORPS 'finsi';
+ */
+ CONDITION  ::= keyword_si EXPR:e keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
+                  System.out.printf("Si condition: %s ", e);
+              :}
+              ;
+/*
  TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
  POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
  */
