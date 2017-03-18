@@ -12,6 +12,12 @@ bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLE
 bin/${CUPFILENAME}.cup : 
 
 bin/sym.class : bin/${CUPFILENAME}.cup
+	# compile every abstractTree class 
+	find -path "*/src/abstractTree/*.java" > sources.txt
+	javac -d bin @sources.txt
+	rm sources.txt
+
+	#compile cup 
 	java  -jar lib/java-cup-11a.jar src/${CUPFILENAME}.cup
 	mv sym.java bin/sym.java 
 	mv parser.java bin/parser.java
@@ -32,6 +38,15 @@ src/$(JFLEXFILENAME).flex:
 # Clean
 clean: 
 	rm -f -r bin
+
+#### DEBUG COMMANDS ######
+
+#AbstractTree lib only 
+abstractTree:
+	mkdir -p bin
+	find -path "*/src/abstractTree/*.java" > sources.txt
+	javac -d bin @sources.txt
+	rm sources.txt
 
 # JFlex only
 jflex: 

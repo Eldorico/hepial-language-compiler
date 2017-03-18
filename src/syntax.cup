@@ -1,12 +1,16 @@
 import java_cup.runtime.*;
+import java.util.Stack;
 import java.util.AbstractMap.SimpleEntry;
+import abstractTree.AbstractTree;
+import abstractTree.expression.*;
 
 init with {:
-  //controller = new SyntaxController();
+  abstractTreeStack = new Stack<AbstractTree>();
 :};
 
+
 parser code {:
-  //SyntaxController controller;
+  Stack<AbstractTree> abstractTreeStack;
 :};
 
 terminal SimpleEntry<String, Integer>  ident;
@@ -83,23 +87,30 @@ non terminal RETOUR;
 non terminal CONDITION;
 non terminal TANTQUE;
 non terminal POUR;
-non terminal String EXPR;
-non terminal String ACCES;
-non terminal String INDEX;
-non terminal String LISTE_INDEX;
-non terminal String OPERANDE;
+non terminal Expression EXPR;
+non terminal ACCES;
+non terminal INDEX;
+non terminal LISTE_INDEX;
+non terminal OPERANDE;
 non terminal String OPEBIN;
-non terminal String OPEUN;
-non terminal String APPELFCT;
-non terminal String PAREFF;
+non terminal OPEUN;
+non terminal APPELFCT;
+non terminal PAREFF;
 
-precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_div, char_egal_egal, char_ppetit, char_pgrand, char_ppetit_pgrand, char_ppetit_egal, char_pgrand_egal, char_fois;
+non terminal ENDASDF;
+
+precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_div, char_egal, char_egal_egal, char_ppetit, char_pgrand, char_ppetit_pgrand, char_ppetit_egal, char_pgrand_egal, char_fois;
 
 
 /***************************
  *        GRAMMAR          *
  ***************************/
 
+ENDASDF ::= EXPR:e {:
+        System.out.printf("Terminé: to string : \n %s\n", parser.abstractTreeStack.peek().toString());
+      :}
+      | ENDASDF EXPR
+      ;
 /*
 
  PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
@@ -162,6 +173,7 @@ DECLAVAR   ::= TYPE:t LIDENT ';' {:
               :}
               ;
 */
+/*
 CORPS      ::= INSTR
               | INSTR CORPS
               ;
@@ -194,28 +206,40 @@ AFFECTATION ::= ACCES:a char_egal EXPR:e char_point_virgule  {:
  /*
  RETOUR     ::= 'retourne' EXPR ';';
  */
+ /*
  CONDITION  ::= keyword_si EXPR:e keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
                   System.out.printf("Si condition: %s ", e);
               :}
               ;
+*/
 /*
  TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
  POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
  */
-EXPR       ::= EXPR:e1 OPEBIN:o EXPR:e2 {:
-                  RESULT = new String(String.format("%s %s %s", e1, o, e2));
+
+EXPR       ::= EXPR OPEBIN:o EXPR {:
+                  // pop the left and the right expression from the stack
+                  Expression right = (Expression) parser.abstractTreeStack.pop();
+                  Expression left  = (Expression) parser.abstractTreeStack.pop();
+
+                  // add the expression on the stack as a new Expression
+                  switch(o){
+                    case "=":
+                      parser.abstractTreeStack.add(new EqualExpression(left, right));
+                      break;
+                  }
               :}
               | OPEUN:o EXPR:e {:
-                  RESULT = new String(String.format("%s %s", o, e));
+                  //RESULT = new String(String.format("%s %s", o, e));
               :}
               | char_par_ouvr EXPR:e char_par_ferm {:
-                  RESULT = new String(String.format("(%s)", e));
+                  //RESULT = new String(String.format("(%s)", e));
               :}
               | OPERANDE:o {:
-                  RESULT = o;
+                  //do nothing. The operand expression should allready be on the top of the stack
               :}
               ;
-
+/*
 ACCES      ::= ident:i{:
                   RESULT = i.getKey();
               :}
@@ -223,7 +247,8 @@ ACCES      ::= ident:i{:
                   RESULT = new String(j.getKey()+k);
               :}
               ;
-
+*/
+/*
 LISTE_INDEX     ::= INDEX:i {:
                   RESULT = i;
               :}
@@ -235,7 +260,7 @@ INDEX      ::= char_crochet_ouvr EXPR:e char_crochet_ferm {:
                   RESULT = new String(String.format("[%s]", e));
               :}
               ;
-
+*/
 OPERANDE   ::= ACCES:a {:
                   RESULT = a;
               :}
@@ -243,7 +268,7 @@ OPERANDE   ::= ACCES:a {:
                   RESULT = a;
               :}
               | constanteEnt:c {:
-                  RESULT = c.getKey();
+                  parser.abstractTreeStack.add(new IntNumber(Integer.valueOf(c.getKey())));
               :}
               | keyword_vrai:v {:
                   RESULT = v.getKey();
@@ -252,6 +277,7 @@ OPERANDE   ::= ACCES:a {:
                   RESULT = f.getKey();
               :}
               ;
+
 OPEBIN     ::=  char_plus:c {:
                   RESULT = c.getKey();
               :}
@@ -262,6 +288,10 @@ OPEBIN     ::=  char_plus:c {:
                   RESULT = c.getKey();
               :}
               | char_div:c {:
+                  RESULT = c.getKey();
+              :}
+              | char_egal:c {:
+                  System.out.println("OPEBIN egal");
                   RESULT = c.getKey();
               :}
               | char_egal_egal:c {:
@@ -289,7 +319,7 @@ OPEBIN     ::=  char_plus:c {:
                   RESULT = c.getKey();
               :}
               ;
-
+/*
 OPEUN      ::= char_non:c {:
                   RESULT = c.getKey();
               :}
@@ -312,3 +342,4 @@ PAREFF     ::= EXPR:e {:
                  RESULT = new String(p+", "+e);
               :}
               ;
+*/
