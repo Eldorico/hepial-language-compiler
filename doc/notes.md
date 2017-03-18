@@ -8,36 +8,31 @@ Le fait d'avoir un gestionnaire d'erreur permet de poursuivre la détection de n
 
 ## Table des symboles
 
-- Sorte de table où sont repertoriées les variables déclarées créée par l'analyseur syntaxique. Intégrer la notion de portée. 
-- Il doit y avoir qu'une seule instance de cette classe. --> singleton pattern
-- On doit enregistrer les numéros de lignes
-- Un symbole contient donc: 
-  - numéro de ligne dans laquelle il est déclaré
-  - valeur, 
-  - l'entrée
-  - ​
+- Entrée: identificateur
+- Symbole: contient le no de ligne, la valeur, et toutes autres informations liées à la déclaration. 
+
+### Construction de la TDS
+
+A chaque déclaration, on ajoute une nouvelle entrée dans la table des symboles. 
 
 #### Classe TDS
 
 ```java
 class TDS{ // doit être une instance unique (singleton pattern)
-    private Stack pile;
-    private HashMap dico; 
-    private int numeroBloc = -1;
     private static TDS instance = new TDS();
   
     // permet d'utiliser l'unique instance 
     static TDS getInstance();
   
     // Peut retourner l'erreur double déclaration. 
-    int ajouter(table, entrée, valeur);  // ajoute dans le bloc courant. sous réserve des blocs ouverts
+    int ajouter(Entrée, Symbole);  // ajoute dans le bloc courant. sous réserve des blocs ouverts
 
     // retourne un symbole ou null
-    String identifier(table, entrée);
+    String identifier(Entrée);
 
     // permet d'entrer/sortir d'un bloc
-    void entreeBloc(table);
-    void sortieBloc(table);  
+    void entreeBloc();
+    void sortieBloc();  
 }
 ```
 

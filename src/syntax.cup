@@ -119,10 +119,10 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
               ;
 */
 /*
- DECLAVAR   ::= TYPE:t ',' ident:i {:
-                  //System.out.printf("var %s (%s)\n", i, t.getKey());
-              :}
-              ;
+DECLAVAR   ::= TYPE:t LIDENT ';' {:
+                 //System.out.printf("var %s (%s)\n", i, t.getKey());
+             :}
+             ;
  LIDENT     ::= ident
               | LIDENT ',' ident
               ;
