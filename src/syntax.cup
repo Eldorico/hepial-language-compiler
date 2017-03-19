@@ -245,10 +245,8 @@ EXPR       ::= EXPR OPEBIN:o EXPR {:
                   Expression left  = (Expression) parser.abstractTreeStack.pop();
 
                   // add the expression to the stack as a new Expression
+                  System.out.println("On passe pas par là");
                   switch(o){
-                    case "=":
-                      parser.abstractTreeStack.add(new EqualExpression(left, right));
-                      break;
                   }
               :}
               | OPEUN:o EXPR:e {:
@@ -311,10 +309,6 @@ OPEBIN     ::=  char_plus:c {:
                   RESULT = c.getKey();
               :}
               | char_div:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_egal:c {:
-                  System.out.println("OPEBIN egal");
                   RESULT = c.getKey();
               :}
               | char_egal_egal:c {:

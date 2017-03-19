@@ -9,9 +9,7 @@ bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLE
 
 
 # Cup ...
-bin/${CUPFILENAME}.cup : 
-
-bin/sym.class : bin/${CUPFILENAME}.cup
+bin/sym.class : src/${CUPFILENAME}.cup
 	# compile every abstractTree class 
 	find -path "*/src/abstractTree/*.java" > sources.txt
 	javac -d bin @sources.txt
@@ -33,11 +31,9 @@ bin/$(JFLEXFILENAME).java: src/$(JFLEXFILENAME).flex
 	mkdir -p bin
 	jflex src/$(JFLEXFILENAME).flex -d bin
 
-src/$(JFLEXFILENAME).flex:
-
 # Clean
 clean: 
-	rm -f -r bin
+	rm -f -r bin sources.txt
 
 #### DEBUG COMMANDS ######
 
