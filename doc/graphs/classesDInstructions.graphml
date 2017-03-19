@@ -21,7 +21,7 @@
           <y:Geometry height="28.0" width="119.5" x="200.0" y="69.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="104.1787109375" x="7.66064453125" y="3.0">ArbreAbstrait<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="99.33544921875" x="10.082275390625" y="3.0">AbstractTree<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -60,10 +60,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="73.0" width="150.75" x="-109.0" y="202.0"/>
+          <y:Geometry height="68.0" width="196.75" x="-125.375" y="190.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="64.53125" modelName="custom" textColor="#000000" visible="true" width="149.6787109375" x="0.53564453125" y="3.0">Affectation
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="64.53125" modelName="custom" textColor="#000000" visible="true" width="166.01123046875" x="15.369384765625" y="3.0">AffectationInstruction
 ---------------------------
 src:Expression
 dst:Expression<y:LabelModel>
@@ -84,14 +84,14 @@ dst:Expression<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="90.0" width="196.75" x="-109.0" y="318.0"/>
+          <y:Geometry height="92.0" width="252.75" x="-165.0" y="318.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="79.6640625" modelName="custom" textColor="#000000" visible="true" width="183.1435546875" x="6.80322265625" y="3.0">Condition
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="79.6640625" modelName="custom" textColor="#000000" visible="true" width="242.0244140625" x="5.36279296875" y="3.0">IfInstruction
 ---------------------------
 condition:Expression
-alors:ListeDInstructions
-sinon:ListeDInstrcutions<y:LabelModel>
+thenInstructions:BlocInstruction
+elseInstructions:BlocInstruction<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -159,12 +159,12 @@ parametres:ParametresEffectifs<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="58.0" width="196.75" x="451.0" y="195.0"/>
+          <y:Geometry height="58.0" width="319.75" x="451.0" y="195.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="177.5830078125" x="9.58349609375" y="3.0">Bloc
----------------------------
-instr:ListeDInstructions<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="297.8203125" x="10.96484375" y="3.0">BlocInstruction
+------------------------------------------------------
+instructionList:LinkedList&lt;Instruction&gt; <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -212,7 +212,6 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e1" source="n7" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -223,7 +222,6 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e2" source="n6" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -236,7 +234,6 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e3" source="n5" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="13.625" sy="-16.5" tx="0.0" ty="0.0">
@@ -249,7 +246,6 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n4" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -260,10 +256,9 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e5" source="n3" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-27.375" sy="-15.0" tx="0.0" ty="0.0">
+          <y:Path sx="-35.1666137229987" sy="-15.333333333333334" tx="0.0" ty="0.0">
             <y:Point x="178.0" y="268.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
@@ -273,11 +268,10 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n2" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="-27.0" y="173.0"/>
+            <y:Point x="40.0" y="147.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>

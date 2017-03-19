@@ -14,9 +14,9 @@ public class BlocInstruction extends Instruction {
 
 	public BlocInstruction(Instruction instruction) {
 		// if the instruction is a BlocInstruction, print error. (it should not be constructed
-		// with a BlocInstruction from the parser. Use the returnWithNewInstruction() instead.
+		// with a BlocInstruction from the parser. Use the addInstruction() instead.
 		if(instruction.getClass().equals(BlocInstruction.class)){
-			System.err.printf("BlocInstruction.constructor: instruction is allready a BlockInstruction. BlockInstruction should be constructed with a BlocInstruction from the parser. Use the returnWithNewInstruction() instead.");
+			System.err.printf("BlocInstruction.constructor: instruction is allready a BlockInstruction. BlockInstruction should be constructed with a BlocInstruction from the parser. Use the addInstruction() instead.");
 		}
 
 		this.instructionList = new LinkedList<Instruction>();
@@ -29,8 +29,8 @@ public class BlocInstruction extends Instruction {
 	 */
 	public void addInstruction(Instruction instruction){
 		// if the instruction is a BlocInstruction, print error.
-		if(instruction instanceof BlocInstruction){
-			System.err.printf("BlocInstruction.returnWithNewInstruction(): instruction is allready a BlockInstruction. BlockInstruction should not be added to a BlockInstruction from the parser I think it is an error.");
+		if(instruction.getClass().equals(BlocInstruction.class)){
+			System.err.printf("BlocInstruction.addInstruction(): instruction is allready a BlockInstruction. BlockInstruction should not be added to a BlockInstruction from the parser. I think it is an error.");
 		}
 		instructionList.addFirst(instruction);
 	}
