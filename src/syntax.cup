@@ -3,6 +3,7 @@ import java.util.Stack;
 import java.util.AbstractMap.SimpleEntry;
 import abstractTree.AbstractTree;
 import abstractTree.expression.*;
+import abstractTree.instruction.*;
 
 init with {:
   abstractTreeStack = new Stack<AbstractTree>();
@@ -105,12 +106,13 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
 /***************************
  *        GRAMMAR          *
  ***************************/
-
+/*
 ENDASDF ::= EXPR:e {:
         System.out.printf("Terminé: to string : \n %s\n", parser.abstractTreeStack.peek().toString());
       :}
       | ENDASDF EXPR
       ;
+*/
 /*
 
  PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
@@ -177,8 +179,10 @@ DECLAVAR   ::= TYPE:t LIDENT ';' {:
 CORPS      ::= INSTR
               | INSTR CORPS
               ;
-
-INSTR      ::= AFFECTATION
+*/
+INSTR      ::= AFFECTATION {:
+                  System.out.printf("Terminé: to string : \n %s\n", parser.abstractTreeStack.peek().toString());
+              :}
               | ECRIRE
               | LIRE
               | CONDITION
@@ -186,7 +190,7 @@ INSTR      ::= AFFECTATION
               | TANTQUE
               | POUR
               ;
-
+/*
  LIRE       ::= keyword_lire ident:i char_point_virgule {:
                   System.out.printf("Lire: %s<-stdin\n", i.getKey());
               :}
@@ -198,9 +202,16 @@ INSTR      ::= AFFECTATION
                   System.out.printf("Ecrire: %s\n", c.getKey());
               :}
               ;
+*/
+AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
+                  // pop the expression
+                  Expression src = (Expression) parser.abstractTreeStack.pop();
 
-AFFECTATION ::= ACCES:a char_egal EXPR:e char_point_virgule  {:
-                  System.out.printf("Affectation: %s<-%s\n", a, e);
+                  // pop the ACCES
+                  Expression dst = (Expression) parser.abstractTreeStack.pop();
+
+                  // add the affectation to the stack as a new Instruction
+                  parser.abstractTreeStack.add(new AffectationInstruction(dst, src));
               :}
               ;
  /*
@@ -222,7 +233,7 @@ EXPR       ::= EXPR OPEBIN:o EXPR {:
                   Expression right = (Expression) parser.abstractTreeStack.pop();
                   Expression left  = (Expression) parser.abstractTreeStack.pop();
 
-                  // add the expression on the stack as a new Expression
+                  // add the expression to the stack as a new Expression
                   switch(o){
                     case "=":
                       parser.abstractTreeStack.add(new EqualExpression(left, right));
@@ -239,15 +250,16 @@ EXPR       ::= EXPR OPEBIN:o EXPR {:
                   //do nothing. The operand expression should allready be on the top of the stack
               :}
               ;
-/*
-ACCES      ::= ident:i{:
-                  RESULT = i.getKey();
+
+ACCES      ::= ident:i{:  // TODO: check if we should factorize something between Identifier and tab[i]
+                  // add ident to the stack
+                  parser.abstractTreeStack.add(new Identifier(i.getKey()));
               :}
               | ident:j LISTE_INDEX:k {:
                   RESULT = new String(j.getKey()+k);
               :}
               ;
-*/
+
 /*
 LISTE_INDEX     ::= INDEX:i {:
                   RESULT = i;
