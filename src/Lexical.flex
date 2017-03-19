@@ -65,12 +65,13 @@ non         {return new Symbol(sym.keyword_non, new SimpleEntry<String, Integer>
 \/    {return new Symbol(sym.char_div, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \=    {return new Symbol(sym.char_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \=\=  {return new Symbol(sym.char_egal_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\!\=  {return new Symbol(sym.char_different, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \<    {return new Symbol(sym.char_ppetit, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \>    {return new Symbol(sym.char_pgrand, new SimpleEntry<String, Integer>(yytext(), yyline));  }
-\<\>  {return new Symbol(sym.char_ppetit_pgrand, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+//\<\>  {return new Symbol(sym.char_ppetit_pgrand, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \<\=  {return new Symbol(sym.char_ppetit_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \>\=  {return new Symbol(sym.char_pgrand_egal, new SimpleEntry<String, Integer>(yytext(), yyline));  }
-\~    {return new Symbol(sym.char_non, new SimpleEntry<String, Integer>(yytext(), yyline));  }
+\!    {return new Symbol(sym.char_non, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \(    {return new Symbol(sym.char_par_ouvr, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \)    {return new Symbol(sym.char_par_ferm, new SimpleEntry<String, Integer>(yytext(), yyline));  }
 \[    {return new Symbol(sym.char_crochet_ouvr, new SimpleEntry<String, Integer>(yytext(), yyline));  }

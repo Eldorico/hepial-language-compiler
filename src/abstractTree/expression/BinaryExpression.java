@@ -6,15 +6,17 @@ package abstractTree.expression;
  * asdf = asdf (Relation type)
  * asdf + asdf (Arithmetic type).
  *
- * It is the parent of Arithemtic and Relation classes
+ * It is the parent of:
+ * - ArithmeticExpression
+ * - RelationalExpression
  *
  */
-public abstract class Binary extends Expression {
+public abstract class BinaryExpression extends Expression {
 
 	Expression leftOperand;
 	Expression rigthOperand;
 
-	public Binary(Expression leftOperand, Expression rightOperand){
+	public BinaryExpression(Expression leftOperand, Expression rightOperand){
 		this.leftOperand = leftOperand;
 		this.rigthOperand = rightOperand;
 	}

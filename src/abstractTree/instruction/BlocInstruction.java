@@ -32,7 +32,7 @@ public class BlocInstruction extends Instruction {
 		if(instruction instanceof BlocInstruction){
 			System.err.printf("BlocInstruction.returnWithNewInstruction(): instruction is allready a BlockInstruction. BlockInstruction should not be added to a BlockInstruction from the parser I think it is an error.");
 		}
-		instructionList.add(instruction);
+		instructionList.addFirst(instruction);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ package abstractTree.expression;
  * asdf == asdf
  *
  */
-public class EqualEqualExpression extends Relation {
+public class EqualEqualExpression extends RelationalExpression {
 
 	public EqualEqualExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);
@@ -14,7 +14,7 @@ public class EqualEqualExpression extends Relation {
 
 	@Override
 	public String toString() {
-		return String.format("%s == %s", this.leftOperand.toString(), this.rigthOperand.toString());
+		return String.format("(%s) == (%s)", this.leftOperand.toString(), this.rigthOperand.toString());
 	}
 
 }

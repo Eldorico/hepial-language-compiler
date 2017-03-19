@@ -51,9 +51,10 @@ terminal SimpleEntry<String, Integer> char_fois;
 terminal SimpleEntry<String, Integer> char_div;
 terminal SimpleEntry<String, Integer> char_egal;
 terminal SimpleEntry<String, Integer> char_egal_egal;
+terminal SimpleEntry<String, Integer> char_different;
 terminal SimpleEntry<String, Integer> char_ppetit;
 terminal SimpleEntry<String, Integer> char_pgrand;
-terminal SimpleEntry<String, Integer> char_ppetit_pgrand;
+//terminal SimpleEntry<String, Integer> char_ppetit_pgrand;
 terminal SimpleEntry<String, Integer> char_ppetit_egal;
 terminal SimpleEntry<String, Integer> char_pgrand_egal;
 terminal SimpleEntry<String, Integer> char_non;
@@ -92,15 +93,15 @@ non terminal ACCES;
 non terminal INDEX;
 non terminal LISTE_INDEX;
 non terminal OPERANDE;
-non terminal String OPEBIN;
-non terminal OPEUN;
+non terminal SimpleEntry<String, Integer> OPEUN; // <String value, lineNumber>
 non terminal APPELFCT;
 non terminal PAREFF;
 
-non terminal ENDASDF;
-non terminal ASDF;
+non terminal ENDASDF; // for debugging
 
-precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_div, char_egal, char_egal_egal, char_ppetit, char_pgrand, char_ppetit_pgrand, char_ppetit_egal, char_pgrand_egal, char_fois;
+precedence left keyword_ou, char_plus, char_moins;
+precedence left keyword_et, char_fois, char_div;
+precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, char_egal_egal, char_different;
 
 
 /***************************
@@ -108,7 +109,7 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
  ***************************/
 
 ENDASDF ::= CORPS {:
-        System.out.printf("Terminé stackSize = %d.  to string : \n %s", parser.abstractTreeStack.size(), parser.abstractTreeStack.peek().toString());
+        System.out.printf("Terminé stackSize = %d.  to string : \n%s", parser.abstractTreeStack.size(), parser.abstractTreeStack.peek().toString());
       :}
       ;
 
@@ -175,21 +176,19 @@ DECLAVAR   ::= TYPE:t LIDENT ';' {:
               ;
 */
 
-//ASDF ::= CORPS;
-
 CORPS      ::= INSTR {:
                 // if instruction on the top of the stack is not a BlocInstruction, convert the instruction to a BlocInstruction and put it on the top of the list. //TODO: could remove this check?
                 if(!parser.abstractTreeStack.peek().getClass().equals(BlocInstruction.class)){
-                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
-                  parser.abstractTreeStack.add(new BlocInstruction(instruct));
+                    Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                    parser.abstractTreeStack.add(new BlocInstruction(instruct));
                 }
               :}
               | INSTR CORPS {:
-                // add the instruction to the CORPS and put it on the top of the abstractTreeStack
-                BlocInstruction block = (BlocInstruction) parser.abstractTreeStack.pop();
-                Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
-                block.addInstruction(instruct);
-                parser.abstractTreeStack.add(block);
+                  // add the instruction to the CORPS and put it on the top of the abstractTreeStack
+                  BlocInstruction block = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                  block.addInstruction(instruct);
+                  parser.abstractTreeStack.add(block);
               :}
               ;
 
@@ -239,25 +238,54 @@ AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
  POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
  */
 
-EXPR       ::= EXPR OPEBIN:o EXPR {:
-                  // pop the left and the right expression from the stack
-                  Expression right = (Expression) parser.abstractTreeStack.pop();
-                  Expression left  = (Expression) parser.abstractTreeStack.pop();
-
-                  // add the expression to the stack as a new Expression
-                  System.out.println("On passe pas par là");
-                  switch(o){
-                  }
+EXPR       ::=  EXPR char_plus EXPR {:
+                  parser.abstractTreeStack.add(new AdditionExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_moins EXPR {:
+                  parser.abstractTreeStack.add(new SubstractionExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_fois EXPR {:
+                  parser.abstractTreeStack.add(new MultiplyExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_div EXPR {:
+                  parser.abstractTreeStack.add(new DivideExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_egal_egal EXPR {:
+                  parser.abstractTreeStack.add(new EqualEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_different EXPR {:
+                  parser.abstractTreeStack.add(new DifferentThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_ppetit EXPR {:
+                  parser.abstractTreeStack.add(new LesserThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_pgrand EXPR {:
+                  parser.abstractTreeStack.add(new GreaterThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_ppetit_egal EXPR {:
+                  parser.abstractTreeStack.add(new LesserEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR char_pgrand_egal EXPR {:
+                  parser.abstractTreeStack.add(new GreaterEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR keyword_et EXPR {:
+                  parser.abstractTreeStack.add(new AndExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+              :}
+              | EXPR keyword_ou EXPR {:
+                  parser.abstractTreeStack.add(new OrExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
               :}
               | OPEUN:o EXPR:e {:
-                  //RESULT = new String(String.format("%s %s", o, e));
+                  Expression expression = (Expression)parser.abstractTreeStack.pop();
+                  String strOperatorValue = o.getKey();
+                  switch(strOperatorValue){
+                    case "!":
+                    case "non":
+                      parser.abstractTreeStack.add(new NotExpression(expression));
+                      break;
+                  }
               :}
-              | char_par_ouvr EXPR:e char_par_ferm {:
-                  //RESULT = new String(String.format("(%s)", e));
-              :}
-              | OPERANDE:o {:
-                  //do nothing. The operand expression should allready be on the top of the stack
-              :}
+              | char_par_ouvr EXPR char_par_ferm
+              | OPERANDE
               ;
 
 ACCES      ::= ident:i{:  // TODO: check if we should factorize something between Identifier and tab[i]
@@ -299,52 +327,15 @@ OPERANDE   ::= ACCES:a {:
               :}
               ;
 
-OPEBIN     ::=  char_plus:c {:
-                  RESULT = c.getKey();
+
+OPEUN      ::= char_non:c {:
+                  RESULT = c;
               :}
-              | char_moins:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_fois:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_div:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_egal_egal:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_ppetit_pgrand:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_ppetit:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_pgrand:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_ppetit_egal:c {:
-                  RESULT = c.getKey();
-              :}
-              | char_pgrand_egal:c {:
-                  RESULT = c.getKey();
-              :}
-              | keyword_et:c {:
-                  RESULT = c.getKey();
-              :}
-              | keyword_ou:c {:
-                  RESULT = c.getKey();
+              | keyword_non:c {:
+                  RESULT = c;
               :}
               ;
 /*
-OPEUN      ::= char_non:c {:
-                  RESULT = c.getKey();
-              :}
-              | keyword_non:c {:
-                  RESULT = c.getKey();
-              :}
-              ;
-
 APPELFCT   ::= ident:i char_par_ouvr char_par_ferm {:
                   RESULT = new String(String.format("%s()", i.getKey()));
               :}
