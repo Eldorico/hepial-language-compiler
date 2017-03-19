@@ -60,7 +60,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="68.0" width="196.75" x="-125.375" y="190.0"/>
+          <y:Geometry height="68.0" width="196.75" x="-148.375" y="174.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="64.53125" modelName="custom" textColor="#000000" visible="true" width="166.01123046875" x="15.369384765625" y="3.0">AffectationInstruction
@@ -84,7 +84,7 @@ dst:Expression<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="92.0" width="252.75" x="-165.0" y="318.0"/>
+          <y:Geometry height="92.0" width="252.75" x="-229.0" y="318.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="79.6640625" modelName="custom" textColor="#000000" visible="true" width="242.0244140625" x="5.36279296875" y="3.0">IfInstruction
@@ -109,15 +109,15 @@ elseInstructions:BlocInstruction<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="101.0" width="218.75" x="132.0" y="318.0"/>
+          <y:Geometry height="101.0" width="218.75" x="53.75" y="318.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="94.796875" modelName="custom" textColor="#000000" visible="true" width="185.2890625" x="16.73046875" y="3.0">Pour
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="94.796875" modelName="custom" textColor="#000000" visible="true" width="208.1025390625" x="5.32373046875" y="3.0">ForLoopInstrcution
 ---------------------------
-idf:Idf
-borneInf:Expression
-borneSup:Expression
-instr:ListeDInsctructions<y:LabelModel>
+i:Identifier
+lowerBound:Expression
+upperBound:Expression
+instructions:BlocInstruction<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -135,7 +135,7 @@ instr:ListeDInsctructions<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="73.0" width="252.75" x="395.0" y="318.0"/>
+          <y:Geometry height="73.0" width="252.75" x="540.0" y="346.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="64.53125" modelName="custom" textColor="#000000" visible="true" width="239.80908203125" x="6.470458984375" y="3.0">Appel
@@ -182,12 +182,36 @@ instructionList:LinkedList&lt;Instruction&gt; <y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="58.0" width="196.75" x="423.0" y="446.0"/>
+          <y:Geometry height="58.0" width="196.75" x="568.0" y="474.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="153.82373046875" x="21.463134765625" y="3.0">AppelQualifie
 ---------------------------
 receveur:Expression<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n8">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="101.0" width="218.75" x="291.25" y="318.0"/>
+          <y:Fill color="#CCFFFF" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="64.53125" modelName="custom" textColor="#000000" visible="true" width="208.1025390625" x="5.32373046875" y="3.0">WhileLoopInstrcution
+---------------------------
+condition:Expression
+instructions:BlocInstruction<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -224,9 +248,7 @@ receveur:Expression<y:LabelModel>
     <edge id="e2" source="n6" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="524.375" y="156.0"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -237,7 +259,7 @@ receveur:Expression<y:LabelModel>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="13.625" sy="-16.5" tx="0.0" ty="0.0">
-            <y:Point x="402.0" y="281.0"/>
+            <y:Point x="428.0" y="264.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -259,7 +281,7 @@ receveur:Expression<y:LabelModel>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-35.1666137229987" sy="-15.333333333333334" tx="0.0" ty="0.0">
-            <y:Point x="178.0" y="268.0"/>
+            <y:Point x="90.0" y="250.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -268,11 +290,21 @@ receveur:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n2" target="n1">
+      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="40.0" y="147.0"/>
-          </y:Path>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e7" source="n8" target="n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>

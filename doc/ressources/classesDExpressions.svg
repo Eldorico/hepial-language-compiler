@@ -81,6 +81,9 @@
       <clipPath clipPathUnits="userSpaceOnUse" id="clipPath26">
         <path d="M716 255 L716 314 L968 314 L968 255 Z"/>
       </clipPath>
+      <clipPath clipPathUnits="userSpaceOnUse" id="clipPath27">
+        <path d="M-276 178 L-276 234 L-126 234 L-126 178 Z"/>
+      </clipPath>
     </defs>
     <g fill="white" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="translate(355,-54)" stroke="white">
       <rect x="-355" width="1384" height="596" y="54" clip-path="url(#clipPath2)" stroke="none"/>
@@ -340,6 +343,18 @@
       <text x="782.6167" xml:space="preserve" y="273.0669" clip-path="url(#clipPath26)" stroke="none">IndexExpression</text>
       <text x="770.0356" xml:space="preserve" y="288.1997" clip-path="url(#clipPath26)" stroke="none">---------------------------</text>
       <text x="723.3105" xml:space="preserve" y="303.3325" clip-path="url(#clipPath26)" stroke="none">indexes:LinkedList&lt;Expression&gt;</text>
+    </g>
+    <g fill="rgb(204,255,255)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,355,-54)" stroke="rgb(204,255,255)">
+      <rect x="-275" width="148" height="54" y="179" clip-path="url(#clipPath2)" stroke="none"/>
+      <rect x="-276" y="178" clip-path="url(#clipPath2)" fill="white" width="1" height="56" stroke="none"/>
+      <rect x="-275" y="178" clip-path="url(#clipPath2)" fill="white" width="148" height="1" stroke="none"/>
+      <rect x="-275" y="233" clip-path="url(#clipPath2)" fill="rgb(142,178,178)" width="149" height="1" stroke="none"/>
+      <rect x="-127" y="178" clip-path="url(#clipPath2)" fill="rgb(142,178,178)" width="1" height="55" stroke="none"/>
+    </g>
+    <g font-size="13px" stroke-linecap="butt" transform="matrix(1,0,0,1,355,-54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="geometricPrecision" font-weight="bold" stroke-miterlimit="1.45">
+      <text x="-262.2119" xml:space="preserve" y="195.0669" clip-path="url(#clipPath27)" stroke="none">BooleanKeyword</text>
+      <text x="-273.5044" xml:space="preserve" y="210.1997" clip-path="url(#clipPath27)" stroke="none">---------------------------</text>
+      <text x="-252.6872" xml:space="preserve" y="225.3325" clip-path="url(#clipPath27)" stroke="none">value:Boolean</text>
       <path fill="none" d="M259.75 132.9688 L259.75 105.0049" clip-path="url(#clipPath2)"/>
       <path d="M259.75 97.0049 L254.75 109.0049 L259.75 106.0049 L264.75 109.0049 Z" stroke="none" clip-path="url(#clipPath2)"/>
       <path fill="none" d="M-26.3019 288.5067 L224.2606 164.5562" clip-path="url(#clipPath2)"/>
@@ -386,6 +401,8 @@
       <path d="M632.9885 342.11 L643.2454 350.0974 L641.67 344.4833 L645.8823 340.4513 Z" stroke="none" clip-path="url(#clipPath2)"/>
       <path fill="none" d="M718.6976 256.0062 L322.4088 161.8823" clip-path="url(#clipPath2)"/>
       <path d="M314.6254 160.0336 L325.1451 167.6713 L323.3818 162.1134 L327.456 157.942 Z" stroke="none" clip-path="url(#clipPath2)"/>
+      <path fill="none" d="M-125.2687 196.5474 L196.9672 155.0794" clip-path="url(#clipPath2)"/>
+      <path d="M204.9018 154.0583 L192.3617 150.6308 L195.9754 155.207 L193.6381 160.5491 Z" stroke="none" clip-path="url(#clipPath2)"/>
     </g>
   </g>
 </svg>

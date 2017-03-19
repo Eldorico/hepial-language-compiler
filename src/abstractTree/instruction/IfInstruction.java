@@ -16,7 +16,7 @@ public class IfInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return String.format("IfInstruction: (%s)?\nThen: \n%sElse:\n%sIfInstruction\n", condition.toString(), thenInstructions.toString(), elseInstructions.toString());
+		return String.format("IfInstruction: (%s)?\nThen: \n%sElse:\n%sEndIfInstruction\n", condition.toString(), thenInstructions.toString(), elseInstructions.toString());
 	}
 
 }

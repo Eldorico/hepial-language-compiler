@@ -228,8 +228,8 @@ AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
  RETOUR     ::= 'retourne' EXPR ';';
  */
 
- CONDITION  ::= keyword_si EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
-                  // pop the two bloc instructions
+CONDITION  ::= keyword_si EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
+                  // pop the two blocs instructions
                   BlocInstruction elseBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   BlocInstruction thenBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   Expression conditionExpression = (Expression) parser.abstractTreeStack.pop();
@@ -239,10 +239,27 @@ AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
               :}
               ;
 
-/*
- TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
- POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
- */
+TANTQUE    ::= keyword_tantque EXPR keyword_faire CORPS keyword_fintantque {:
+                  // pop the needed blocs
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression condition = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a while instruction
+                  parser.abstractTreeStack.add(new WhileLoopInstrcution(condition, instructions));
+              :}
+              ;
+
+POUR       ::= keyword_pour ident:id keyword_allantde EXPR keyword_a EXPR keyword_faire CORPS keyword_finpour {:
+                  // pop the needed blocs
+                  Identifier i = new Identifier(id.getKey());
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression upperBound = (Expression) parser.abstractTreeStack.pop();
+                  Expression lowerBound = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a for loop Instruction
+                  parser.abstractTreeStack.add(new ForLoopInstruction(i, lowerBound, upperBound, instructions));
+              :}
+              ;
 
 EXPR       ::=  EXPR char_plus EXPR {:
                   parser.abstractTreeStack.add(new AdditionExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
@@ -326,20 +343,16 @@ INDEX      ::= char_crochet_ouvr EXPR char_crochet_ferm {:
               :}
               ;
 
-OPERANDE   ::= ACCES:a {:
-                  RESULT = a;
-              :}
-              | APPELFCT:a {:
-                  RESULT = a;
-              :}
+OPERANDE   ::= ACCES
+              | APPELFCT
               | constanteEnt:c {:
                   parser.abstractTreeStack.add(new IntNumber(Integer.valueOf(c.getKey())));
               :}
-              | keyword_vrai:v {:
-                  RESULT = v.getKey();
+              | keyword_vrai {:
+                  parser.abstractTreeStack.add(new BooleanKeyword(true));
               :}
-              | keyword_faux:f {:
-                  RESULT = f.getKey();
+              | keyword_faux {:
+                  parser.abstractTreeStack.add(new BooleanKeyword(false));
               :}
               ;
 

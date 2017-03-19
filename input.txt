@@ -1,6 +1,39 @@
 //cible = "asdf ! Wesh! ";  // ceci n'est pas prévu par hepial:
 asdf = asdf;
+
+tantque (wesh == vrai) faire
+	parentheses = (3 + 3) * 4;
+fintantque
+
 /*
+pour i allantde 0 a 25 faire
+	pour j allantde 0 a 25 faire
+		loop1 = tab[i][j];
+		loop1 = tab[asdf];
+		asdf = asdf + 1;
+	finpour
+finpour
+
+si asdf == asdf alors 
+	thenAsdf = asdf2;
+	parentheses = (3 + 3) * 4;
+sinon
+	elseAsdf = asdf2;
+finsi
+
+withoutParentheses = 3 + 3 * 4;
+
+si asdf2 == vrai alors
+	tab[123] = tab[2+3*4] + 2;
+sinon 
+	si doubleCond == faux
+	alors 
+		tab[ast] = 4+(5+2)/3;
+	sinon 
+		doubleCond = vrai;
+	finsi
+finsi	
+
 priorite = fea * fjioe + 2930;
 priorite2 = fea + fjioe * 2930;
 priorite3 = asdf == asdf - 123 / 124;
@@ -10,21 +43,11 @@ booleans = asdf ou asdf et qwer == 1;
 petit = asdf < adfs ou asdf > asdf et asdf <= asdf et asdf >= asdf;
 withoutParentheses = 3 + 3 * 4;
 parentheses = (3 + 3) * 4;
-*/
-/*
-si asdf == asdf
-alors 
-thenAsdf = asdf2;
-parentheses = (3 + 3) * 4;
-sinon
-elseAsdf = asdf2;
-finsi
-withoutParentheses = 3 + 3 * 4;
-*/
+
 asdf = tab[asdf];
 tab[123] = tab[2+3*4] + 2;
 asdf = tab[1][2][3];
-
+*/
 
 
 
