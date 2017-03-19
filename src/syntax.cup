@@ -227,12 +227,18 @@ AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
  /*
  RETOUR     ::= 'retourne' EXPR ';';
  */
- /*
- CONDITION  ::= keyword_si EXPR:e keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
-                  System.out.printf("Si condition: %s ", e);
+
+ CONDITION  ::= keyword_si EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
+                  // pop the two bloc instructions
+                  BlocInstruction elseBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  BlocInstruction thenBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression conditionExpression = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a conditionInstruction and put it on the top of the stack
+                  parser.abstractTreeStack.add(new IfInstruction(conditionExpression, thenBlocInstructions, elseBlocInstructions));
               :}
               ;
-*/
+
 /*
  TANTQUE    ::= 'tantque' EXPR 'faire' CORPS 'fintantque';
  POUR       ::= 'pour' ident 'allantde' EXPR 'a' EXPR 'faire' CORPS 'finpour';
@@ -326,7 +332,6 @@ OPERANDE   ::= ACCES:a {:
                   RESULT = f.getKey();
               :}
               ;
-
 
 OPEUN      ::= char_non:c {:
                   RESULT = c;

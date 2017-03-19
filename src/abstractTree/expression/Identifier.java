@@ -8,15 +8,15 @@ package abstractTree.expression;
  */
 public class Identifier extends Expression {
 
-	String value;
+	String name;
 
 	public Identifier(String value) {
-		this.value = value;
+		this.name = value;
 	}
 
 	@Override
 	public String toString() {
-		return value;
+		return name;
 	}
 
 }

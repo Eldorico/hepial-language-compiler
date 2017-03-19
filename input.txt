@@ -8,6 +8,18 @@ non1 = non asdf;
 non2 = !asdf;
 booleans = asdf ou asdf et qwer == 1;
 petit = asdf < adfs ou asdf > asdf et asdf <= asdf et asdf >= asdf;
+withoutParentheses = 3 + 3 * 4;
+parentheses = (3 + 3) * 4;
 */
+si asdf == asdf
+alors 
+thenAsdf = asdf2;
+parentheses = (3 + 3) * 4;
+sinon
+elseAsdf = asdf2;
+finsi
+withoutParentheses = 3 + 3 * 4;
+
+
 
 
