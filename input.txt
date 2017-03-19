@@ -1,25 +1,13 @@
-// Affectations: 
 //cible = "asdf ! Wesh! ";  // ceci n'est pas prévu par hepial:
-cible = valeur;
-cible = fct1();
-cible = fct2( 123, asdf, qwer);
-cible = tab[asdf];
-cible = tab[2][qwer];
-cible = 1234 + 1234;
-cible = 1234 - ( 1234 + 893);
-cible = 123 + tab[1234][1234] - fct(asdf, 1234);
-cible = asdf * 4 + ftc(123-1532, tab[1234]);
-oui = non faux;
-cible = vrai;
-ecrire "Wesh ma gueule!";
-lire cible;
-ecrire 123 + tab[1234][1234] - fct(asdf, 1234);
-si asdf 
-alors 
-cible=true; 
-sinon 
-cible=false; 
-finsi
-
+asdf = asdf;
+/*
+priorite = fea * fjioe + 2930;
+priorite2 = fea + fjioe * 2930;
+priorite3 = asdf == asdf - 123 / 124;
+non1 = non asdf;
+non2 = !asdf;
+booleans = asdf ou asdf et qwer == 1;
+petit = asdf < adfs ou asdf > asdf et asdf <= asdf et asdf >= asdf;
+*/
 
 

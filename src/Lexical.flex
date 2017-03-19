@@ -23,7 +23,7 @@ ident = [a-zA-Z][a-zA-Z0-9_]*                     /*   asdf9_   */
 constanteEnt = [0-9]+                             /*   1234     */
 constanteChaine = [\"]([^\"]|\"\")*[\"]           /* " as""df " */
 
-comments = \/\/.*\n                               /* //comment  */
+comments = (\/\/.*\n) | (\/\* (.|\n)* \*\/)                           /* //comment  */
 any_thing_else = .? | \n
 
 %%
