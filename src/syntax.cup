@@ -294,28 +294,38 @@ EXPR       ::=  EXPR char_plus EXPR {:
               | OPERANDE
               ;
 
-ACCES      ::= ident:i{:  // TODO: check if we should factorize something between Identifier and tab[i]
+ACCES      ::= ident:i{:
                   // add ident to the stack
                   parser.abstractTreeStack.add(new Identifier(i.getKey()));
               :}
-              | ident:j LISTE_INDEX:k {:
-                  RESULT = new String(j.getKey()+k);
+              | ident:i LISTE_INDEX {:
+                  // pop the IndexExpression from the stack and create a new TabValueIndentifier
+                  IndexExpression indexes = (IndexExpression) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new TabValueIndentifier(i.getKey(), indexes));
               :}
               ;
 
-/*
-LISTE_INDEX     ::= INDEX:i {:
-                  RESULT = i;
+
+LISTE_INDEX  ::= INDEX:i {:
+                  // pop the first index and create an IndexExpression
+                  Expression index = (Expression) parser.abstractTreeStack.pop();
+                  // place the IndexExpression on the top of the stack
+                  parser.abstractTreeStack.add(new IndexExpression(index));
               :}
               | INDEX:i LISTE_INDEX:l {:
-                  RESULT = new String(i+" "+l);
+                  // add the index to the indexExpression and put it on the top of the stack
+                  IndexExpression indexExpression = (IndexExpression) parser.abstractTreeStack.pop();
+                  Expression index = (Expression) parser.abstractTreeStack.pop();
+                  indexExpression.addIndex(index);
+                  parser.abstractTreeStack.add(indexExpression);
               :}
               ;
-INDEX      ::= char_crochet_ouvr EXPR:e char_crochet_ferm {:
-                  RESULT = new String(String.format("[%s]", e));
+
+INDEX      ::= char_crochet_ouvr EXPR char_crochet_ferm {:
+                  // do nothing. The expression of the be placed on the stack in the EXPR reduction
               :}
               ;
-*/
+
 OPERANDE   ::= ACCES:a {:
                   RESULT = a;
               :}

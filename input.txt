@@ -11,6 +11,7 @@ petit = asdf < adfs ou asdf > asdf et asdf <= asdf et asdf >= asdf;
 withoutParentheses = 3 + 3 * 4;
 parentheses = (3 + 3) * 4;
 */
+/*
 si asdf == asdf
 alors 
 thenAsdf = asdf2;
@@ -19,6 +20,10 @@ sinon
 elseAsdf = asdf2;
 finsi
 withoutParentheses = 3 + 3 * 4;
+*/
+asdf = tab[asdf];
+tab[123] = tab[2+3*4] + 2;
+asdf = tab[1][2][3];
 
 
 
