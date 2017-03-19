@@ -9,7 +9,6 @@ init with {:
   abstractTreeStack = new Stack<AbstractTree>();
 :};
 
-
 parser code {:
   Stack<AbstractTree> abstractTreeStack;
 :};
@@ -79,8 +78,8 @@ non terminal TYPEBASE;
 non terminal TABLEAU;
 non terminal DIM;
 non terminal PARAM;
-non terminal INSTR;
-non terminal CORPS;
+non terminal Instruction INSTR;
+non terminal BlocInstruction CORPS; // TODO: explain somewhere that a CORPS is a list of instcutions...
 non terminal LIRE;
 non terminal ECRIRE;
 non terminal AFFECTATION;
@@ -99,6 +98,7 @@ non terminal APPELFCT;
 non terminal PAREFF;
 
 non terminal ENDASDF;
+non terminal ASDF;
 
 precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_div, char_egal, char_egal_egal, char_ppetit, char_pgrand, char_ppetit_pgrand, char_ppetit_egal, char_pgrand_egal, char_fois;
 
@@ -106,13 +106,12 @@ precedence left char_plus, char_moins, keyword_et, keyword_ou, char_fois, char_d
 /***************************
  *        GRAMMAR          *
  ***************************/
-/*
-ENDASDF ::= EXPR:e {:
-        System.out.printf("Terminé: to string : \n %s\n", parser.abstractTreeStack.peek().toString());
+
+ENDASDF ::= CORPS {:
+        System.out.printf("Terminé stackSize = %d.  to string : \n %s", parser.abstractTreeStack.size(), parser.abstractTreeStack.peek().toString());
       :}
-      | ENDASDF EXPR
       ;
-*/
+
 /*
 
  PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
@@ -175,14 +174,26 @@ DECLAVAR   ::= TYPE:t LIDENT ';' {:
               :}
               ;
 */
-/*
-CORPS      ::= INSTR
-              | INSTR CORPS
-              ;
-*/
-INSTR      ::= AFFECTATION {:
-                  System.out.printf("Terminé: to string : \n %s\n", parser.abstractTreeStack.peek().toString());
+
+//ASDF ::= CORPS;
+
+CORPS      ::= INSTR {:
+                // if instruction on the top of the stack is not a BlocInstruction, convert the instruction to a BlocInstruction and put it on the top of the list. //TODO: could remove this check?
+                if(!parser.abstractTreeStack.peek().getClass().equals(BlocInstruction.class)){
+                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new BlocInstruction(instruct));
+                }
               :}
+              | INSTR CORPS {:
+                // add the instruction to the CORPS and put it on the top of the abstractTreeStack
+                BlocInstruction block = (BlocInstruction) parser.abstractTreeStack.pop();
+                Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                block.addInstruction(instruct);
+                parser.abstractTreeStack.add(block);
+              :}
+              ;
+
+INSTR      ::= AFFECTATION
               | ECRIRE
               | LIRE
               | CONDITION
