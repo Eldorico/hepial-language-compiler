@@ -316,25 +316,25 @@ ACCES      ::= ident:i{:
                   parser.abstractTreeStack.add(new Identifier(i.getKey()));
               :}
               | ident:i LISTE_INDEX {:
-                  // pop the IndexExpression from the stack and create a new TabValueIndentifier
-                  IndexExpression indexes = (IndexExpression) parser.abstractTreeStack.pop();
+                  // pop the ExpressionListpression from the stack and create a new TabValueIndentifier
+                  ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
                   parser.abstractTreeStack.add(new TabValueIndentifier(i.getKey(), indexes));
               :}
               ;
 
 
 LISTE_INDEX  ::= INDEX:i {:
-                  // pop the first index and create an IndexExpression
+                  // pop the first index and create an ExpressionList
                   Expression index = (Expression) parser.abstractTreeStack.pop();
-                  // place the IndexExpression on the top of the stack
-                  parser.abstractTreeStack.add(new IndexExpression(index));
+                  // place the ExpressionList on the top of the stack
+                  parser.abstractTreeStack.add(new ExpressionList(index));
               :}
               | INDEX:i LISTE_INDEX:l {:
-                  // add the index to the indexExpression and put it on the top of the stack
-                  IndexExpression indexExpression = (IndexExpression) parser.abstractTreeStack.pop();
+                  // add the index to the ExpressionList and put it on the top of the stack
+                  ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
                   Expression index = (Expression) parser.abstractTreeStack.pop();
-                  indexExpression.addIndex(index);
-                  parser.abstractTreeStack.add(indexExpression);
+                  indexes.addExpression(index);
+                  parser.abstractTreeStack.add(indexes);
               :}
               ;
 

@@ -1,11 +1,16 @@
 //cible = "asdf ! Wesh! ";  // ceci n'est pas prévu par hepial:
 asdf = asdf;
 
+asdf = tab[asdf];
+tab[123] = tab[2+3*4] + 2;
+asdf = tab[1][2][3];
+
+/*
 tantque (wesh == vrai) faire
 	parentheses = (3 + 3) * 4;
 fintantque
 
-/*
+
 pour i allantde 0 a 25 faire
 	pour j allantde 0 a 25 faire
 		loop1 = tab[i][j];
@@ -43,11 +48,9 @@ booleans = asdf ou asdf et qwer == 1;
 petit = asdf < adfs ou asdf > asdf et asdf <= asdf et asdf >= asdf;
 withoutParentheses = 3 + 3 * 4;
 parentheses = (3 + 3) * 4;
-
-asdf = tab[asdf];
-tab[123] = tab[2+3*4] + 2;
-asdf = tab[1][2][3];
 */
+
+
 
 
 

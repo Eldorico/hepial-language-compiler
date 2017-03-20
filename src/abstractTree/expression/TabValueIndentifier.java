@@ -10,9 +10,9 @@ package abstractTree.expression;
  */
 public class TabValueIndentifier extends Identifier {
 
-	IndexExpression indexes;
+	ExpressionList indexes;
 
-	public TabValueIndentifier(String value, IndexExpression indexes) {
+	public TabValueIndentifier(String value, ExpressionList indexes) {
 		super(value);
 		this.indexes = indexes;
 	}
