@@ -79,7 +79,7 @@
         <path d="M716 369 L716 442 L1012 442 L1012 369 Z"/>
       </clipPath>
       <clipPath clipPathUnits="userSpaceOnUse" id="clipPath26">
-        <path d="M716 255 L716 314 L968 314 L968 255 Z"/>
+        <path d="M667 255 L667 314 L968 314 L968 255 Z"/>
       </clipPath>
       <clipPath clipPathUnits="userSpaceOnUse" id="clipPath27">
         <path d="M-276 178 L-276 234 L-126 234 L-126 178 Z"/>
@@ -333,16 +333,16 @@
       <text x="781.908" xml:space="preserve" y="431.4653" clip-path="url(#clipPath25)" stroke="none">index:IndexExpression</text>
     </g>
     <g fill="rgb(204,255,255)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,355,-54)" stroke="rgb(204,255,255)">
-      <rect x="717" width="250" height="57" y="256" clip-path="url(#clipPath2)" stroke="none"/>
-      <rect x="716" y="255" clip-path="url(#clipPath2)" fill="white" width="1" height="59" stroke="none"/>
-      <rect x="717" y="255" clip-path="url(#clipPath2)" fill="white" width="250" height="1" stroke="none"/>
-      <rect x="717" y="313" clip-path="url(#clipPath2)" fill="rgb(142,178,178)" width="251" height="1" stroke="none"/>
+      <rect x="668" width="299" height="57" y="256" clip-path="url(#clipPath2)" stroke="none"/>
+      <rect x="667" y="255" clip-path="url(#clipPath2)" fill="white" width="1" height="59" stroke="none"/>
+      <rect x="668" y="255" clip-path="url(#clipPath2)" fill="white" width="299" height="1" stroke="none"/>
+      <rect x="668" y="313" clip-path="url(#clipPath2)" fill="rgb(142,178,178)" width="300" height="1" stroke="none"/>
       <rect x="967" y="255" clip-path="url(#clipPath2)" fill="rgb(142,178,178)" width="1" height="58" stroke="none"/>
     </g>
     <g font-size="13px" stroke-linecap="butt" transform="matrix(1,0,0,1,355,-54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="geometricPrecision" font-weight="bold" stroke-miterlimit="1.45">
-      <text x="782.6167" xml:space="preserve" y="273.0669" clip-path="url(#clipPath26)" stroke="none">IndexExpression</text>
-      <text x="770.0356" xml:space="preserve" y="288.1997" clip-path="url(#clipPath26)" stroke="none">---------------------------</text>
-      <text x="723.3105" xml:space="preserve" y="303.3325" clip-path="url(#clipPath26)" stroke="none">indexes:LinkedList&lt;Expression&gt;</text>
+      <text x="765.0706" xml:space="preserve" y="273.0669" clip-path="url(#clipPath26)" stroke="none">ExpressionList</text>
+      <text x="745.5356" xml:space="preserve" y="288.1997" clip-path="url(#clipPath26)" stroke="none">---------------------------</text>
+      <text x="673.9246" xml:space="preserve" y="303.3325" clip-path="url(#clipPath26)" stroke="none">expressionList:LinkedList&lt;Expression&gt;</text>
     </g>
     <g fill="rgb(204,255,255)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,355,-54)" stroke="rgb(204,255,255)">
       <rect x="-275" width="148" height="54" y="179" clip-path="url(#clipPath2)" stroke="none"/>
@@ -399,8 +399,8 @@
       <path d="M216.5234 161.0061 L203.5665 159.9484 L207.9616 163.7802 L206.6489 169.4615 Z" stroke="none" clip-path="url(#clipPath2)"/>
       <path fill="none" d="M731.3777 369.0063 L640.7054 344.2196" clip-path="url(#clipPath2)"/>
       <path d="M632.9885 342.11 L643.2454 350.0974 L641.67 344.4833 L645.8823 340.4513 Z" stroke="none" clip-path="url(#clipPath2)"/>
-      <path fill="none" d="M718.6976 256.0062 L322.4088 161.8823" clip-path="url(#clipPath2)"/>
-      <path d="M314.6254 160.0336 L325.1451 167.6713 L323.3818 162.1134 L327.456 157.942 Z" stroke="none" clip-path="url(#clipPath2)"/>
+      <path fill="none" d="M699.4149 256.0062 L322.3925 162.531" clip-path="url(#clipPath2)"/>
+      <path d="M314.6276 160.6058 L325.0718 168.3466 L323.3632 162.7716 L327.4782 158.6405 Z" stroke="none" clip-path="url(#clipPath2)"/>
       <path fill="none" d="M-125.2687 196.5474 L196.9672 155.0794" clip-path="url(#clipPath2)"/>
       <path d="M204.9018 154.0583 L192.3617 150.6308 L195.9754 155.207 L193.6381 160.5491 Z" stroke="none" clip-path="url(#clipPath2)"/>
     </g>

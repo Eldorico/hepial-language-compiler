@@ -99,9 +99,9 @@ non terminal PAREFF;
 
 non terminal ENDASDF; // for debugging
 
-precedence left keyword_ou, char_plus, char_moins;
+precedence left keyword_ou, char_plus, char_moins; // less prioritar
 precedence left keyword_et, char_fois, char_div;
-precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, char_egal_egal, char_different;
+precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, char_egal_egal, char_different; // most prioritar
 
 
 /***************************

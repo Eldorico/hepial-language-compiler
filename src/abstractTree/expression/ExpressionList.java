@@ -18,7 +18,7 @@ import java.util.LinkedList;
  */
 public class ExpressionList extends Expression {
 
-	LinkedList<Expression> indexes;
+	LinkedList<Expression> expressionList;
 
 	public ExpressionList(Expression expression) {
 		// if the expression is a IndexExpression, print error. (it should not be constructed
@@ -27,8 +27,8 @@ public class ExpressionList extends Expression {
 			System.err.printf("ExpressionList.constructor: expression is allready a ExpressionList. ExpressionList should be constructed with a ExpressionList from the parser. Use the addExpression() instead.");
 		}
 
-		this.indexes = new LinkedList<Expression>();
-		this.indexes.add(expression);
+		this.expressionList = new LinkedList<Expression>();
+		this.expressionList.add(expression);
 	}
 
 	/**
@@ -40,13 +40,13 @@ public class ExpressionList extends Expression {
 		if(expression.getClass().equals(ExpressionList.class)){
 			System.err.printf("ExpressionList.addExpression(): instruction is allready a ExpressionList. ExpressionList should not be added to a ExpressionList from the parser. I think it is an error.");
 		}
-		indexes.addFirst(expression);
+		expressionList.addFirst(expression);
 	}
 
 	@Override
 	public String toString() {
 		String stringToReturn = new String("");
-		Iterator<Expression> i = indexes.iterator();
+		Iterator<Expression> i = expressionList.iterator();
 		while(i.hasNext()){
 			stringToReturn += String.format("[%s]", i.next().toString());
 		}
