@@ -1,6 +1,7 @@
 package abstractTree.instruction;
 
 import abstractTree.expression.Expression;
+import abstractTree.expression.Identifier;
 
 /**
  * @descrition:
@@ -18,14 +19,14 @@ import abstractTree.expression.Expression;
 public class AffectationInstruction extends Instruction {
 
 	Expression src;
-	Expression dst; // TODO: AffectationInstrcution.dst : dst should be an Identifier or a tab[i] or something like that..
+	Identifier dst;
 
 	/**
 	 * @description: Affectation is like: dst = src;
 	 * @param dst
 	 * @param src
 	 */
-	public AffectationInstruction(Expression dst, Expression src) {
+	public AffectationInstruction(Identifier dst, Expression src) {
 		this.dst = dst;
 		this.src = src;
 	}

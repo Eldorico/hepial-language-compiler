@@ -177,11 +177,11 @@ DECLAVAR   ::= TYPE:t LIDENT ';' {:
 */
 
 CORPS      ::= INSTR {:
-                // if instruction on the top of the stack is not a BlocInstruction, convert the instruction to a BlocInstruction and put it on the top of the list. //TODO: could remove this check?
-                if(!parser.abstractTreeStack.peek().getClass().equals(BlocInstruction.class)){
+                // if instruction on the top of the stack is not a BlocInstruction, convert the instruction to a BlocInstruction and put it on the top of the list.
+                //if(!parser.abstractTreeStack.peek().getClass().equals(BlocInstruction.class)){
                     Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
                     parser.abstractTreeStack.add(new BlocInstruction(instruct));
-                }
+                //}
               :}
               | INSTR CORPS {:
                   // add the instruction to the CORPS and put it on the top of the abstractTreeStack
@@ -200,25 +200,26 @@ INSTR      ::= AFFECTATION
               | TANTQUE
               | POUR
               ;
-/*
+
  LIRE       ::= keyword_lire ident:i char_point_virgule {:
-                  System.out.printf("Lire: %s<-stdin\n", i.getKey());
+                  parser.abstractTreeStack.add(new ReadInstruction(new Identifier(i.getKey())));
               :}
               ;
  ECRIRE     ::= keyword_ecrire EXPR:e char_point_virgule {:
-                  System.out.printf("Ecrire: %s\n", e);
+                  Expression output = (Expression) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new WriteInstruction(output));
               :}
               | keyword_ecrire constanteChaine:c char_point_virgule {:
-                  System.out.printf("Ecrire: %s\n", c.getKey());
+                 parser.abstractTreeStack.add(new WriteInstruction(new CstString(c.getKey())));
               :}
               ;
-*/
+
 AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
                   // pop the expression
                   Expression src = (Expression) parser.abstractTreeStack.pop();
 
                   // pop the ACCES
-                  Expression dst = (Expression) parser.abstractTreeStack.pop();
+                  Identifier dst = (Identifier) parser.abstractTreeStack.pop();
 
                   // add the affectation to the stack as a new Instruction
                   parser.abstractTreeStack.add(new AffectationInstruction(dst, src));
@@ -339,7 +340,7 @@ LISTE_INDEX  ::= INDEX:i {:
               ;
 
 INDEX      ::= char_crochet_ouvr EXPR char_crochet_ferm {:
-                  // do nothing. The expression of the be placed on the stack in the EXPR reduction
+                  // do nothing. The expression of the index should be placed on the stack in the EXPR reduction
               :}
               ;
 
@@ -363,19 +364,29 @@ OPEUN      ::= char_non:c {:
                   RESULT = c;
               :}
               ;
-/*
+
 APPELFCT   ::= ident:i char_par_ouvr char_par_ferm {:
-                  RESULT = new String(String.format("%s()", i.getKey()));
+                  parser.abstractTreeStack.add(new FctCallExpression(new Identifier(i.getKey())));
               :}
               | ident:i char_par_ouvr PAREFF:p char_par_ferm {:
-                  RESULT = new String(String.format("%s(%s)", i.getKey(), p));
+                  // Pop the parameters
+                  ExpressionList parameters = (ExpressionList) parser.abstractTreeStack.pop();
+
+                  // add new fct call
+                  parser.abstractTreeStack.add(new FctCallExpression(new Identifier(i.getKey()), parameters));
               :}
               ;
 PAREFF     ::= EXPR:e {:
-                  RESULT = new String(e);
+                  // pop the first index and create an ExpressionList
+                  Expression parameter = (Expression) parser.abstractTreeStack.pop();
+                  // place the ExpressionList on the top of the stack
+                  parser.abstractTreeStack.add(new ExpressionList(parameter));
               :}
               | PAREFF:p char_virgule EXPR:e {:
-                 RESULT = new String(p+", "+e);
+                  // add the index to the ExpressionList and put it on the top of the stack
+                  Expression parameter = (Expression) parser.abstractTreeStack.pop();
+                  ExpressionList parameters = (ExpressionList) parser.abstractTreeStack.pop();
+                  parameters.addExpression(parameter);
+                  parser.abstractTreeStack.add(parameters);
               :}
               ;
-*/

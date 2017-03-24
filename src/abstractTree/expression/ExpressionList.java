@@ -31,6 +31,10 @@ public class ExpressionList extends Expression {
 		this.expressionList.add(expression);
 	}
 
+	public ExpressionList(){
+		this.expressionList = new LinkedList<Expression>();
+	}
+
 	/**
 	 * @description: adds the expression as a new index
 	 * @param instruction: the instruction to add to the BlocInstruction
@@ -44,13 +48,30 @@ public class ExpressionList extends Expression {
 	}
 
 	@Override
-	public String toString() {
+	public String toString(){
+		return new String("ExpressionList.toString(): SHOULD NOT BE USED!. Use ExpressionList.toString(booelan) INSTEAD\n");
+	}
+
+	public String toString(boolean isIndex) {
 		String stringToReturn = new String("");
 		Iterator<Expression> i = expressionList.iterator();
 		while(i.hasNext()){
-			stringToReturn += String.format("[%s]", i.next().toString());
+			if(isIndex){
+				stringToReturn += String.format("[%s]", i.next().toString());
+			}else{
+				stringToReturn += String.format("%s, ", i.next().toString());
+			}
 		}
-		return stringToReturn;
+		if(isIndex){
+			return stringToReturn;
+		}else{
+			if(stringToReturn.length() > 2){
+				return stringToReturn.substring(0, stringToReturn.length()-2);
+			}else{
+				return stringToReturn;
+			}
+		}
+
 	}
 
 }

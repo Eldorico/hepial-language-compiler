@@ -19,7 +19,7 @@ public class TabValueIndentifier extends Identifier {
 
 	@Override
 	public String toString(){
-		return String.format("%s%s", this.name, this.indexes.toString());
+		return String.format("%s%s", this.name, this.indexes.toString(true));
 	}
 
 }
