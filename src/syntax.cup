@@ -1,9 +1,11 @@
 import java_cup.runtime.*;
 import java.util.Stack;
+import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 import abstractTree.AbstractTree;
 import abstractTree.expression.*;
 import abstractTree.instruction.*;
+import abstractTree.symbol.*;
 
 init with {:
   abstractTreeStack = new Stack<AbstractTree>();
@@ -68,14 +70,15 @@ terminal SimpleEntry<String, Integer> char_point_point;
 
 non terminal AXIOME;
 non terminal PROGRAMME;
-non terminal ENTETE;
+non terminal String ENTETE;
 non terminal DECLA;
 non terminal DECLAVAR;
-non terminal LIDENT;
+non terminal LISTE_DECLA;
+non terminal ArrayList<String> LIDENT;
 non terminal DECLACONST;
 non terminal DECLAFONCT;
-non terminal TYPE;
-non terminal TYPEBASE;
+non terminal abstractTree.symbol.Symbol TYPE;
+non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
 non terminal TABLEAU;
 non terminal DIM;
 non terminal PARAM;
@@ -107,56 +110,88 @@ precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, ch
 /***************************
  *        GRAMMAR          *
  ***************************/
-
-ENDASDF ::= CORPS {:
+/*
+ENDASDF ::= PROGRAMME {:
         System.out.printf("Terminé stackSize = %d.  to string : \n%s", parser.abstractTreeStack.size(), parser.abstractTreeStack.peek().toString());
       :}
       ;
-
-/*
-
- PROGRAMME  ::= ENTETE DECLA* 'debutprg' CORPS 'finprg' {:
-                  //System.out.printf("detecté programme\n");
-              :}
-              ;
-
- ENTETE     ::= 'programme' ident:i {:
-                  //System.out.printf("nom du programme: %s\n", i.getKey());
-              :}
-              ;
 */
-/*
+
+
+
+ PROGRAMME  ::= ENTETE:e LISTE_DECLA keyword_debutprg CORPS keyword_finprg {:
+                  System.out.printf("\nTerminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
+              :}
+              ;
+
+ ENTETE     ::= keyword_programme ident:i {:
+                  RESULT = i.getKey();
+              :}
+              ;
+
+LISTE_DECLA  ::= DECLA
+              | DECLA LISTE_DECLA
+              ;
+
  DECLA      ::= DECLAVAR
               | DECLACONST
               | DECLAFONCT
               ;
-*/
-/*
-DECLAVAR   ::= TYPE:t LIDENT ';' {:
-                 //System.out.printf("var %s (%s)\n", i, t.getKey());
+
+
+DECLAVAR   ::= TYPE:t LIDENT:l char_point_virgule {:
+                  for(int i=0; i<l.size(); i++){
+                      SymbolTable.getInstance().addSymbol(l.get(i), t);
+                  }
              :}
              ;
- LIDENT     ::= ident
-              | LIDENT ',' ident
+LIDENT     ::= ident:i {:
+                  ArrayList identifiersList = new ArrayList<String>();
+                  identifiersList.add(i.getKey());
+                  RESULT = identifiersList;
+              :}
+              | LIDENT:l char_virgule ident:i {:
+                  l.add(i.getKey());
+                  RESULT = l;
+              :}
               ;
- DECLACONST ::= 'constante' TYPE ident '=' EXPR ';';
+DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgule {:
+                 if(t.getClass().equals(IntBoolSymbol.class)){
+                   IntBoolSymbol s = (IntBoolSymbol)t;
+                   Type type = s.type();
+                   int line = s.getDeclarationLinesNumber();
+                   Expression expression = (Expression) parser.abstractTreeStack.pop();
+                   CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression);
+                   SymbolTable.getInstance().addSymbol(i.getKey(), symbol);
+                 }else{
+                   System.err.println("DECLACONST: TYPE:t received is not an varBool or varInt! Dont know what to do");
+                 }
+              :}
+              ;
+
+/*
  DECLAFONCT ::= TYPE ident '(' PARAM ')' DECLA* 'debutfonc' CORPS 'finfonc'
               | TYPE ident '(' ')' DECLA* 'debutfonc' CORPS 'finfonc'
               ;
+*/
  TYPE       ::= TYPEBASE:t {:
-                  //RESULT = t;
+                  int lineNumber = t.getKey();
+                  Type type = t.getValue();
+                  RESULT = new IntBoolSymbol(lineNumber, type);
               :}
-              | TABLEAU:t {:
+              | TABLEAU {:
                   //RESULT = t;
               :}
               ;
- TYPEBASE   ::= 'entier' {:
-                  //RESULT = new String("entier");
+TYPEBASE   ::=  keyword_entier:k {:
+                  RESULT = new SimpleEntry<Integer, Type>(k.getValue(), Type.INTEGER);
               :}
-              |  'booleen' {:
-                  //RESULT = new String("boolen");
+              |  keyword_booleen:k {:
+                  RESULT = new SimpleEntry<Integer, Type>(k.getValue(), Type.BOOLEAN);
               :}
               ;
+
+/*
  TABLEAU    ::= TYPEBASE:t '[' DIM:d ']' {:
                   //RESULT = new String(t+"["+d+"]");
               :}
@@ -324,13 +359,13 @@ ACCES      ::= ident:i{:
               ;
 
 
-LISTE_INDEX  ::= INDEX:i {:
+LISTE_INDEX  ::= INDEX {:
                   // pop the first index and create an ExpressionList
                   Expression index = (Expression) parser.abstractTreeStack.pop();
                   // place the ExpressionList on the top of the stack
                   parser.abstractTreeStack.add(new ExpressionList(index));
               :}
-              | INDEX:i LISTE_INDEX:l {:
+              | INDEX LISTE_INDEX {:
                   // add the index to the ExpressionList and put it on the top of the stack
                   ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
                   Expression index = (Expression) parser.abstractTreeStack.pop();
