@@ -79,11 +79,11 @@ non terminal DECLACONST;
 non terminal DECLAFONCT;
 non terminal abstractTree.symbol.Symbol TYPE;
 non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
-non terminal TABLEAU;
-non terminal DIM;
+non terminal ArraySymbol TABLEAU;
+non terminal ArrayList<SimpleEntry<Expression, Expression>> DIM;
 non terminal PARAM;
 non terminal Instruction INSTR;
-non terminal BlocInstruction CORPS; // TODO: explain somewhere that a CORPS is a list of instcutions...
+non terminal BlocInstruction CORPS;
 non terminal LIRE;
 non terminal ECRIRE;
 non terminal AFFECTATION;
@@ -119,12 +119,12 @@ ENDASDF ::= PROGRAMME {:
 
 
 
- PROGRAMME  ::= ENTETE:e LISTE_DECLA keyword_debutprg CORPS keyword_finprg {:
+PROGRAMME  ::= ENTETE:e LISTE_DECLA keyword_debutprg CORPS keyword_finprg {:
                   System.out.printf("\nTerminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
               :}
               ;
 
- ENTETE     ::= keyword_programme ident:i {:
+ENTETE     ::= keyword_programme ident:i {:
                   RESULT = i.getKey();
               :}
               ;
@@ -133,7 +133,7 @@ LISTE_DECLA  ::= DECLA
               | DECLA LISTE_DECLA
               ;
 
- DECLA      ::= DECLAVAR
+DECLA      ::= DECLAVAR
               | DECLACONST
               | DECLAFONCT
               ;
@@ -179,8 +179,8 @@ DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgul
                   Type type = t.getValue();
                   RESULT = new IntBoolSymbol(lineNumber, type);
               :}
-              | TABLEAU {:
-                  //RESULT = t;
+              | TABLEAU:t {:
+                  RESULT = t;
               :}
               ;
 TYPEBASE   ::=  keyword_entier:k {:
@@ -191,17 +191,28 @@ TYPEBASE   ::=  keyword_entier:k {:
               :}
               ;
 
-/*
- TABLEAU    ::= TYPEBASE:t '[' DIM:d ']' {:
-                  //RESULT = new String(t+"["+d+"]");
+TABLEAU    ::= TYPEBASE:t char_crochet_ouvr DIM:d char_crochet_ferm {:
+                  int lineNumber = t.getKey();
+                  Type type = t.getValue();
+                  RESULT = new ArraySymbol(lineNumber, type, d);
               :}
               ;
- DIM        ::= EXPR:e1 '..' EXPR:e2 {:
-                  //RESULT = new String(e1+".."+e2);
+
+DIM        ::= EXPR char_point_point EXPR {:
+                  ArrayList<SimpleEntry<Expression, Expression>> dimensionsList = new ArrayList<SimpleEntry<Expression, Expression>>();
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop(); // TODO check the order here
+                  Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  dimensionsList.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
+                  RESULT = dimensionsList;
               :}
-              |  DIM:d ',' EXPR:e1 '..' EXPR:e2; {:
-                  //RESULT = new String(d+","+e1+".."+e2);
+              |  DIM:d char_virgule EXPR char_point_point EXPR {:
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop(); // TODO check the order here
+                  Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  d.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
+                  RESULT = d;
               :}
+              ;
+/*
  PARAM      ::= TYPE:t ident:i {:
                   //RESULT = new String(t+" "i);
               :}

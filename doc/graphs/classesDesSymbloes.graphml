@@ -108,12 +108,12 @@ returnType:TypeEnum<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="36.0" width="140.5" x="657.0" y="361.0"/>
+          <y:Geometry height="55.0" width="495.5" x="652.0" y="375.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="34.265625" modelName="custom" textColor="#000000" visible="true" width="128.0966796875" x="6.20166015625" y="3.0">ArraySymbol
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="497.30810546875" x="-0.904052734375" y="3.0">ArraySymbol
 -----------------------
-<y:LabelModel>
+dimensionsList:ArrayList&lt; SimpleEntry&lt; Expression, Expression&gt;&gt;<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -191,7 +191,6 @@ value:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n5" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

@@ -1,5 +1,11 @@
 package abstractTree.symbol;
 
+/**
+ * @description: its the parent of
+ * IntBoolSymbol
+ * ArraySymbol
+ *
+ */
 public abstract class VariableSymbol extends Symbol {
 
 	Type type;

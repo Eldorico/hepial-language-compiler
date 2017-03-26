@@ -4,6 +4,14 @@ entier x, y, z;
 booleen wesh;
 constante booleen u = vrai;
 
+entier [2 .. 4] tab, tab2;
+constante entier limiteInf = 50;
+constante entier limiteSup = 250;
+entier [ (9*2-3) .. (60/2), 0 .. 100, limiteInf..limiteSup] treackyTab;
+
+constante booleen YES = vrai;
+entier asdf;
+
 debutprg
 	y = 10 + 2;
 finprg
