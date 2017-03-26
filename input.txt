@@ -14,6 +14,7 @@ entier asdf;
 
 debutprg
 	y = 10 + 2;
+	test = 9*2-3;
 finprg
 
 /*

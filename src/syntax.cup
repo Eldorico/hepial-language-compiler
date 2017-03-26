@@ -200,14 +200,14 @@ TABLEAU    ::= TYPEBASE:t char_crochet_ouvr DIM:d char_crochet_ferm {:
 
 DIM        ::= EXPR char_point_point EXPR {:
                   ArrayList<SimpleEntry<Expression, Expression>> dimensionsList = new ArrayList<SimpleEntry<Expression, Expression>>();
-                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop(); // TODO check the order here
                   Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop();
                   dimensionsList.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
                   RESULT = dimensionsList;
               :}
               |  DIM:d char_virgule EXPR char_point_point EXPR {:
-                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop(); // TODO check the order here
                   Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop();
                   d.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
                   RESULT = d;
               :}
@@ -223,11 +223,8 @@ DIM        ::= EXPR char_point_point EXPR {:
 */
 
 CORPS      ::= INSTR {:
-                // if instruction on the top of the stack is not a BlocInstruction, convert the instruction to a BlocInstruction and put it on the top of the list.
-                //if(!parser.abstractTreeStack.peek().getClass().equals(BlocInstruction.class)){
-                    Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
-                    parser.abstractTreeStack.add(new BlocInstruction(instruct));
-                //}
+                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new BlocInstruction(instruct));
               :}
               | INSTR CORPS {:
                   // add the instruction to the CORPS and put it on the top of the abstractTreeStack
@@ -309,40 +306,64 @@ POUR       ::= keyword_pour ident:id keyword_allantde EXPR keyword_a EXPR keywor
               ;
 
 EXPR       ::=  EXPR char_plus EXPR {:
-                  parser.abstractTreeStack.add(new AdditionExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new AdditionExpression(expr1, expr2));
               :}
               | EXPR char_moins EXPR {:
-                  parser.abstractTreeStack.add(new SubstractionExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new SubstractionExpression(expr1, expr2));
               :}
               | EXPR char_fois EXPR {:
-                  parser.abstractTreeStack.add(new MultiplyExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new MultiplyExpression(expr1, expr2));
               :}
               | EXPR char_div EXPR {:
-                  parser.abstractTreeStack.add(new DivideExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new DivideExpression(expr1, expr2));
               :}
               | EXPR char_egal_egal EXPR {:
-                  parser.abstractTreeStack.add(new EqualEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new EqualEqualExpression(expr1, expr2));
               :}
               | EXPR char_different EXPR {:
-                  parser.abstractTreeStack.add(new DifferentThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new DifferentThanExpression(expr1, expr2));
               :}
               | EXPR char_ppetit EXPR {:
-                  parser.abstractTreeStack.add(new LesserThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new LesserThanExpression(expr1, expr2));
               :}
               | EXPR char_pgrand EXPR {:
-                  parser.abstractTreeStack.add(new GreaterThanExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new GreaterThanExpression(expr1, expr2));
               :}
               | EXPR char_ppetit_egal EXPR {:
-                  parser.abstractTreeStack.add(new LesserEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new LesserEqualExpression(expr1, expr2));
               :}
               | EXPR char_pgrand_egal EXPR {:
-                  parser.abstractTreeStack.add(new GreaterEqualExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new GreaterEqualExpression(expr1, expr2));
               :}
               | EXPR keyword_et EXPR {:
-                  parser.abstractTreeStack.add(new AndExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new AndExpression(expr1, expr2));
               :}
               | EXPR keyword_ou EXPR {:
-                  parser.abstractTreeStack.add(new OrExpression((Expression)parser.abstractTreeStack.pop(), (Expression)parser.abstractTreeStack.pop()));
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new OrExpression(expr1, expr2));
               :}
               | OPEUN:o EXPR:e {:
                   Expression expression = (Expression)parser.abstractTreeStack.pop();
