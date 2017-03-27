@@ -71,11 +71,11 @@ terminal SimpleEntry<String, Integer> char_point_point;
 non terminal AXIOME;
 non terminal PROGRAMME;
 non terminal String ENTETE;
-non terminal DECLA;
-non terminal DECLAVAR;
-non terminal LISTE_DECLA;
+non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>  DECLA; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLAVAR; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>  LISTE_DECLA; // ArrayList<VarName, Symbol>
 non terminal ArrayList<String> LIDENT;
-non terminal DECLACONST;
+non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLACONST;
 non terminal DECLAFONCT;
 non terminal abstractTree.symbol.Symbol TYPE;
 non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
@@ -100,8 +100,6 @@ non terminal SimpleEntry<String, Integer> OPEUN; // <String value, lineNumber>
 non terminal APPELFCT;
 non terminal PAREFF;
 
-non terminal ENDASDF; // for debugging
-
 precedence left keyword_ou, char_plus, char_moins; // less prioritar
 precedence left keyword_et, char_fois, char_div;
 precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, char_egal_egal, char_different; // most prioritar
@@ -110,16 +108,11 @@ precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, ch
 /***************************
  *        GRAMMAR          *
  ***************************/
-/*
-ENDASDF ::= PROGRAMME {:
-        System.out.printf("Terminé stackSize = %d.  to string : \n%s", parser.abstractTreeStack.size(), parser.abstractTreeStack.peek().toString());
-      :}
-      ;
-*/
 
-
-
-PROGRAMME  ::= ENTETE:e LISTE_DECLA keyword_debutprg CORPS keyword_finprg {:
+PROGRAMME  ::= ENTETE:e LISTE_DECLA:l keyword_debutprg CORPS keyword_finprg {:
+                  for(int i=l.size()-1; i>=0; i--){
+                      SymbolTable.getInstance().addSymbol(l.get(i).getKey(), l.get(i).getValue());
+                  }
                   System.out.printf("\nTerminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
               :}
               ;
@@ -129,22 +122,36 @@ ENTETE     ::= keyword_programme ident:i {:
               :}
               ;
 
-LISTE_DECLA  ::= DECLA
-              | DECLA LISTE_DECLA
+LISTE_DECLA  ::= DECLA:d {:
+                  RESULT = d;
+              :}
+              | DECLA:d LISTE_DECLA:l {:
+                  for(int i=0; i<d.size(); i++){
+                    l.add(d.get(i));
+                  }
+                  RESULT = l;
+              :}
               ;
 
-DECLA      ::= DECLAVAR
-              | DECLACONST
+DECLA      ::= DECLAVAR:d {:
+                  RESULT = d;
+              :}
+              | DECLACONST:d {:
+                  RESULT = d;
+              :}
               | DECLAFONCT
               ;
 
 
 DECLAVAR   ::= TYPE:t LIDENT:l char_point_virgule {:
+                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
                   for(int i=0; i<l.size(); i++){
-                      SymbolTable.getInstance().addSymbol(l.get(i), t);
+                      declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(l.get(i), t));
                   }
+                  RESULT = declarationsList;
              :}
              ;
+
 LIDENT     ::= ident:i {:
                   ArrayList identifiersList = new ArrayList<String>();
                   identifiersList.add(i.getKey());
@@ -157,12 +164,16 @@ LIDENT     ::= ident:i {:
               ;
 DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgule {:
                  if(t.getClass().equals(IntBoolSymbol.class)){
+                   ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+
                    IntBoolSymbol s = (IntBoolSymbol)t;
                    Type type = s.type();
                    int line = s.getDeclarationLinesNumber();
                    Expression expression = (Expression) parser.abstractTreeStack.pop();
                    CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression);
-                   SymbolTable.getInstance().addSymbol(i.getKey(), symbol);
+
+                   declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(i.getKey(), symbol));
+                   RESULT = declarationsList;
                  }else{
                    System.err.println("DECLACONST: TYPE:t received is not an varBool or varInt! Dont know what to do");
                  }
@@ -183,6 +194,7 @@ DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgul
                   RESULT = t;
               :}
               ;
+
 TYPEBASE   ::=  keyword_entier:k {:
                   RESULT = new SimpleEntry<Integer, Type>(k.getValue(), Type.INTEGER);
               :}
@@ -443,6 +455,7 @@ APPELFCT   ::= ident:i char_par_ouvr char_par_ferm {:
                   parser.abstractTreeStack.add(new FctCallExpression(new Identifier(i.getKey()), parameters));
               :}
               ;
+
 PAREFF     ::= EXPR:e {:
                   // pop the first index and create an ExpressionList
                   Expression parameter = (Expression) parser.abstractTreeStack.pop();

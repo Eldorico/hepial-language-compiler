@@ -1,11 +1,13 @@
 package abstractTree.symbol;
 
 import java.util.HashMap;
+import java.util.Stack;
 
 public class SymbolTable {
 
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
+	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("main");
 	private String currentBlocName;
 
@@ -31,7 +33,7 @@ public class SymbolTable {
 			return false;
 		}else{
 			symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
-			System.out.printf("SymbolTable: added %s: %s\n", symbolIdentifier, symbol.toString());
+			System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
 			return true;
 		}
 	}
@@ -48,6 +50,7 @@ public class SymbolTable {
 		if(!symbolTable.containsKey(blocName)){
 			symbolTable.put(blocName, new HashMap<String, Symbol>());
 		}
+		openedBlocs.add(blocName);
 		currentBlocName = blocName;
 	}
 
@@ -55,7 +58,8 @@ public class SymbolTable {
 		if(currentBlocName.equals(mainBlocName)){
 			System.err.println("SymbolTable : cannot exit mainBloc");
 		}else{
-			currentBlocName = mainBlocName;
+			openedBlocs.pop();
+			currentBlocName = openedBlocs.peek();
 		}
 	}
 
