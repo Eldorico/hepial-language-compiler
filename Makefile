@@ -12,6 +12,7 @@ bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLE
 bin/sym.class : src/${CUPFILENAME}.cup src/$(JFLEXFILENAME).flex
 	# compile every abstractTree class 
 	find -path "*/src/abstractTree/*.java" > sources.txt
+	find -path "*/src/symbol/*.java" >> sources.txt
 	javac -d bin @sources.txt
 	rm sources.txt
 

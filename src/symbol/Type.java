@@ -1,4 +1,4 @@
-package abstractTree.symbol;
+package symbol;
 
 public enum Type {
 	INTEGER, BOOLEAN

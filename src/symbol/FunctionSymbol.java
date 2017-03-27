@@ -1,4 +1,4 @@
-package abstractTree.symbol;
+package symbol;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;

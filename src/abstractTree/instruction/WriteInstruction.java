@@ -16,7 +16,7 @@ public class WriteInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return String.format("Write: output = %s\n", output);
+		return String.format("Write: %s\n", output);
 	}
 
 }

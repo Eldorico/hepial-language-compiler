@@ -1,4 +1,4 @@
-package abstractTree.symbol;
+package symbol;
 
 
 public class IntBoolSymbol extends VariableSymbol {

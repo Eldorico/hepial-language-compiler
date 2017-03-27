@@ -1,4 +1,4 @@
-package abstractTree.symbol;
+package symbol;
 
 /**
  * @description:

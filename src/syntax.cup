@@ -5,7 +5,7 @@ import java.util.AbstractMap.SimpleEntry;
 import abstractTree.AbstractTree;
 import abstractTree.expression.*;
 import abstractTree.instruction.*;
-import abstractTree.symbol.*;
+import symbol.*;
 
 init with {:
   abstractTreeStack = new Stack<AbstractTree>();
@@ -71,13 +71,13 @@ terminal SimpleEntry<String, Integer> char_point_point;
 non terminal AXIOME;
 non terminal PROGRAMME;
 non terminal String ENTETE;
-non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>  DECLA; // ArrayList<VarName, Symbol>
-non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLAVAR; // ArrayList<VarName, Symbol>
-non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>  LISTE_DECLA; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>>  DECLA; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLAVAR; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>>  LISTE_DECLA; // ArrayList<VarName, Symbol>
 non terminal ArrayList<String> LIDENT;
-non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLACONST;
-non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLAFONCT;
-non terminal abstractTree.symbol.Symbol TYPE;
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLACONST;
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLAFONCT;
+non terminal symbol.Symbol TYPE;
 non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
 non terminal ArraySymbol TABLEAU;
 non terminal ArrayList<SimpleEntry<Expression, Expression>> DIM;
@@ -146,9 +146,9 @@ DECLA      ::= DECLAVAR:d {:
 
 
 DECLAVAR   ::= TYPE:t LIDENT:l char_point_virgule {:
-                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
                   for(int i=0; i<l.size(); i++){
-                      declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(l.get(i), t));
+                      declarationsList.add(new SimpleEntry<String, symbol.Symbol>(l.get(i), t));
                   }
                   RESULT = declarationsList;
              :}
@@ -166,7 +166,7 @@ LIDENT     ::= ident:i {:
               ;
 DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgule {:
                  if(t.getClass().equals(IntBoolSymbol.class)){
-                   ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+                   ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
 
                    IntBoolSymbol s = (IntBoolSymbol)t;
                    Type type = s.type();
@@ -174,7 +174,7 @@ DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgul
                    Expression expression = (Expression) parser.abstractTreeStack.pop();
                    CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression);
 
-                   declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(i.getKey(), symbol));
+                   declarationsList.add(new SimpleEntry<String, symbol.Symbol>(i.getKey(), symbol));
                    RESULT = declarationsList;
                  }else{
                    System.err.println("DECLACONST: TYPE:t received is not an varBool or varInt! Dont know what to do");
@@ -191,13 +191,13 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   SymbolTable.getInstance().exitCurrentBloc();
 
                   // create declarationList to return
-                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
 
                   // add the function to the declarationsList
                   BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
-                  declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions)));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions)));
                   RESULT = declarationsList;
               :}
               | TYPE:t ident:fctIdentifier char_par_ouvr char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
@@ -209,14 +209,14 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   SymbolTable.getInstance().exitCurrentBloc();
 
                   // create declarationList to return
-                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
 
                   // add the function to the SymbolTable
                   BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
                   ArrayList<SimpleEntry<String, VariableSymbol>> emptyParamsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
-                  declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions)));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions)));
                   RESULT = declarationsList;
               :}
               ;
