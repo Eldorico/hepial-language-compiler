@@ -41,7 +41,7 @@ lineDeclaration:int<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="60.0" width="140.5" x="568.0" y="243.0"/>
+          <y:Geometry height="55.0" width="140.5" x="591.0" y="218.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="128.0966796875" x="6.20166015625" y="3.0">VariableSymbol
@@ -64,12 +64,14 @@ type:TypeEnum<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="60.0" width="178.5" x="858.0" y="243.0"/>
+          <y:Geometry height="85.0" width="471.1666666666665" x="858.0" y="218.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="167.4267578125" x="5.53662109375" y="3.0">FunctionSymbol
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="79.6640625" modelName="custom" textColor="#000000" visible="true" width="432.9111328125" x="19.127766927083258" y="3.0">FunctionSymbol
 ------------------------
-returnType:TypeEnum<y:LabelModel>
+returnType:TypeEnum
+params:ArrayList&lt;SimpleEntry&lt;String, VariableSymbol&gt;&gt;
+instructions:BlocInstruction<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -87,7 +89,7 @@ returnType:TypeEnum<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="140.5" x="457.5" y="361.0"/>
+          <y:Geometry height="28.0" width="140.5" x="457.5" y="423.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" modelName="custom" textColor="#000000" visible="true" width="110.60888671875" x="14.945556640625" y="3.0">IntBoolSymbol<y:LabelModel>
@@ -108,7 +110,7 @@ returnType:TypeEnum<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="495.5" x="652.0" y="375.0"/>
+          <y:Geometry height="55.0" width="495.5" x="652.0" y="437.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="497.30810546875" x="-0.904052734375" y="3.0">ArraySymbol
@@ -131,7 +133,7 @@ dimensionsList:ArrayList&lt; SimpleEntry&lt; Expression, Expression&gt;&gt;<y:La
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="163.5" x="399.0" y="467.0"/>
+          <y:Geometry height="55.0" width="163.5" x="399.0" y="529.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="138.8876953125" x="12.30615234375" y="3.0">CstIntBoolSymbol

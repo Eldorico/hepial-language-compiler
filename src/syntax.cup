@@ -76,12 +76,12 @@ non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLAVAR
 non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>  LISTE_DECLA; // ArrayList<VarName, Symbol>
 non terminal ArrayList<String> LIDENT;
 non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLACONST;
-non terminal DECLAFONCT;
+non terminal ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> DECLAFONCT;
 non terminal abstractTree.symbol.Symbol TYPE;
 non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
 non terminal ArraySymbol TABLEAU;
 non terminal ArrayList<SimpleEntry<Expression, Expression>> DIM;
-non terminal PARAM;
+non terminal ArrayList<SimpleEntry<String, VariableSymbol>> PARAM;
 non terminal Instruction INSTR;
 non terminal BlocInstruction CORPS;
 non terminal LIRE;
@@ -113,7 +113,7 @@ PROGRAMME  ::= ENTETE:e LISTE_DECLA:l keyword_debutprg CORPS keyword_finprg {:
                   for(int i=l.size()-1; i>=0; i--){
                       SymbolTable.getInstance().addSymbol(l.get(i).getKey(), l.get(i).getValue());
                   }
-                  System.out.printf("\nTerminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
+                  System.out.printf("Terminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
               :}
               ;
 
@@ -139,7 +139,9 @@ DECLA      ::= DECLAVAR:d {:
               | DECLACONST:d {:
                   RESULT = d;
               :}
-              | DECLAFONCT
+              | DECLAFONCT:d {:
+                  RESULT = d;
+              :}
               ;
 
 
@@ -180,12 +182,46 @@ DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgul
               :}
               ;
 
-/*
- DECLAFONCT ::= TYPE ident '(' PARAM ')' DECLA* 'debutfonc' CORPS 'finfonc'
-              | TYPE ident '(' ')' DECLA* 'debutfonc' CORPS 'finfonc'
+DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
+                  // add the declarations of the function to the SymbolTable
+                  SymbolTable.getInstance().enterBloc(fctIdentifier.getKey());
+                  for(int i=0; i<fctDeclarationsList.size(); i++){
+                    SymbolTable.getInstance().addSymbol(fctDeclarationsList.get(i).getKey(), fctDeclarationsList.get(i).getValue());
+                  }
+                  SymbolTable.getInstance().exitCurrentBloc();
+
+                  // create declarationList to return
+                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+
+                  // add the function to the declarationsList
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  VariableSymbol type = (VariableSymbol)t;
+                  Type ftcReturnType = type.type();
+                  declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions)));
+                  RESULT = declarationsList;
+              :}
+              | TYPE:t ident:fctIdentifier char_par_ouvr char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
+                  // add the declarations of the function to the SymbolTable
+                  SymbolTable.getInstance().enterBloc(fctIdentifier.getKey());
+                  for(int i=0; i<fctDeclarationsList.size(); i++){
+                    SymbolTable.getInstance().addSymbol(fctDeclarationsList.get(i).getKey(), fctDeclarationsList.get(i).getValue());
+                  }
+                  SymbolTable.getInstance().exitCurrentBloc();
+
+                  // create declarationList to return
+                  ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, abstractTree.symbol.Symbol>>();
+
+                  // add the function to the SymbolTable
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  VariableSymbol type = (VariableSymbol)t;
+                  Type ftcReturnType = type.type();
+                  ArrayList<SimpleEntry<String, VariableSymbol>> emptyParamsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
+                  declarationsList.add(new SimpleEntry<String, abstractTree.symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions)));
+                  RESULT = declarationsList;
+              :}
               ;
-*/
- TYPE       ::= TYPEBASE:t {:
+
+TYPE       ::= TYPEBASE:t {:
                   int lineNumber = t.getKey();
                   Type type = t.getValue();
                   RESULT = new IntBoolSymbol(lineNumber, type);
@@ -224,15 +260,18 @@ DIM        ::= EXPR char_point_point EXPR {:
                   RESULT = d;
               :}
               ;
-/*
- PARAM      ::= TYPE:t ident:i {:
-                  //RESULT = new String(t+" "i);
+
+PARAM      ::= TYPE:t ident:i {:
+                  ArrayList<SimpleEntry<String, VariableSymbol>> paramsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
+                  paramsList.add(new SimpleEntry<String, VariableSymbol>(i.getKey() ,(VariableSymbol)t));
+                  RESULT = paramsList;
               :}
-              |  PARAM:p ',' TYPE:t ident:i {:
-                  //RESULT = new String(p+", "+t+" "+i);
+              |  PARAM:p char_virgule TYPE:t ident:i {:
+                  p.add(new SimpleEntry<String, VariableSymbol>(i.getKey() ,(VariableSymbol)t));
+                  RESULT = p;
               :}
               ;
-*/
+
 
 CORPS      ::= INSTR {:
                   Instruction instruct = (Instruction) parser.abstractTreeStack.pop();

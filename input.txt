@@ -1,20 +1,21 @@
-programme hepial1
+programme hepial3
+constante entier FIXE = 50;
+entier nb;
 
-entier x, y, z;
-booleen wesh;
-constante booleen u = vrai;
-
-entier [2 .. 4] tab, tab2;
-constante entier limiteInf = 50;
-constante entier limiteSup = 250;
-entier [ (9*2-3) .. (60/2), 0 .. 100, limiteInf..limiteSup] treackyTab;
-
-constante booleen YES = vrai;
-entier asdf;
+entier carre(entier i)
+entier test;
+debutfonc	
+		i = i * i;
+		//retourne i;
+finfonc
 
 debutprg
-	y = 10 + 2;
-	test = 9*2-3;
+	si nb >= FIXE alors		
+		nb = 5;
+	sinon
+		nb = 3;
+	finsi
+	ecrire carre(nb); 
 finprg
 
 /*
