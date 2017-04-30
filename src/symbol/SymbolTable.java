@@ -1,5 +1,6 @@
 package symbol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -7,6 +8,7 @@ public class SymbolTable {
 
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
+	
 	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("main");
 	private String currentBlocName;
@@ -34,6 +36,7 @@ public class SymbolTable {
 		}else{
 			symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
 			System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
+			
 			return true;
 		}
 	}
@@ -61,6 +64,16 @@ public class SymbolTable {
 			openedBlocs.pop();
 			currentBlocName = openedBlocs.peek();
 		}
+	}
+	
+	/**
+	 * @description: Checks the functions declarations and the const declarations. 
+	 * 	If some errors are detected, they are reported to the ErrorPrinter 
+	 * 	and the function returns false;
+	 * @return
+	 */
+	public boolean declarationErrorsDetected(){
+		
 	}
 
 }

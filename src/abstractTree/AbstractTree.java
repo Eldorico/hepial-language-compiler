@@ -5,6 +5,6 @@ public abstract class AbstractTree {
 	@Override
 	abstract public String toString();
 
-	abstract public boolean semanticErrorsDetected();
+	//abstract public boolean semanticErrorsDetected();
 
 }
