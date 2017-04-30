@@ -314,7 +314,7 @@ ecrire "ceci est une chaine de caractères \" avec un guilllemet au milieu";
 
 
 
-# Questions:
+## Contrôle de l'arbre abstrait
 
-- Tableaux?
-- CORPS: la grammaire empêche de déclarer des variables dans un corps. C'est juste non? Du coup la portée ne concerne que les affectations? 
+
+

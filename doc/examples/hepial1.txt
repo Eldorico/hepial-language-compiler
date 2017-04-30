@@ -1,8 +1,0 @@
-programme hepial1
-
-entier x;
-constante booleen y = vrai;
-
-debutprg
-	y = 10 + 2;
-finprg
