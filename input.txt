@@ -1,7 +1,7 @@
 programme hepial1
 
 entier x;
-constante booleen y = vrai;
+constante booleen y = faux;
 
 debutprg
 	y = 10 + 2;

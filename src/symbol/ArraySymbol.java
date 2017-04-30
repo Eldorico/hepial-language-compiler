@@ -16,11 +16,18 @@ public class ArraySymbol extends VariableSymbol {
 
 	@Override
 	public String toString(){
-		String strToReturn = String.format("Array %s. No Ligne: %d. Dimensions: ", getType(), declarationLinesNumber);
+		String strToReturn = String.format("Array %s. No Ligne: %d. Dimensions: ", getType(), declarationLineNumber);
 		for(SimpleEntry<Expression, Expression> entry : dimensionsList){
 			strToReturn += String.format("[%s..%s]", entry.getKey().toString(), entry.getValue().toString());
 		}
 		return strToReturn;
 	}
+
+    @Override
+    public boolean semanticErrorsDetected() {
+        //TODO ArraySymbol.semanticErrorsDetected()
+        System.err.println("ArraySymbol.semanticErrorsDetected(): à faire");
+        return false;
+    }
 
 }

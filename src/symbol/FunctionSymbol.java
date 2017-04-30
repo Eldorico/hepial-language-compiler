@@ -20,7 +20,7 @@ public class FunctionSymbol extends Symbol {
 
 	@Override
 	public String toString(){
-		String strToReturn =  String.format("Function. Return type: %s. No Ligne: %d. Parametres:\n", getReturnType(), declarationLinesNumber);
+		String strToReturn =  String.format("Function. Return type: %s. No Ligne: %d. Parametres:\n", getReturnType(), declarationLineNumber);
 		for(SimpleEntry<String, VariableSymbol> parameter: parameters){
 			strToReturn += String.format("%s: (%s)\n", parameter.getKey(), parameter.toString());
 		}
@@ -42,4 +42,11 @@ public class FunctionSymbol extends Symbol {
 	Type returnType(){
 		return this.returnType;
 	}
+
+    @Override
+    public boolean semanticErrorsDetected() {
+        // TODO FunctionSymbol.semanticErrorsDetected()
+        System.err.println("FunctionSymbol.semanticErrorsDetected: à faire");
+        return false;
+    }
 }

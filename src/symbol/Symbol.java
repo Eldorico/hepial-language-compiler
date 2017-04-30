@@ -6,13 +6,15 @@ package symbol;
  */
 public abstract class Symbol {
 
-	int declarationLinesNumber;
+	int declarationLineNumber;
 
 	public Symbol(int declarationLinesNumber) {
-		this.declarationLinesNumber = declarationLinesNumber+1;
+		this.declarationLineNumber = declarationLinesNumber+1;
 	}
 
 	public int getDeclarationLinesNumber(){
-		return declarationLinesNumber;
+		return declarationLineNumber;
 	}
+
+	abstract public boolean semanticErrorsDetected();
 }

@@ -8,13 +8,15 @@ public class SymbolTable {
 
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
-	
+	private ArrayList<Symbol> symbolsList; // used to browse quickly every symbol added to symbolTable, in the order they have been added
+
 	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("main");
 	private String currentBlocName;
 
 	private SymbolTable(){
 		this.symbolTable = new HashMap<String, HashMap<String, Symbol>>();
+		this.symbolsList = new ArrayList<Symbol>();
 		this.enterBloc(mainBlocName);
 	}
 
@@ -35,8 +37,8 @@ public class SymbolTable {
 			return false;
 		}else{
 			symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
+			symbolsList.add(symbol);
 			System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
-			
 			return true;
 		}
 	}
@@ -65,15 +67,21 @@ public class SymbolTable {
 			currentBlocName = openedBlocs.peek();
 		}
 	}
-	
+
 	/**
-	 * @description: Checks the functions declarations and the const declarations. 
-	 * 	If some errors are detected, they are reported to the ErrorPrinter 
+	 * @description: Checks the functions declarations and the const declarations.
+	 * 	If some errors are detected, they are reported to the ErrorPrinter
 	 * 	and the function returns false;
 	 * @return
 	 */
-	public boolean declarationErrorsDetected(){
-		
+	public boolean semanticErrorsDetected(){
+	    boolean returnValue = false;
+	    for(Symbol symbol: symbolsList){
+	        if(symbol.semanticErrorsDetected()){
+	            returnValue = true;
+	        }
+	    }
+	    return returnValue;
 	}
 
 }
