@@ -1,7 +1,10 @@
 programme hepial1
 
-entier x;
-constante booleen y = faux;
+constante entier x = 1234;
+constante entier y = 456;
+entier z;
+entier[(y+2)*x..z] array;
+
 
 debutprg
 	y = 10 + 2;

@@ -21,4 +21,12 @@ public abstract class BinaryExpression extends Expression {
 		this.rigthOperand = rightOperand;
 	}
 
+	public Expression getLeftOperand(){
+	    return this.leftOperand;
+	}
+
+	public Expression getRightOperand(){
+	    return this.rigthOperand;
+	}
+
 }

@@ -14,6 +14,10 @@ public class Identifier extends Expression {
 		this.name = value;
 	}
 
+	public String getName(){
+	    return name;
+	}
+
 	@Override
 	public String toString() {
 		return name;

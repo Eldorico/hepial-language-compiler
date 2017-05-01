@@ -39,7 +39,7 @@ public class FunctionSymbol extends Symbol {
 		}
 	}
 
-	Type returnType(){
+	public Type returnType(){
 		return this.returnType;
 	}
 
