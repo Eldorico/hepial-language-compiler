@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 /**
  * @description
  * This class represents an Integer expression.
@@ -16,6 +18,11 @@ public class IntNumber extends Expression {
 	@Override
 	public String toString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public Type getType(){
+	    return Type.INTEGER;
 	}
 
 }

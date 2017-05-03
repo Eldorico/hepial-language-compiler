@@ -1,5 +1,9 @@
 package abstractTree.expression;
 
+import symbol.SymbolTable;
+import symbol.Type;
+import symbol.VariableSymbol;
+
 /**
  * @description:
  * This class represents an identifier. For example, in an expression as 'a = b', 'a' and
@@ -21,6 +25,12 @@ public class Identifier extends Expression {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public Type getType(){
+	    VariableSymbol identifiersSymbol = (VariableSymbol)SymbolTable.getInstance().getSymbol(name);
+	    return  identifiersSymbol.type();
 	}
 
 }

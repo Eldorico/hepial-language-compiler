@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 /**
  * @description:
  * This class is the parents of binary Expressions such as:
@@ -27,6 +29,20 @@ public abstract class BinaryExpression extends Expression {
 
 	public Expression getRightOperand(){
 	    return this.rigthOperand;
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public Type getType(){
+	    Type leftOperandType = leftOperand.getType();
+	    Type rightOperandType = rigthOperand.getType();
+	    if(leftOperandType == rightOperandType){
+	        return leftOperandType;
+	    }else{
+	        return null;
+	    }
 	}
 
 }

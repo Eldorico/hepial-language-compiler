@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 /**
  * @description:
  * This class represents a boolean keyword.
@@ -15,6 +17,11 @@ public class BooleanKeyword extends Expression {
 	@Override
 	public String toString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public Type getType(){
+	    return Type.BOOLEAN;
 	}
 
 }

@@ -1,5 +1,9 @@
 package abstractTree.expression;
 
+import symbol.FunctionSymbol;
+import symbol.SymbolTable;
+import symbol.Type;
+
 
 /**
  * This class represents a function call such as:
@@ -28,5 +32,11 @@ public class FctCallExpression extends Expression {
 	public String toString() {
 		return String.format("%s(%s)", fctName.toString(), parameters.toString(false));
 	}
+
+    @Override
+    public Type getType(){
+        FunctionSymbol functionsSymbol = (FunctionSymbol)SymbolTable.getInstance().getSymbol(fctName.getName());
+        return  functionsSymbol.returnType();
+    }
 
 }

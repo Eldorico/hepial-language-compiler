@@ -3,6 +3,8 @@ package abstractTree.expression;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import symbol.Type;
+
 /**
  * @description:
  * This class represent a list of expression. It can be used to access a particular part of an array.
@@ -72,6 +74,12 @@ public class ExpressionList extends Expression {
 			}
 		}
 
+	}
+
+	@Override
+	public Type getType(){
+	    System.err.println("ExpressionList.getType(): This function should not be used!");
+	    return null;
 	}
 
 }

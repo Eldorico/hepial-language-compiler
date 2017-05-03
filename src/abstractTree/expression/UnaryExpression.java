@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 /**
  * This class represents unary Expressions as:
  * !asdf
@@ -13,5 +15,10 @@ public abstract class UnaryExpression extends Expression {
 
 	public UnaryExpression(Expression expression) {
 		this.expression = expression;
+	}
+
+	@Override
+	public Type getType(){
+	    return expression.getType();
 	}
 }

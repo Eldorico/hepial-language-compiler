@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 public class CstString extends Expression {
 
 	String value;
@@ -11,6 +13,11 @@ public class CstString extends Expression {
 	@Override
 	public String toString() {
 		return value;
+	}
+
+	@Override
+	public Type getType(){
+	    return Type.CST_STRING;
 	}
 
 }
