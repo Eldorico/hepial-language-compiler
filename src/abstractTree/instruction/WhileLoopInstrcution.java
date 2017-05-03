@@ -14,7 +14,9 @@ public class WhileLoopInstrcution extends Instruction {
 	Expression condition;
 	BlocInstruction instructions;
 
-	public WhileLoopInstrcution(Expression condition, BlocInstruction instructions) {
+	public WhileLoopInstrcution(Expression condition, BlocInstruction instructions, int declarationLineNumber) {
+	    super(declarationLineNumber);
+
 		this.condition = condition;
 		this.instructions = instructions;
 	}

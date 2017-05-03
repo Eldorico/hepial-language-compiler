@@ -18,7 +18,9 @@ public class ForLoopInstruction extends Instruction {
 	Expression upperBound;
 	BlocInstruction instructions;
 
-	public ForLoopInstruction(Identifier i, Expression lowerBound, Expression upperBound, BlocInstruction instructions) {
+	public ForLoopInstruction(Identifier i, Expression lowerBound, Expression upperBound, BlocInstruction instructions, int declarationLineNumber) {
+	    super(declarationLineNumber);
+
 		this.i = i;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;

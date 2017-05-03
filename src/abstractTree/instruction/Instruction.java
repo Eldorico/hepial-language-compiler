@@ -20,4 +20,12 @@ import abstractTree.AbstractTree;
  */
 public abstract class Instruction extends AbstractTree {
 
+    int declarationLineNumber;
+
+    public Instruction(int declarationLineNumber){
+        this.declarationLineNumber = declarationLineNumber;
+    }
+
+    //public abstract boolean semanticErrorsDetected();
+
 }

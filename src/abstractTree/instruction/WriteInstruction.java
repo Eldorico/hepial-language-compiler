@@ -10,7 +10,8 @@ public class WriteInstruction extends Instruction {
 
 	Expression output;
 
-	public WriteInstruction(Expression output) {
+	public WriteInstruction(Expression output, int declarationLineNumber) {
+	    super(declarationLineNumber);
 		this.output = output;
 	}
 

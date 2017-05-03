@@ -8,7 +8,9 @@ public class IfInstruction extends Instruction {
 	BlocInstruction thenInstructions;
 	BlocInstruction elseInstructions;
 
-	public IfInstruction(Expression condition, BlocInstruction thenInstructions, BlocInstruction elseInstructions) {
+	public IfInstruction(Expression condition, BlocInstruction thenInstructions, BlocInstruction elseInstructions, int declarationLineNumber) {
+	    super(declarationLineNumber);
+
 		this.condition = condition;
 		this.thenInstructions = thenInstructions;
 		this.elseInstructions = elseInstructions;

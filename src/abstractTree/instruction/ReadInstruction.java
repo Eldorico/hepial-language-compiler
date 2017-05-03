@@ -6,7 +6,8 @@ public class ReadInstruction extends Instruction {
 
 	Identifier dst;
 
-	public ReadInstruction(Identifier dst) {
+	public ReadInstruction(Identifier dst, int declarationLineNumber) {
+	    super(declarationLineNumber);
 		this.dst = dst;
 	}
 

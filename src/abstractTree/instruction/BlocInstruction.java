@@ -13,6 +13,8 @@ public class BlocInstruction extends Instruction {
 	LinkedList<Instruction> instructionList;
 
 	public BlocInstruction(Instruction instruction) {
+	    super(-1); // we should not use the declarationLineNumber of the bloc instruction. Only the declarationNumber of the instructions into the instructionList...
+
 		// if the instruction is a BlocInstruction, print error. (it should not be constructed
 		// with a BlocInstruction from the parser. Use the addInstruction() instead.
 		if(instruction.getClass().equals(BlocInstruction.class)){
@@ -44,5 +46,20 @@ public class BlocInstruction extends Instruction {
 		}
 		return stringToReturn;
 	}
+
+	/**
+	 * @description: checks every instruction to see if a semantic error is detected.
+	 * @return: true if an error has been detected. True if not.
+	 */
+//	@Override
+//	public boolean semanticErrorsDetected(){
+//	    boolean errorsDetected = false;
+//	    for(Instruction instruction : instructionList){
+//	        if(instruction.semanticErrorsDetected()){
+//	            errorsDetected = true;
+//	        }
+//	    }
+//	    return errorsDetected;
+//	}
 
 }

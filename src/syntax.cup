@@ -296,19 +296,19 @@ INSTR      ::= AFFECTATION
               ;
 
  LIRE       ::= keyword_lire ident:i char_point_virgule {:
-                  parser.abstractTreeStack.add(new ReadInstruction(new Identifier(i.getKey())));
+                  parser.abstractTreeStack.add(new ReadInstruction(new Identifier(i.getKey()), i.getValue()));
               :}
               ;
- ECRIRE     ::= keyword_ecrire EXPR:e char_point_virgule {:
+ ECRIRE     ::= keyword_ecrire:k EXPR char_point_virgule {:
                   Expression output = (Expression) parser.abstractTreeStack.pop();
-                  parser.abstractTreeStack.add(new WriteInstruction(output));
+                  parser.abstractTreeStack.add(new WriteInstruction(output, k.getValue()));
               :}
               | keyword_ecrire constanteChaine:c char_point_virgule {:
-                 parser.abstractTreeStack.add(new WriteInstruction(new CstString(c.getKey())));
+                 parser.abstractTreeStack.add(new WriteInstruction(new CstString(c.getKey()), c.getValue()));
               :}
               ;
 
-AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
+AFFECTATION ::= ACCES:a char_egal:c EXPR char_point_virgule  {:
                   // pop the expression
                   Expression src = (Expression) parser.abstractTreeStack.pop();
 
@@ -316,31 +316,31 @@ AFFECTATION ::= ACCES:a char_egal EXPR char_point_virgule  {:
                   Identifier dst = (Identifier) parser.abstractTreeStack.pop();
 
                   // add the affectation to the stack as a new Instruction
-                  parser.abstractTreeStack.add(new AffectationInstruction(dst, src));
+                  parser.abstractTreeStack.add(new AffectationInstruction(dst, src, c.getValue()));
               :}
               ;
  /*
  RETOUR     ::= 'retourne' EXPR ';';
  */
 
-CONDITION  ::= keyword_si EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
+CONDITION  ::= keyword_si:k EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
                   // pop the two blocs instructions
                   BlocInstruction elseBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   BlocInstruction thenBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   Expression conditionExpression = (Expression) parser.abstractTreeStack.pop();
 
                   // create a conditionInstruction and put it on the top of the stack
-                  parser.abstractTreeStack.add(new IfInstruction(conditionExpression, thenBlocInstructions, elseBlocInstructions));
+                  parser.abstractTreeStack.add(new IfInstruction(conditionExpression, thenBlocInstructions, elseBlocInstructions, k.getValue()));
               :}
               ;
 
-TANTQUE    ::= keyword_tantque EXPR keyword_faire CORPS keyword_fintantque {:
+TANTQUE    ::= keyword_tantque:k EXPR keyword_faire CORPS keyword_fintantque {:
                   // pop the needed blocs
                   BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   Expression condition = (Expression) parser.abstractTreeStack.pop();
 
                   // create a while instruction
-                  parser.abstractTreeStack.add(new WhileLoopInstrcution(condition, instructions));
+                  parser.abstractTreeStack.add(new WhileLoopInstrcution(condition, instructions, k.getValue()));
               :}
               ;
 
@@ -352,7 +352,7 @@ POUR       ::= keyword_pour ident:id keyword_allantde EXPR keyword_a EXPR keywor
                   Expression lowerBound = (Expression) parser.abstractTreeStack.pop();
 
                   // create a for loop Instruction
-                  parser.abstractTreeStack.add(new ForLoopInstruction(i, lowerBound, upperBound, instructions));
+                  parser.abstractTreeStack.add(new ForLoopInstruction(i, lowerBound, upperBound, instructions, id.getValue()));
               :}
               ;
 
