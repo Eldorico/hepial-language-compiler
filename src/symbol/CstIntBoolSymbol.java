@@ -1,7 +1,14 @@
 package symbol;
 
 import utils.ErrorPrinter;
+import utils.ExpressionEvaluator;
+import abstractTree.expression.ArithmeticExpression;
+import abstractTree.expression.BooleanKeyword;
 import abstractTree.expression.Expression;
+import abstractTree.expression.Identifier;
+import abstractTree.expression.IntNumber;
+import abstractTree.expression.RelationalExpression;
+import abstractTree.expression.UnaryExpression;
 
 public class CstIntBoolSymbol extends IntBoolSymbol {
 
@@ -18,28 +25,40 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 	}
 
 	/**
-	 * @description: checks if the CstIntBoolSymbol is really a Boolean or an Integer
+	 * @description:   checks the semantic declaration of a Integer of Boolean Constant.
+	 *     It checks that the expression type matches the Symbol type, and that the expression is a combination of constants.
 	 * @return true if an error has been detected. Else, returns false
 	 */
 	@Override
     public boolean semanticErrorsDetected(){
-	    // if the Symbol is a boolean symbol
-	    if(type == type.BOOLEAN){
-	        if(this.value.getClass().getSimpleName().equals("BooleanKeyword")){
-	            return false;
-	        }else{
-	            ErrorPrinter.getInstance().logError("Value has to be a boolean value.", declarationLineNumber);
-	            return true;
-	        }
-	    // else, it is an Integer symbol
-	    }else{
-            if(this.value.getClass().getSimpleName().equals("IntNumber")){
-                return false;
+	    // check that the expression type matches the Symbol type
+        if(this.type != value.getType()){
+            ErrorPrinter.getInstance().logError("Value has to be a "+Type.strType(this.type)+" value.", declarationLineNumber);
+            return true;
+        }
+
+        // check that the expression is composed of coherent constant componants
+        Class [] expectedSymbolClasses = {CstIntBoolSymbol.class};
+
+        if(type == Type.INTEGER){
+            Class [] expectedCstIntegerExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class}; // if boolean: check is only made of Numbers, arithmetics operations, and constants identifiers
+            if(ExpressionEvaluator.expressionContainsOnly(expectedCstIntegerExpressionClasses, expectedSymbolClasses, value)){
+               return false;
             }else{
-                ErrorPrinter.getInstance().logError("Value has to be an integer value.", declarationLineNumber);
+                ErrorPrinter.getInstance().logError("Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
                 return true;
             }
-	    }
-	}
+        }else{
+            Class [] expectedCstBooleanExpressionClasses = {BooleanKeyword.class, RelationalExpression.class, UnaryExpression.class, Identifier.class}; // if integer: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
+            if(ExpressionEvaluator.expressionContainsOnly(expectedCstBooleanExpressionClasses, expectedSymbolClasses, value)){
+                return false;
+             }else{
+                 ErrorPrinter.getInstance().logError("Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
+                 return true;
+             }
+        }
+
+        }
+
 
 }

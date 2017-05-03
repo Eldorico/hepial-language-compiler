@@ -1,9 +1,9 @@
 programme hepial1
 
-constante entier x = 1234;
-constante entier y = 456;
-entier z;
-entier[(y+2)*x..z] array;
+constante booleen x = vrai;
+booleen z;
+constante booleen b = ! x et z ;
+constante entier y = 2 + 56;
 
 
 debutprg

@@ -39,4 +39,8 @@ public class FctCallExpression extends Expression {
         return  functionsSymbol.returnType();
     }
 
+    public Identifier getFctName(){
+        return fctName;
+    }
+
 }

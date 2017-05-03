@@ -21,4 +21,8 @@ public abstract class UnaryExpression extends Expression {
 	public Type getType(){
 	    return expression.getType();
 	}
+
+	public Expression getExpression(){
+	    return expression;
+	}
 }
