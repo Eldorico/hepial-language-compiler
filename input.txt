@@ -2,7 +2,7 @@ programme hepial1
 
 constante booleen x = vrai;
 booleen z;
-constante booleen b = ! x et z ;
+constante booleen b = ! x et faux ;
 constante entier y = 2 + 56;
 
 

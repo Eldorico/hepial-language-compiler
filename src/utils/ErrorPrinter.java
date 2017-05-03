@@ -18,7 +18,7 @@ public class ErrorPrinter {
     }
 
     public void logError(String msg, int lineNumber){
-        errorsMsg.add(String.format("%d: %s", lineNumber, msg));
+        errorsMsg.add(String.format("%s on line %d", msg, lineNumber));
     }
 
     public void printErrors(){

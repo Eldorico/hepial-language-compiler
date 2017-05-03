@@ -31,8 +31,15 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 	 */
 	@Override
     public boolean semanticErrorsDetected(){
-	    // check that the expression type matches the Symbol type
-        if(this.type != value.getType()){
+	    // check if the expression is undefined
+	    Type expressionType = value.getType();
+	    if(expressionType == null){
+	        ErrorPrinter.getInstance().logError(this.value.toString()+" : Expression undefined", declarationLineNumber);
+	        return true;
+	    }
+
+        // check that the expression type matches the Symbol type
+	    if(this.type != expressionType){
             ErrorPrinter.getInstance().logError("Value has to be a "+Type.strType(this.type)+" value.", declarationLineNumber);
             return true;
         }
@@ -41,7 +48,7 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
         Class [] expectedSymbolClasses = {CstIntBoolSymbol.class};
 
         if(type == Type.INTEGER){
-            Class [] expectedCstIntegerExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class}; // if boolean: check is only made of Numbers, arithmetics operations, and constants identifiers
+            Class [] expectedCstIntegerExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class}; // if integer: check is only made of Numbers, arithmetics operations, and constants identifiers
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstIntegerExpressionClasses, expectedSymbolClasses, value)){
                return false;
             }else{
@@ -49,7 +56,7 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
                 return true;
             }
         }else{
-            Class [] expectedCstBooleanExpressionClasses = {BooleanKeyword.class, RelationalExpression.class, UnaryExpression.class, Identifier.class}; // if integer: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
+            Class [] expectedCstBooleanExpressionClasses = {BooleanKeyword.class, RelationalExpression.class, UnaryExpression.class, Identifier.class}; // if boolean: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstBooleanExpressionClasses, expectedSymbolClasses, value)){
                 return false;
              }else{

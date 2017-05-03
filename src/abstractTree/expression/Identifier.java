@@ -30,7 +30,11 @@ public class Identifier extends Expression {
 	@Override
 	public Type getType(){
 	    VariableSymbol identifiersSymbol = (VariableSymbol)SymbolTable.getInstance().getSymbol(name);
-	    return  identifiersSymbol.type();
+	    if(identifiersSymbol == null){
+	        return null;
+	    }else{
+	        return  identifiersSymbol.type();
+	    }
 	}
 
 }
