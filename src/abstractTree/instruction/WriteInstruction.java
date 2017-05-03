@@ -20,4 +20,10 @@ public class WriteInstruction extends Instruction {
 		return String.format("Write: %s\n", output);
 	}
 
+    @Override
+    public boolean semanticErrorsDetected(){
+        // TODO: semanticErrorsDetected
+        return false;
+    }
+
 }

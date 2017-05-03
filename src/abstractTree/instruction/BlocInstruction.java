@@ -51,15 +51,15 @@ public class BlocInstruction extends Instruction {
 	 * @description: checks every instruction to see if a semantic error is detected.
 	 * @return: true if an error has been detected. True if not.
 	 */
-//	@Override
-//	public boolean semanticErrorsDetected(){
-//	    boolean errorsDetected = false;
-//	    for(Instruction instruction : instructionList){
-//	        if(instruction.semanticErrorsDetected()){
-//	            errorsDetected = true;
-//	        }
-//	    }
-//	    return errorsDetected;
-//	}
+	@Override
+	public boolean semanticErrorsDetected(){
+	    boolean errorsDetected = false;
+	    for(Instruction instruction : instructionList){
+	        if(instruction.semanticErrorsDetected()){
+	            errorsDetected = true;
+	        }
+	    }
+	    return errorsDetected;
+	}
 
 }

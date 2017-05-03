@@ -1,5 +1,12 @@
 package abstractTree.instruction;
 
+import symbol.CstIntBoolSymbol;
+import symbol.Symbol;
+import symbol.SymbolTable;
+import symbol.Type;
+import symbol.VariableSymbol;
+import utils.ErrorPrinter;
+import utils.ExpressionEvaluator;
 import abstractTree.expression.Expression;
 import abstractTree.expression.Identifier;
 
@@ -41,21 +48,54 @@ public class AffectationInstruction extends Instruction {
      * @description: checks if the dst is associated to a VariableSymbol. (not a function symbol)
      *  Checks if the dst type and the src type are the same.
      *  Checks if dst and the src can be defined.
+     *  Checks that we dont affect a constant
      *  Logs the errors into the ErrorPrinter.
      * @return: true if an error has been detected. True if not.
 	 */
-//	@Override
-//	public boolean semanticErrorsDetected(){
-//	    boolean errorsDetected = false;
-//
-//	    // get the src and dst type
-//	    Type srcType = src.getType();
-//	    Type dstType = dst.getType();
-//
-//	    // check if dst and src are undefined and return if one is undefined.
-//	    if(srcType == null){
-//	        ErrorPrinter.getInstance().logError(srcType.toString()+" : Expression undefined", declarationLineNumber);
-//	    }
-//	}
+	@Override
+	public boolean semanticErrorsDetected(){
+	    boolean errorsDetected = false;
+
+	    // get the src and dst type
+	    Type srcType = src.getType();
+	    Type dstType = dst.getType();
+
+	    // check if dst and src are undefined and return if one is undefined.
+	    if(srcType == null){
+	        ErrorPrinter.getInstance().logError(src.toString()+" : The type of the expression is undefined of mixed.", declarationLineNumber);
+	        errorsDetected = true;
+	    }
+        if(dstType == null){
+            ErrorPrinter.getInstance().logError(dst.toString()+" : Expression undefined", declarationLineNumber);
+            errorsDetected = true;
+        }
+        if(errorsDetected){
+            return errorsDetected;
+        }
+
+        // check that the dst and src type are the same
+        if(srcType != dstType){
+            ErrorPrinter.getInstance().logError("The affectation must be an "+Type.strType(dst.getType())+" expression", declarationLineNumber);
+            errorsDetected = true;
+        }
+
+        // check that the dst is a VariableSymbol
+        Class [] expectedSymbolClasses = {VariableSymbol.class};
+        Class [] expectedExpressionClasses = {Identifier.class};
+        if(!ExpressionEvaluator.expressionContainsOnly(expectedExpressionClasses, expectedSymbolClasses, dst)){
+            ErrorPrinter.getInstance().logError("Left assignment has to be a variable identifier", declarationLineNumber);
+            errorsDetected = true;
+        }
+
+        // check that we dont affect a constant
+        Symbol symbolDst = SymbolTable.getInstance().getSymbol(dst.getName());
+        if(symbolDst instanceof CstIntBoolSymbol){
+            ErrorPrinter.getInstance().logError("Left assignment cannot be a constant", declarationLineNumber);
+            errorsDetected = true;
+        }
+
+        return errorsDetected;
+
+	}
 
 }

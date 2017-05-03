@@ -9,7 +9,7 @@ entier [123..e + 56] array;
 
 
 debutprg
-	y = 10 + 2;
+	t = z;
 finprg
 
 /*

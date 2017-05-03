@@ -26,4 +26,10 @@ public class WhileLoopInstrcution extends Instruction {
 		return String.format("WhileLoop: condition= (%s) do:\n%sEndWhileLoop\n", condition.toString(), instructions.toString());
 	}
 
+    @Override
+    public boolean semanticErrorsDetected(){
+        // TODO: semanticErrorsDetected
+        return false;
+    }
+
 }

@@ -21,4 +21,10 @@ public class IfInstruction extends Instruction {
 		return String.format("IfInstruction: (%s) ?\nThen: \n%sElse:\n%sEndIfInstruction\n", condition.toString(), thenInstructions.toString(), elseInstructions.toString());
 	}
 
+    @Override
+    public boolean semanticErrorsDetected(){
+        // TODO: semanticErrorsDetected
+        return false;
+    }
+
 }

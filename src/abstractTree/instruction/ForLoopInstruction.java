@@ -32,4 +32,10 @@ public class ForLoopInstruction extends Instruction {
 		return String.format("ForLoopInstruction: for (%s) from (%s) to (%s), do:\n%sEndForLoopInstruction\n", i.toString(), lowerBound.toString(), upperBound.toString(), instructions.toString());
 	}
 
+	@Override
+	public boolean semanticErrorsDetected(){
+	    // TODO: semanticErrorsDetected
+	    return false;
+	}
+
 }

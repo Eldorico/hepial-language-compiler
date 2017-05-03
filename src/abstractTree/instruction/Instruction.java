@@ -26,6 +26,6 @@ public abstract class Instruction extends AbstractTree {
         this.declarationLineNumber = declarationLineNumber;
     }
 
-    //public abstract boolean semanticErrorsDetected();
+    public abstract boolean semanticErrorsDetected();
 
 }
