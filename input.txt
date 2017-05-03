@@ -2,8 +2,10 @@ programme hepial1
 
 constante booleen x = vrai;
 booleen z;
+entier e;
 constante booleen b = ! x et faux ;
 constante entier y = 2 + 56;
+entier [123..e + 56] array;
 
 
 debutprg

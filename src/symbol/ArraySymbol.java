@@ -4,8 +4,11 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
 import utils.ErrorPrinter;
-import utils.NumberExpressionEvaluator;
+import utils.ExpressionEvaluator;
+import abstractTree.expression.ArithmeticExpression;
 import abstractTree.expression.Expression;
+import abstractTree.expression.Identifier;
+import abstractTree.expression.IntNumber;
 
 public class ArraySymbol extends VariableSymbol {
 
@@ -26,46 +29,73 @@ public class ArraySymbol extends VariableSymbol {
 	}
 
     /**
-     * @descrpition: check that every [Expression .. Expression] is a Number or an Arithmetic operation,
-     *  It also calls semanticErrorsDetected of every Expression it has.
+     * @descrpition: check that every [Expression .. Expression] is a Number or an Arithmetic expression.
+     *  if errors or incoherences are found, logs the errors and return true
      */
     @Override
     public boolean semanticErrorsDetected() {
         boolean errorsDetected = false;
+        // for each boundaries
         for(int i=0; i<dimensionsList.size(); i++){
-            if(errorsDetectedOnExpression(dimensionsList.get(i).getKey(), 1, i+1)){
+            // check if a boundary expression is undefined, or not an Integer
+            if(!logErrorIfUndefinedOrNotInteger(dimensionsList.get(i).getKey(), 1, i+1)){
                 errorsDetected = true;
             }
-            if(errorsDetectedOnExpression(dimensionsList.get(i).getValue(), 2, i+1)){
+            if(!logErrorIfUndefinedOrNotInteger(dimensionsList.get(i).getValue(), 2, i+1)){
                 errorsDetected = true;
             }
+
+            // check that the elements composing the boundaries are cohérent. (they are composed of Integer or arithmetic expressions
+            if(!logErrorIfBoundaryComponentsNotCoherents(dimensionsList.get(i).getKey(), 1, i+1)){
+                errorsDetected = true;
+            }
+            if(!logErrorIfBoundaryComponentsNotCoherents(dimensionsList.get(i).getValue(), 2, i+1)){
+                errorsDetected = true;
+            }
+
         }
         return errorsDetected;
     }
 
     /**
      * @description:
-     * @param expression
-     * @param expressionNumber
-     * @param dimensionNumber
+     * @param boundary
+     * @param expressionNumber for logging: 1 for the left boundary, 2 for the right boundary
+     * @param dimensionNumber for logging: the dimension number. [dimension1][dimension2] etc.
      * @return
      */
-    private boolean errorsDetectedOnExpression(Expression expression, int expressionNumber, int dimensionNumber){
-        boolean errorsDetected = false;
-
-        // check that the expression is an Integer expression
-        int evaluationResult = NumberExpressionEvaluator.isIntegerExpression(expression);
-        switch(evaluationResult){
-            case 0:
-                ErrorPrinter.getInstance().logError("The expression "+expressionNumber+" of the dimension "+dimensionNumber+" should be an Integer expression", this.declarationLineNumber);
-                errorsDetected = true;
-                break;
-            case -1:
-                ErrorPrinter.getInstance().logError("Expression not defined: "+expression.toString(), this.declarationLineNumber);
-                errorsDetected = true;
-                break;
+    private boolean logErrorIfBoundaryComponentsNotCoherents(Expression boundary, int expressionNumber, int dimensionNumber){
+        Class [] expectedSymbolClasses = {IntBoolSymbol.class};
+        Class [] expectedExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class};
+        if(!ExpressionEvaluator.expressionContainsOnly(expectedExpressionClasses, expectedSymbolClasses, boundary)){
+            ErrorPrinter.getInstance().logError("The expression "+expressionNumber+" of the dimension "+dimensionNumber+" should only be composed of arithmetic expression or Integer variables", declarationLineNumber);
+            return false;
+        }else{
+            return true;
         }
-        return errorsDetected;
+
+    }
+
+    /**
+     * @description: checks if an expression is undefined, or if it isnt an Integer. // TODO: maybe move this function to ExpressionEvaluator
+     *  If it is undefined or isnt an Integer, it logs an error to the ErrorPrinter and returns false;
+     * @param expression: the expression to check.
+     * @param expressionNumber for logging: 1 for the left boundary, 2 for the right boundary
+     * @param dimensionNumber for logging: the dimension number. [dimension1][dimension2] etc.
+     * @return
+     */
+    private boolean logErrorIfUndefinedOrNotInteger(Expression expression, int expressionNumber, int dimensionNumber){
+        // check that the expression is an Integer expression
+        Type expressionType = expression.getType();
+        if(expressionType == null){
+            ErrorPrinter.getInstance().logError(expression.toString()+" : Expression undefined", this.declarationLineNumber);
+            return false;
+        }else if(expressionType == Type.INTEGER){
+            return true;
+        }else{
+            ErrorPrinter.getInstance().logError("The expression "+expressionNumber+" of the dimension "+dimensionNumber+" should be an Integer expression", this.declarationLineNumber);
+            return false;
+        }
     }
 
 }

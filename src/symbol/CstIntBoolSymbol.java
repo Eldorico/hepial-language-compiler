@@ -44,19 +44,21 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
             return true;
         }
 
-        // check that the expression is composed of coherent constant componants
+        // check that the expression is composed of coherent constant components
         Class [] expectedSymbolClasses = {CstIntBoolSymbol.class};
 
+        //  if integer: check is only made of Numbers, arithmetics operations, and constants identifiers
         if(type == Type.INTEGER){
-            Class [] expectedCstIntegerExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class}; // if integer: check is only made of Numbers, arithmetics operations, and constants identifiers
+            Class [] expectedCstIntegerExpressionClasses = {IntNumber.class, ArithmeticExpression.class, Identifier.class};
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstIntegerExpressionClasses, expectedSymbolClasses, value)){
                return false;
             }else{
                 ErrorPrinter.getInstance().logError("Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
                 return true;
             }
+        // if boolean: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
         }else{
-            Class [] expectedCstBooleanExpressionClasses = {BooleanKeyword.class, RelationalExpression.class, UnaryExpression.class, Identifier.class}; // if boolean: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
+            Class [] expectedCstBooleanExpressionClasses = {BooleanKeyword.class, RelationalExpression.class, UnaryExpression.class, Identifier.class};
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstBooleanExpressionClasses, expectedSymbolClasses, value)){
                 return false;
              }else{
