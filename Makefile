@@ -37,6 +37,11 @@ bin/$(JFLEXFILENAME).java: src/$(JFLEXFILENAME).flex
 clean:
 	rm -f -r bin sources.txt
 
+# Remake 
+remake: 
+	make clean
+	make
+
 #### DEBUG COMMANDS ######
 
 #AbstractTree lib only

@@ -26,6 +26,9 @@ public class HepialCompilateur {
 			    System.exit(-2);
 			}
 
+			// debug
+			System.out.println("\n\ndectecting semantics errors...");
+
 			// check for semantic errors and print errors if any
 			boolean errorsDetected = false;
 			if(SymbolTable.getInstance().semanticErrorsDetected()){

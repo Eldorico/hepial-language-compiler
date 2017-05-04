@@ -319,9 +319,16 @@ AFFECTATION ::= ACCES:a char_egal:c EXPR char_point_virgule  {:
                   parser.abstractTreeStack.add(new AffectationInstruction(dst, src, c.getValue()));
               :}
               ;
- /*
- RETOUR     ::= 'retourne' EXPR ';';
- */
+
+RETOUR     ::= keyword_retourne:k EXPR char_point_virgule {:
+                  // pop the expression
+                  Expression returnExpression = (Expression) parser.abstractTreeStack.pop();
+
+                  // add the return expression to the stack as a new Instruction
+                  parser.abstractTreeStack.add(new ReturnInstruction(returnExpression, k.getValue()));
+              :}
+              ;
+
 
 CONDITION  ::= keyword_si:k EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
                   // pop the two blocs instructions
