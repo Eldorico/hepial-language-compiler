@@ -34,7 +34,7 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 	    // check if the expression is undefined
 	    Type expressionType = value.getType();
 	    if(expressionType == null){
-	        ErrorPrinter.getInstance().logError(this.value.toString()+" : Expression undefined", declarationLineNumber);
+	        ErrorPrinter.getInstance().logError(this.value.toString()+" : Expression undefined or has mixed types", declarationLineNumber);
 	        return true;
 	    }
 
@@ -53,7 +53,7 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstIntegerExpressionClasses, expectedSymbolClasses, value)){
                return false;
             }else{
-                ErrorPrinter.getInstance().logError("Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
+                ErrorPrinter.getInstance().logError(value.toString()+" : Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
                 return true;
             }
         // if boolean: check is only made of IntNumber, ArithmeticExpression, constants Identifier for Integers
@@ -62,7 +62,7 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
             if(ExpressionEvaluator.expressionContainsOnly(expectedCstBooleanExpressionClasses, expectedSymbolClasses, value)){
                 return false;
              }else{
-                 ErrorPrinter.getInstance().logError("Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
+                 ErrorPrinter.getInstance().logError(value.toString()+" : Right assignment has to be a "+Type.strType(this.type)+" constant expression.", declarationLineNumber);
                  return true;
              }
         }
