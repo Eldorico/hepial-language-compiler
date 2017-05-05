@@ -56,4 +56,12 @@ public class ArraySymbol extends VariableSymbol {
         }
         return errorsDetected;
     }
+
+    /**
+     * @description: returns the number of dimensions of the array
+     * @return the number of dimensions of the array
+     */
+    public int getNbDimensions(){
+        return dimensionsList.size();
+    }
 }

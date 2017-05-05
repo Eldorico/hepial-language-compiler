@@ -40,7 +40,7 @@ public class Identifier extends Expression {
 
 
 	/**
-	 * @description:
+	 * @description: checks that the identifier is defined
 	 * @return
 	 */
 	@Override
