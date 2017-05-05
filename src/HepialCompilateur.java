@@ -27,8 +27,8 @@ public class HepialCompilateur {
 			    System.exit(-2);
 			}
 			// the abstractTreeStack generated from the parser has to be an instance of Instruction
-			Instruction abstractTreeElement;
-			if(!myP.abstractTreeStack.peek() instanceof Instruction){
+			Instruction abstractTreeElement = null;
+			if(!(myP.abstractTreeStack.peek() instanceof Instruction)){
                 System.err.println("The element in the abstractTreeStack is not an instance of Instruction. Compilation will exit");
                 System.exit(-2);
 			}else{
