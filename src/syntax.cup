@@ -197,7 +197,7 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
-                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions)));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions, fctIdentifier.getKey())));
                   RESULT = declarationsList;
               :}
               | TYPE:t ident:fctIdentifier char_par_ouvr char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
@@ -216,7 +216,7 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
                   ArrayList<SimpleEntry<String, VariableSymbol>> emptyParamsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
-                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions)));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions, fctIdentifier.getKey())));
                   RESULT = declarationsList;
               :}
               ;

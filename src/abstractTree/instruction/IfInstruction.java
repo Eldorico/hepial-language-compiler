@@ -50,4 +50,12 @@ public class IfInstruction extends Instruction {
         return errorsDetected;
     }
 
+    public BlocInstruction getThenBlockInstructions(){
+        return thenInstructions;
+    }
+
+    public BlocInstruction getElseBlockInstructions(){
+        return elseInstructions;
+    }
+
 }

@@ -1,5 +1,6 @@
 package symbol;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -44,9 +45,17 @@ public class SymbolTable {
 			return false;
 		// else, add the symbol into the table
 		}else{
-			symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
-			symbolsList.add(symbol);
-			System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
+
+		    // if the symbol is a function, add the parameters of the function
+			if(symbol instanceof FunctionSymbol){
+			    addFunctionParameters(symbolIdentifier, (FunctionSymbol)symbol);
+			}
+
+			// add the symbol to the table
+	        symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
+	        symbolsList.add(symbol);
+	        System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
+
 			return true;
 		}
 	}
@@ -90,6 +99,23 @@ public class SymbolTable {
 	        }
 	    }
 	    return returnValue;
+	}
+
+	/**
+	 * @description: adds the function parameters to the symbol table
+	 * @param functionSymbol
+	 */
+	private void addFunctionParameters(String functionIdentifier, FunctionSymbol functionSymbol){
+	    // enter the bloc
+	    enterBloc(functionIdentifier);
+
+	    // add the parameters
+	    for(SimpleEntry<String, VariableSymbol> parameter : functionSymbol.parameters){
+	        this.addSymbol(parameter.getKey(), parameter.getValue());
+	    }
+
+	    // exit the bloc
+	    exitCurrentBloc();
 	}
 
 }

@@ -11,7 +11,7 @@ import abstractTree.expression.Expression;
  * 	instructions
  * endWhile
  */
-public class WhileLoopInstrcution extends Instruction {
+public class WhileLoopInstrcution extends Instruction { // TODO: correct the spelling of this class XD
 
 	Expression condition;
 	BlocInstruction instructions;
@@ -50,5 +50,9 @@ public class WhileLoopInstrcution extends Instruction {
         }
 
         return errorsDetected;
+    }
+
+    public BlocInstruction getInstructions(){
+        return instructions;
     }
 }

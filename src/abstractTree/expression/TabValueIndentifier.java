@@ -77,5 +77,4 @@ public class TabValueIndentifier extends Identifier {
 
 	    return errorsDetected;
 	}
-
 }

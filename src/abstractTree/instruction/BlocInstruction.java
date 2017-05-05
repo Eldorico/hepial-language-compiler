@@ -8,9 +8,9 @@ import java.util.LinkedList;
  * This class represents a list of instructions.
  *
  */
-public class BlocInstruction extends Instruction {
+public class BlocInstruction extends Instruction implements Iterable<Instruction> {
 
-	LinkedList<Instruction> instructionList;
+	LinkedList<Instruction> instructionList; // TODO: change this to an ArrayList
 
 	public BlocInstruction(Instruction instruction) {
 	    super(-1); // we should not use the declarationLineNumber of the bloc instruction. Only the declarationNumber of the instructions into the instructionList...
@@ -62,4 +62,19 @@ public class BlocInstruction extends Instruction {
 	    return errorsDetected;
 	}
 
+	/**
+	 * @description: se we can use the class like this: for(Instruction instruction : BlocInstruction){;}
+	 */
+	@Override
+    public Iterator<Instruction> iterator(){
+	    return instructionList.iterator();
+	}
+
+	public int size(){
+	    return instructionList.size();
+	}
+
+	public Instruction get(int i){
+	    return instructionList.get(i);
+	}
 }

@@ -89,4 +89,8 @@ public class ForLoopInstruction extends Instruction {
 	    return errorsDetected;
 	}
 
+	public BlocInstruction getInstructions(){
+	    return instructions;
+	}
+
 }
