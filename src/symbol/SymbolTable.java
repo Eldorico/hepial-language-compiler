@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import utils.ErrorPrinter;
+
 public class SymbolTable {
 
 	private static SymbolTable instance = new SymbolTable();
@@ -13,6 +15,8 @@ public class SymbolTable {
 	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("main");
 	private String currentBlocName;
+
+	private boolean duplicateSymbolsFound = false;
 
 	private SymbolTable(){
 		this.symbolTable = new HashMap<String, HashMap<String, Symbol>>();
@@ -32,9 +36,13 @@ public class SymbolTable {
 	 * @return
 	 */
 	public boolean addSymbol(String symbolIdentifier, Symbol symbol){
-		if(symbolTable.get(currentBlocName).containsKey(symbolIdentifier)){
+	    // if symbol allready added, log error
+	    if(symbolTable.get(currentBlocName).containsKey(symbolIdentifier)){
 			System.err.printf("SymbolTable: duplicate symbol: %s\n", symbolIdentifier);
+			ErrorPrinter.getInstance().logError(symbolIdentifier+" : symbol allready defined on line "+getSymbol(symbolIdentifier).declarationLineNumber, symbol.declarationLineNumber);
+			duplicateSymbolsFound = true;
 			return false;
+		// else, add the symbol into the table
 		}else{
 			symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
 			symbolsList.add(symbol);
@@ -75,7 +83,7 @@ public class SymbolTable {
 	 * @return
 	 */
 	public boolean semanticErrorsDetected(){
-	    boolean returnValue = false;
+	    boolean returnValue = duplicateSymbolsFound;
 	    for(Symbol symbol: symbolsList){
 	        if(symbol.semanticErrorsDetected()){
 	            returnValue = true;
