@@ -39,10 +39,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="56.50000000000006" width="473.75" x="22.875" y="133.0"/>
+          <y:Geometry height="56.50000000000006" width="492.75" x="13.375" y="133.0"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="473.4091796875" x="0.17041015625" y="3.0">Expression
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="473.4091796875" x="9.67041015625" y="3.0">Expression
 ---------------------------------------------------------------------------------------
 semanticErrorsDetected(int declarationLineNumber): boolean<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
