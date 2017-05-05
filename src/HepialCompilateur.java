@@ -3,6 +3,7 @@ import java.io.FileReader;
 
 import symbol.SymbolTable;
 import utils.ErrorPrinter;
+import abstractTree.instruction.Instruction;
 
 public class HepialCompilateur {
 
@@ -25,6 +26,14 @@ public class HepialCompilateur {
 			    System.err.println("The abstractTreeStack has not a size of 1. It has a size of "+myP.abstractTreeStack.size()+". Compilation will exit");
 			    System.exit(-2);
 			}
+			// the abstractTreeStack generated from the parser has to be an instance of Instruction
+			Instruction abstractTreeElement;
+			if(!myP.abstractTreeStack.peek() instanceof Instruction){
+                System.err.println("The element in the abstractTreeStack is not an instance of Instruction. Compilation will exit");
+                System.exit(-2);
+			}else{
+			    abstractTreeElement = (Instruction) myP.abstractTreeStack.peek();
+			}
 
 			// debug
 			System.out.println("\n\ndectecting semantics errors...");
@@ -34,7 +43,7 @@ public class HepialCompilateur {
 			if(SymbolTable.getInstance().semanticErrorsDetected()){
 				errorsDetected = true;
 			}
-			if(myP.abstractTreeStack.peek().semanticErrorsDetected()){
+			if(abstractTreeElement.semanticErrorsDetected()){
 			    errorsDetected = true;
 			}
 

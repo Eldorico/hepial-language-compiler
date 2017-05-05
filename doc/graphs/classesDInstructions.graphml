@@ -39,12 +39,14 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="58.0" width="212.5746153846154" x="130.7126923076923" y="91.32615384615377"/>
+          <y:Geometry height="92.0" width="291.5746153846154" x="91.2126923076923" y="84.32615384615377"/>
           <y:Fill color="#CCFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="49.3984375" modelName="custom" textColor="#000000" visible="true" width="209.029296875" x="1.7726592548077065" y="3.0">Instruction
---------------------------------------
-declarationLineNumber:int<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="79.6640625" modelName="custom" textColor="#000000" visible="true" width="279.1708984375" x="6.2018584735577065" y="3.0">Instruction
+---------------------------------------------------
+declarationLineNumber:int
+---------------------------------------------------
+semanticErrorsDetected(): boolean<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -330,7 +332,6 @@ returnExpression:Expression<y:LabelModel>
       </data>
     </edge>
     <edge id="e8" source="n9" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

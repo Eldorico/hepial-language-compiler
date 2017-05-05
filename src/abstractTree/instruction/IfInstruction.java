@@ -21,6 +21,11 @@ public class IfInstruction extends Instruction {
 		return String.format("IfInstruction: (%s) ?\nThen: \n%sElse:\n%sEndIfInstruction\n", condition.toString(), thenInstructions.toString(), elseInstructions.toString());
 	}
 
+    /**
+     * @description: checks that the expression is a relational expression or a boolean expression
+     * calls the semanticErrorsDetected() for the relational expression
+     *
+     */
     @Override
     public boolean semanticErrorsDetected(){
         // TODO: semanticErrorsDetected

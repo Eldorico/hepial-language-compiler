@@ -1,12 +1,13 @@
 package abstractTree.expression;
 
+
 /**
  * @description:
  * This class represents an greater-than-equal-relation expression such as:
  * asdf >= asdf
  *
  */
-public class GreaterEqualExpression extends RelationalExpression {
+public class GreaterEqualExpression extends RelationalIntegerExpression {
 
 	public GreaterEqualExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);
@@ -14,7 +15,7 @@ public class GreaterEqualExpression extends RelationalExpression {
 
 	@Override
 	public String toString() {
-		return String.format("(%s) >= (%s)", this.leftOperand.toString(), this.rigthOperand.toString());
+		return String.format("(%s) >= (%s)", this.leftOperand.toString(), this.rightOperand.toString());
 	}
 
 }

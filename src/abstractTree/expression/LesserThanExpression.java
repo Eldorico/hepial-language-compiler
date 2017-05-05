@@ -6,7 +6,7 @@ package abstractTree.expression;
  * asdf < asdf
  *
  */
-public class LesserThanExpression extends RelationalExpression {
+public class LesserThanExpression extends RelationalIntegerExpression {
 
 	public LesserThanExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);
@@ -14,7 +14,7 @@ public class LesserThanExpression extends RelationalExpression {
 
 	@Override
 	public String toString() {
-		return String.format("(%s) < (%s)", this.leftOperand.toString(), this.rigthOperand.toString());
+		return String.format("(%s) < (%s)", this.leftOperand.toString(), this.rightOperand.toString());
 	}
 
 }
