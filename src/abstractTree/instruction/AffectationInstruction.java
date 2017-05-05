@@ -61,17 +61,17 @@ public class AffectationInstruction extends Instruction {
 	        errorsDetected = true;
 	    }
 
+        // if errors detected, return here because if we have some undefined expressions, the rest will crash due to reflexive operations. (invalid file like errors)
+        if(errorsDetected){
+            return errorsDetected;
+        }
+
         // check that the dst and src type are the same
         Type srcType = src.getType();
         Type dstType = dst.getType();
         if(srcType != dstType){
             ErrorPrinter.getInstance().logError("The affectation must be an "+Type.strType(dst.getType())+" expression", declarationLineNumber);
             errorsDetected = true;
-        }
-
-        // if errors detected, return here because if we have some undefined expressions, the rest will crash due to reflexive operations. (invalid file like errors)
-        if(errorsDetected){
-            return errorsDetected;
         }
 
         // check that the dst is a VariableSymbol

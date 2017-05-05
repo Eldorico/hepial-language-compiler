@@ -1,5 +1,7 @@
 package abstractTree.instruction;
 
+import symbol.Type;
+import utils.ErrorPrinter;
 import abstractTree.expression.Expression;
 
 public class IfInstruction extends Instruction {
@@ -22,14 +24,30 @@ public class IfInstruction extends Instruction {
 	}
 
     /**
-     * @description: checks that the expression is a relational expression or a boolean expression
-     * calls the semanticErrorsDetected() for the relational expression
-     *
+     * @description: checks into the condition expression for semantic errors
+     * checks that the condition is a boolean expression
+     * checks into the thenInstructions and else Instructions for any semantic errors
      */
     @Override
     public boolean semanticErrorsDetected(){
-        // TODO: semanticErrorsDetected
-        return false;
+        // checks into the condition expression for semantic errors
+        boolean errorsDetected = condition.semanticErrorsDetected(declarationLineNumber);
+
+        // checks that the condition is a boolean expression
+        if(condition.getType() != Type.BOOLEAN){
+            ErrorPrinter.getInstance().logError(condition.toString()+" : condition has to be a boolean expression.", declarationLineNumber);
+            errorsDetected = true;
+        }
+
+        // checks into the thenInstructions and else Instructions for any semantic errors
+        if(thenInstructions.semanticErrorsDetected()){
+            errorsDetected = true;
+        }
+        if(elseInstructions != null && elseInstructions.semanticErrorsDetected()){
+            errorsDetected = true;
+        }
+
+        return errorsDetected;
     }
 
 }

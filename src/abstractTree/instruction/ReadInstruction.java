@@ -16,10 +16,4 @@ public class ReadInstruction extends Instruction {
 		return String.format("Read: destination = %s\n", dst.toString());
 	}
 
-    @Override
-    public boolean semanticErrorsDetected(){
-        // TODO: semanticErrorsDetected
-        return false;
-    }
-
 }

@@ -1,5 +1,6 @@
 package abstractTree.instruction;
 
+import symbol.Type;
 import abstractTree.expression.Expression;
 
 public class ReturnInstruction extends Instruction{
@@ -11,15 +12,21 @@ public class ReturnInstruction extends Instruction{
         this.returnExpression = returnExpression;
     }
 
-    @Override
-    public boolean semanticErrorsDetected() {
-        // TODO semanticErrorsDetected()
-        return false;
+    public Type getType(){
+        return returnExpression.getType();
     }
 
     @Override
     public String toString() {
         return String.format("Return expression: %s\n", returnExpression.toString());
+    }
+
+    /**
+     * @description: checks for errors into the return expression
+     */
+    @Override
+    public boolean semanticErrorsDetected() {
+        return returnExpression.semanticErrorsDetected(declarationLineNumber);
     }
 
 }

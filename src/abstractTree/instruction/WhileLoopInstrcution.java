@@ -1,5 +1,7 @@
 package abstractTree.instruction;
 
+import symbol.Type;
+import utils.ErrorPrinter;
 import abstractTree.expression.Expression;
 
 /**
@@ -26,10 +28,27 @@ public class WhileLoopInstrcution extends Instruction {
 		return String.format("WhileLoop: condition= (%s) do:\n%sEndWhileLoop\n", condition.toString(), instructions.toString());
 	}
 
+   /**
+    * @description: checks into the condition expression for semantic errors
+    * checks that the condition is a boolean expression
+    * checks into the instructions for any semantic errors
+    */
     @Override
     public boolean semanticErrorsDetected(){
-        // TODO: semanticErrorsDetected
-        return false;
-    }
+        // checks into the condition expression for semantic errors
+        boolean errorsDetected = condition.semanticErrorsDetected(declarationLineNumber);
 
+        // checks that the condition is a boolean expression
+        if(condition.getType() != Type.BOOLEAN){
+            ErrorPrinter.getInstance().logError(condition.toString()+" : condition has to be a boolean expression.", declarationLineNumber);
+            errorsDetected = true;
+        }
+
+        // checks the instruction
+        if(instructions.semanticErrorsDetected()){
+            errorsDetected = true;
+        }
+
+        return errorsDetected;
+    }
 }

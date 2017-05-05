@@ -38,49 +38,40 @@ public class ForLoopInstruction extends Instruction {
 	}
 
 	/**
-	 * @description: checks that the i, lowerBound and upperBound are defined, and of type Integer.
+	 * @description: checks for semantic errors into the i, lowerBound and upperBound
 	 *  Checks that the i isn't a constant.
-	 *  Calls also the BlocInstruction.semanticErrorsDetected()
+	 *  Checks that the lowerbound and upperbound are integers expressions
+	 *  Calls also the instructions.semanticErrorsDetected()
 	 * @return: true if some errors have been detected.
 	 */
 	@Override
 	public boolean semanticErrorsDetected(){
 	    boolean errorsDetected = false;
 
-	    // get the type of i, lowerBound, upperBound
-	    Type iType = i.getType();
-	    Type lowerBoundType = lowerBound.getType();
-	    Type upperBoundType = upperBound.getType();
-
-	    // log errors if a type isnt defined and return here if an error is detected.
-	    if(iType == null){
-	        ErrorPrinter.getInstance().logError(i.toString()+" : identifier not defined", declarationLineNumber);
+	    // check for semantic errors into i, lowerBound and upperBound
+	    if(i.semanticErrorsDetected(declarationLineNumber)
+	       || lowerBound.semanticErrorsDetected(declarationLineNumber)
+	       || upperBound.semanticErrorsDetected(declarationLineNumber)){
 	        errorsDetected = true;
 	    }
-        if(lowerBoundType == null){
-            ErrorPrinter.getInstance().logError(lowerBound.toString()+" : lower bound is not defined, or has mixed types content", declarationLineNumber);
-            errorsDetected = true;
-        }
-        if(upperBoundType == null){
-            ErrorPrinter.getInstance().logError(upperBound.toString()+" : upper bound is not defined, or has mixed types content", declarationLineNumber);
-            errorsDetected = true;
-        }
-        if(errorsDetected){
-            return errorsDetected;
-        }
 
         // log error if the types are not correct
-        if(iType != Type.INTEGER){
+        if(i.getType() != Type.INTEGER){
             ErrorPrinter.getInstance().logError(i.toString()+" : identifier has to be an integer.", declarationLineNumber);
             errorsDetected = true;
         }
-        if(lowerBoundType != Type.INTEGER){
+        if(lowerBound.getType() != Type.INTEGER){
             ErrorPrinter.getInstance().logError(lowerBound.toString()+" : lower bound has to be an integer expression", declarationLineNumber);
             errorsDetected = true;
         }
-        if(upperBoundType != Type.INTEGER){
+        if(upperBound.getType() != Type.INTEGER){
             ErrorPrinter.getInstance().logError(upperBound.toString()+" : upper bound has to be an integer expression", declarationLineNumber);
             errorsDetected = true;
+        }
+
+        // if errors detected, return here because if we have some undefined expressions, the rest will crash due to reflexive operations. (invalid file like errors)
+        if(errorsDetected){
+            return errorsDetected;
         }
 
         // log error if i is not an IntBoolSymbol

@@ -314,7 +314,20 @@ ecrire "ceci est une chaine de caractères \" avec un guilllemet au milieu";
 
 
 
-## Contrôle de l'arbre abstrait
+## Questions
+
+- < > <= acceptent des booléens??
+
+- qu'est-ce que c'est que ça? <>
+
+- qu'est-ce que ça veut dire? Quel opérateur conditionnel? Relationnel?
+
+  ```
+  C7: L'opérateur	 conditionnel	 accepte	 un	 premier	 opérande	 booléen.	 Si	 les	 deux derniers	opérandes	sont	entiers	(resp.	booléens),	le	type	de	l'expression	est	entier	(resp.	
+  booléens).		
+  ```
+
+- ​
 
 
 
