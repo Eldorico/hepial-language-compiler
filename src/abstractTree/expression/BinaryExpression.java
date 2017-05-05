@@ -16,11 +16,11 @@ import symbol.Type;
 public abstract class BinaryExpression extends Expression {
 
 	Expression leftOperand;
-	Expression rigthOperand;
+	Expression rightOperand;
 
 	public BinaryExpression(Expression leftOperand, Expression rightOperand){
 		this.leftOperand = leftOperand;
-		this.rigthOperand = rightOperand;
+		this.rightOperand = rightOperand;
 	}
 
 	public Expression getLeftOperand(){
@@ -28,7 +28,7 @@ public abstract class BinaryExpression extends Expression {
 	}
 
 	public Expression getRightOperand(){
-	    return this.rigthOperand;
+	    return this.rightOperand;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public abstract class BinaryExpression extends Expression {
 	@Override
 	public Type getType(){
 	    Type leftOperandType = leftOperand.getType();
-	    Type rightOperandType = rigthOperand.getType();
+	    Type rightOperandType = rightOperand.getType();
 	    if(leftOperandType == rightOperandType){
 	        return leftOperandType;
 	    }else{

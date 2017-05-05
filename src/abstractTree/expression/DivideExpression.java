@@ -8,7 +8,7 @@ public class DivideExpression extends ArithmeticExpression {
 
 	@Override
 	public String toString() {
-		return String.format("(%s) / (%s)", this.leftOperand.toString(), this.rigthOperand.toString());
+		return String.format("(%s) / (%s)", this.leftOperand.toString(), this.rightOperand.toString());
 	}
 
 }

@@ -22,5 +22,4 @@ public abstract class RelationalExpression extends BinaryExpression {
 	public RelationalExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);
 	}
-
 }

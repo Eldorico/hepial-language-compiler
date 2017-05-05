@@ -14,7 +14,7 @@ public class DifferentThanExpression extends RelationalExpression {
 
 	@Override
 	public String toString() {
-		return String.format("(%s) != (%s)", this.leftOperand.toString(), this.rigthOperand.toString());
+		return String.format("(%s) != (%s)", this.leftOperand.toString(), this.rightOperand.toString());
 	}
 
 }

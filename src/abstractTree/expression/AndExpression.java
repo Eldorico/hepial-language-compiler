@@ -15,7 +15,7 @@ public class AndExpression extends RelationalExpression {
 
 	@Override
 	public String toString() {
-		return String.format("(%s) && (%s)", leftOperand, rigthOperand);
+		return String.format("(%s) && (%s)", leftOperand, rightOperand);
 	}
 
 }
