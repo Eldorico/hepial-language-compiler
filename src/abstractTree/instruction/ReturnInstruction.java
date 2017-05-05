@@ -18,7 +18,7 @@ public class ReturnInstruction extends Instruction{
 
     @Override
     public String toString() {
-        return String.format("Return expression: %s\n", returnExpression.toString());
+        return String.format("Return expression: %s", returnExpression.toString());
     }
 
     /**

@@ -34,7 +34,7 @@ public class ForLoopInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return String.format("ForLoopInstruction: for (%s) from (%s) to (%s), do:\n%sEndForLoopInstruction\n", i.toString(), lowerBound.toString(), upperBound.toString(), instructions.toString());
+		return String.format("ForLoopInstruction: for (%s) from (%s) to (%s), do:\n%sEndForLoopInstruction", i.toString(), lowerBound.toString(), upperBound.toString(), instructions.toString());
 	}
 
 	/**

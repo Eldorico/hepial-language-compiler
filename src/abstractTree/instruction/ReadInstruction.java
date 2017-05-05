@@ -13,7 +13,7 @@ public class ReadInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return String.format("Read: destination = %s\n", dst.toString());
+		return String.format("Read: destination = %s", dst.toString());
 	}
 
 }

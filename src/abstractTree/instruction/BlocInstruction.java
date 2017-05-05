@@ -42,7 +42,7 @@ public class BlocInstruction extends Instruction implements Iterable<Instruction
 		String stringToReturn = new String("");
 		Iterator<Instruction> i = instructionList.iterator();
 		while(i.hasNext()){
-			stringToReturn += i.next().toString();
+			stringToReturn += i.next().toString()+"\n";
 		}
 		return stringToReturn;
 	}

@@ -25,7 +25,7 @@ public class WhileLoopInstrcution extends Instruction { // TODO: correct the spe
 
 	@Override
 	public String toString() {
-		return String.format("WhileLoop: condition= (%s) do:\n%sEndWhileLoop\n", condition.toString(), instructions.toString());
+		return String.format("WhileLoop: condition= (%s) do:\n%sEndWhileLoop", condition.toString(), instructions.toString());
 	}
 
    /**
