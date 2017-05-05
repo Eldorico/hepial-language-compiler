@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.Type;
+
 /**
  * @description:
  *	This class represents Relational expressions such as:
@@ -21,5 +23,10 @@ public abstract class RelationalExpression extends BinaryExpression {
 
 	public RelationalExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);
+	}
+
+	@Override
+    public Type getType(){
+	    return Type.BOOLEAN;
 	}
 }

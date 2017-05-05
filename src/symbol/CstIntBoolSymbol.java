@@ -25,24 +25,26 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 	}
 
 	/**
-	 * @description:   checks the semantic declaration of a Integer of Boolean Constant.
+	 * @description:   checks the semantic of the value
 	 *     It checks that the expression type matches the Symbol type, and that the expression is a combination of constants.
 	 * @return true if an error has been detected. Else, returns false
 	 */
 	@Override
     public boolean semanticErrorsDetected(){
-	    // check if the expression is undefined
-	    Type expressionType = value.getType();
-	    if(expressionType == null){
-	        ErrorPrinter.getInstance().logError(this.value.toString()+" : Expression undefined or has mixed types", declarationLineNumber);
-	        return true;
-	    }
+	    // check the semantic of the value
+	    boolean errorsDetected = value.semanticErrorsDetected(declarationLineNumber);
 
         // check that the expression type matches the Symbol type
+	    Type expressionType = value.getType();
 	    if(this.type != expressionType){
-            ErrorPrinter.getInstance().logError("Value has to be a "+Type.strType(this.type)+" value.", declarationLineNumber);
-            return true;
+            ErrorPrinter.getInstance().logError(value.toString()+" : Expression has to be a "+Type.strType(this.type)+" value.", declarationLineNumber);
+            errorsDetected = true;
         }
+
+	    // return here if errors have been detected. (if some expression is undefined, the rest of the function will crash due to ReflexionClasses verifications
+	    if(errorsDetected){
+	        return errorsDetected;
+	    }
 
         // check that the expression is composed of coherent constant components
         Class [] expectedSymbolClasses = {CstIntBoolSymbol.class};

@@ -1,6 +1,5 @@
 package abstractTree.expression;
 
-import symbol.Type;
 
 /**
  * @description:
@@ -31,18 +30,6 @@ public abstract class BinaryExpression extends Expression {
 	    return this.rightOperand;
 	}
 
-	/**
-	 *
-	 */
-	@Override
-	public Type getType(){
-	    Type leftOperandType = leftOperand.getType();
-	    Type rightOperandType = rightOperand.getType();
-	    if(leftOperandType == rightOperandType){
-	        return leftOperandType;
-	    }else{
-	        return null;
-	    }
-	}
+
 
 }

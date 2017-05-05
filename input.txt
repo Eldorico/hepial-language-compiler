@@ -2,15 +2,10 @@ programme hepial1
 
 booleen z;
 entier e,i;
-constante entier y = 2 + 56;
-entier [123..e + 56] array;
+//entier [123..e + 56] array;
 
 debutprg
-	si 1 + 4 alors
-		i = 2;
-	sinon
-		i =3;
-	finsi
+	e = 1234;
 finprg
 
 /*

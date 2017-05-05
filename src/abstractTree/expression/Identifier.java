@@ -3,6 +3,7 @@ package abstractTree.expression;
 import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
+import utils.ErrorPrinter;
 
 /**
  * @description:
@@ -35,6 +36,22 @@ public class Identifier extends Expression {
 	    }else{
 	        return  identifiersSymbol.type();
 	    }
+	}
+
+
+	/**
+	 * @description:
+	 * @return
+	 */
+	@Override
+	public boolean semanticErrorsDetected(int declarationLineNumber){
+	       VariableSymbol identifiersSymbol = (VariableSymbol)SymbolTable.getInstance().getSymbol(name);
+	        if(identifiersSymbol == null){
+	            ErrorPrinter.getInstance().logError(name+" : expresssion undefined.", declarationLineNumber);
+	            return true;
+	        }else{
+	            return  false;
+	        }
 	}
 
 }

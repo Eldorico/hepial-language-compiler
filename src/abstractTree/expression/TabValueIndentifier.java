@@ -22,4 +22,11 @@ public class TabValueIndentifier extends Identifier {
 		return String.format("%s%s", this.name, this.indexes.toString(true));
 	}
 
+	@Override
+	public boolean semanticErrorsDetected(int declarationLineNumber){
+	    boolean errorsDetected = super.semanticErrorsDetected(declarationLineNumber);
+	    // TODO: TabValueIdentifier.semanticErrorsDetected() : do the rest!
+	    return errorsDetected;
+	}
+
 }

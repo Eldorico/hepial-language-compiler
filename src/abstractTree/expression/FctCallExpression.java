@@ -43,4 +43,10 @@ public class FctCallExpression extends Expression {
         return fctName;
     }
 
+    @Override
+    public boolean semanticErrorsDetected(int declarationLineNumber){
+        // TODO: FctCallExpression.semanticErrorsDetected() : to do
+        return false;
+    }
+
 }

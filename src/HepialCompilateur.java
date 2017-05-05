@@ -36,7 +36,7 @@ public class HepialCompilateur {
 			}
 
 			// debug
-			System.out.println("\n\ndectecting semantics errors...");
+			System.out.println("\n\ndectecting semantic errors...");
 
 			// check for semantic errors and print errors if any
 			boolean errorsDetected = false;
