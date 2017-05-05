@@ -7,7 +7,7 @@ package abstractTree.expression;
  * asdf and asdf
  *
  */
-public class AndExpression extends RelationalExpression {
+public class AndExpression extends RelationalBooleanExpression {
 
 	public AndExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);

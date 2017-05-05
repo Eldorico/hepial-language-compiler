@@ -6,7 +6,7 @@ package abstractTree.expression;
  * asdf == asdf
  *
  */
-public class EqualEqualExpression extends RelationalExpression {
+public class EqualEqualExpression extends RelationalMixedExpression {
 
 	public EqualEqualExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);

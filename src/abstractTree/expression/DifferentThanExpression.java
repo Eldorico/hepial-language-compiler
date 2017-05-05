@@ -6,7 +6,7 @@ package abstractTree.expression;
  * asdf != asdf
  *
  */
-public class DifferentThanExpression extends RelationalExpression {
+public class DifferentThanExpression extends RelationalMixedExpression {
 
 	public DifferentThanExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);

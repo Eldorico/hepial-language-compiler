@@ -30,6 +30,16 @@ public abstract class BinaryExpression extends Expression {
 	    return this.rightOperand;
 	}
 
-
-
+	/**
+	 * @description: checks if the left and right operands have semantic errors.
+	 * If errors are found, they will be logged into the ErrorPrinter
+	 */
+	@Override
+    public boolean semanticErrorsDetected(int declarationLineNumber){
+	    if(leftOperand.semanticErrorsDetected(declarationLineNumber) || rightOperand.semanticErrorsDetected(declarationLineNumber)){
+	        return true;
+	    }else{
+	        return false;
+	    }
+	}
 }

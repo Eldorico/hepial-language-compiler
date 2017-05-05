@@ -1,7 +1,9 @@
 package abstractTree.expression;
 
+import symbol.Symbol;
 import symbol.Type;
 import utils.ErrorPrinter;
+import utils.ExpressionEvaluator;
 
 /**
  * @description:
@@ -39,15 +41,8 @@ public abstract class ArithmeticExpression extends BinaryExpression {
    */
    @Override
    public boolean semanticErrorsDetected(int declarationLineNumber){
-       boolean errorsDetected = false;
-
-       // check for semantic errors
-       if(leftOperand.semanticErrorsDetected(declarationLineNumber)){
-           errorsDetected = true;
-       }
-       if(rightOperand.semanticErrorsDetected(declarationLineNumber)){
-           errorsDetected = true;
-       }
+       // check for semantic errors on the left and right operand. (It will log errors if any found)
+       boolean errorsDetected = super.semanticErrorsDetected(declarationLineNumber);
 
        // checks that the types of the left and right operand are Integers
        if(leftOperand.getType() != Type.INTEGER){
@@ -56,6 +51,23 @@ public abstract class ArithmeticExpression extends BinaryExpression {
        }
        if(rightOperand.getType() != Type.INTEGER){
            ErrorPrinter.getInstance().logError(rightOperand.toString()+" : Operand has to be an Integer", declarationLineNumber);
+           errorsDetected = true;
+       }
+
+       // if any errors has been detected return here because it can crash the program. (If an expression is undefined, it will crash because of the reflective operations below
+       if(errorsDetected){
+           return errorsDetected;
+       }
+
+       // check that the left and right operands are only made of Arithmetic Expressions, IntNumber, Identifiers or FctCallExpression
+       Class [] expectedSymbolClasses = {Symbol.class};
+       Class [] expectedExpressionClasses = {ArithmeticExpression.class, Identifier.class, FctCallExpression.class, IntNumber.class};
+       if(!ExpressionEvaluator.expressionContainsOnly(expectedExpressionClasses, expectedSymbolClasses, leftOperand)){
+           ErrorPrinter.getInstance().logError(leftOperand.toString()+"Left operand has to be an Arithmetic Expression, a fctCall, or an Identifier", declarationLineNumber);
+           errorsDetected = true;
+       }
+       if(!ExpressionEvaluator.expressionContainsOnly(expectedExpressionClasses, expectedSymbolClasses, rightOperand)){
+           ErrorPrinter.getInstance().logError(rightOperand.toString()+"Right operand has to be an Arithmetic Expression, a fctCall, or an Identifier", declarationLineNumber);
            errorsDetected = true;
        }
 

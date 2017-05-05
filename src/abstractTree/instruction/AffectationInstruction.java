@@ -56,27 +56,22 @@ public class AffectationInstruction extends Instruction {
 	public boolean semanticErrorsDetected(){
 	    boolean errorsDetected = false;
 
-	    // get the src and dst type
-	    Type srcType = src.getType();
-	    Type dstType = dst.getType();
-
-	    // check if dst and src are undefined and return if one is undefined.
-	    if(srcType == null){
-	        ErrorPrinter.getInstance().logError(src.toString()+" : The type of the expression is undefined of mixed.", declarationLineNumber);
+	    // check the semantic of the src and dst. (it will log errors if found)
+	    if(src.semanticErrorsDetected(declarationLineNumber) || dst.semanticErrorsDetected(declarationLineNumber)){
 	        errorsDetected = true;
 	    }
-        if(dstType == null){
-            ErrorPrinter.getInstance().logError(dst.toString()+" : Expression undefined", declarationLineNumber);
-            errorsDetected = true;
-        }
-        if(errorsDetected){
-            return errorsDetected;
-        }
 
         // check that the dst and src type are the same
+        Type srcType = src.getType();
+        Type dstType = dst.getType();
         if(srcType != dstType){
             ErrorPrinter.getInstance().logError("The affectation must be an "+Type.strType(dst.getType())+" expression", declarationLineNumber);
             errorsDetected = true;
+        }
+
+        // if errors detected, return here because if we have some undefined expressions, the rest will crash due to reflexive operations. (invalid file like errors)
+        if(errorsDetected){
+            return errorsDetected;
         }
 
         // check that the dst is a VariableSymbol

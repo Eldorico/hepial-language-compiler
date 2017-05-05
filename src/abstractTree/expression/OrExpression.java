@@ -6,7 +6,7 @@ package abstractTree.expression;
  * asdf or asdf
  *
  */
-public class OrExpression extends RelationalExpression {
+public class OrExpression extends RelationalBooleanExpression {
 
 	public OrExpression(Expression leftOperand, Expression rightOperand) {
 		super(leftOperand, rightOperand);

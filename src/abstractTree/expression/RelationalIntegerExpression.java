@@ -5,6 +5,9 @@ import symbol.Type;
 import utils.ErrorPrinter;
 import utils.ExpressionEvaluator;
 
+/**
+ * @description: represents relationals expression that can only have integer type
+ */
 public abstract class RelationalIntegerExpression extends RelationalExpression {
 
     public RelationalIntegerExpression(Expression leftOperand, Expression rightOperand) {
@@ -19,33 +22,22 @@ public abstract class RelationalIntegerExpression extends RelationalExpression {
      */
     @Override
     public boolean semanticErrorsDetected(int declarationLineNumber){
-        boolean errorsDetected = false;
-
-        // get the types of the left and right operand
-        Type leftOperandType = leftOperand.getType();
-        Type rightOperandType = rightOperand.getType();
-
-        // check if dst and src are undefined and return if one is undefined.
-        if(leftOperandType == null){
-            ErrorPrinter.getInstance().logError(leftOperand.toString()+" : The type of the expression is undefined of mixed.", declarationLineNumber);
-            errorsDetected = true;
-        }
-        if(rightOperandType == null){
-            ErrorPrinter.getInstance().logError(rightOperand.toString()+" : The type of the expression is undefined of mixed.", declarationLineNumber);
-            errorsDetected = true;
-        }
-        if(errorsDetected){
-            return errorsDetected;
-        }
+        // check for semantic errors on the left and right operand. (It will log errors if any found)
+        boolean errorsDetected = super.semanticErrorsDetected(declarationLineNumber);
 
         // check that the left and right operand are Integer types
-        if(leftOperandType != Type.INTEGER){
+        if(leftOperand.getType() != Type.INTEGER){
             ErrorPrinter.getInstance().logError(leftOperand.toString()+" : The left operand has to be an Integer type.", declarationLineNumber);
             errorsDetected = true;
         }
-        if(rightOperandType != Type.INTEGER){
+        if(rightOperand.getType() != Type.INTEGER){
             ErrorPrinter.getInstance().logError(rightOperand.toString()+" : The left operand has to be an Integer type.", declarationLineNumber);
             errorsDetected = true;
+        }
+
+        // if any errors has been detected return here because it can crash the program. (If an expression is undefined, it will crash because of the reflective operations below
+        if(errorsDetected){
+            return errorsDetected;
         }
 
         // check that the left and right operands are only made of Arithmetic Expressions, IntNumber, Identifiers or FctCallExpression
