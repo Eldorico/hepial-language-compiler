@@ -173,4 +173,13 @@ public class FunctionSymbol extends Symbol {
         }
         return allReturnTypesEqualsReturnType;
     }
+
+    public int getNbParameters(){
+        return parameters.size();
+    }
+
+    public Type getTypeOfParameter(int i){
+        return parameters.get(i).getValue().type;
+    }
+
 }

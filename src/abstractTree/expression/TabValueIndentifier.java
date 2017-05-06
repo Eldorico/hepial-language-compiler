@@ -30,8 +30,8 @@ public class TabValueIndentifier extends Identifier {
 	}
 
 	/**
-	 * @description: checks that the identifier is defined
-	 * checks that the identifier corresponds to a ArraySymbol
+	 * @description: checks that the identifier is defined and return if not
+	 * checks that the identifier corresponds to an ArraySymbol
 	 * checks that the number of indexes correspond to the dimension of the ArraySymbol
 	 * checks that every expression on the expressionList is an Integer expression
 	 * checks for semantic errors on every expression on the expressionList is an Integer expression
@@ -62,15 +62,16 @@ public class TabValueIndentifier extends Identifier {
             return errorsDetected;
         }
 
-	    // checks that every expression on the expressionList is an Integer expression
         // checks for semantic errors on every expression on the expressionList is an Integer expression
-	    for(int i=0; i<indexes.expressionList.size(); i++){
-	        Expression indexExpression = indexes.expressionList.get(i);
+        if(indexes.semanticErrorsDetected(declarationLineNumber)){
+            errorsDetected = true;
+        }
+
+        // checks that every expression on the expressionList is an Integer expression
+	    for(int i=0; i<indexes.size(); i++){
+	        Expression indexExpression = indexes.get(i);
 	        if(indexExpression.getType() != Type.INTEGER){
 	            ErrorPrinter.getInstance().logError("Index "+(i+1)+" of the "+this.name+" array has to be an integer expression", declarationLineNumber);
-	            errorsDetected = true;
-	        }
-	        if(indexExpression.semanticErrorsDetected(declarationLineNumber)){
 	            errorsDetected = true;
 	        }
 	    }

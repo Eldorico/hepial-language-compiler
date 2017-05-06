@@ -356,7 +356,7 @@
     <g font-size="13px" stroke-linecap="butt" transform="matrix(1,0,0,1,355,-54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="geometricPrecision" font-weight="bold" stroke-miterlimit="1.45">
       <text x="765.0706" xml:space="preserve" y="273.0669" clip-path="url(#clipPath26)" stroke="none">ExpressionList</text>
       <text x="745.5356" xml:space="preserve" y="288.1997" clip-path="url(#clipPath26)" stroke="none">---------------------------</text>
-      <text x="673.9246" xml:space="preserve" y="303.3325" clip-path="url(#clipPath26)" stroke="none">expressionList:LinkedList&lt;Expression&gt;</text>
+      <text x="678.241" xml:space="preserve" y="303.3325" clip-path="url(#clipPath26)" stroke="none">expressionList:ArrayList&lt;Expression&gt;</text>
     </g>
     <g fill="rgb(204,255,255)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,355,-54)" stroke="rgb(204,255,255)">
       <rect x="-275" width="148" height="54" y="179" clip-path="url(#clipPath2)" stroke="none"/>

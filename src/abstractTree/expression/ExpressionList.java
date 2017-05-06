@@ -1,6 +1,7 @@
 package abstractTree.expression;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import symbol.Type;
 
@@ -18,7 +19,7 @@ import symbol.Type;
  * fct(ExpressionList, ExpressionList, ExpressionList)
  *
  */
-public class ExpressionList extends Expression {
+public class ExpressionList extends Expression  implements Iterable<Expression>{
 
 	ArrayList<Expression> expressionList;
 
@@ -105,5 +106,36 @@ public class ExpressionList extends Expression {
 	public int getSize(){
 	    return expressionList.size();
 	}
+
+	/**
+	 * @checks calls semanticErrorsDetected() on all expressions
+	 * Errors found will be logged into the ErrorPrinter
+	 */
+	@Override
+    public boolean semanticErrorsDetected(int declarationLineNumber){
+	    boolean errorsDetected = false;
+	    for(Expression expression: expressionList){
+	        if(expression.semanticErrorsDetected(declarationLineNumber)){
+	            errorsDetected = true;
+	        }
+	    }
+	    return errorsDetected;
+	}
+
+    /**
+     * @description: so we can use the class like this: for(Expression expression : ExpressionList){;}
+     */
+    @Override
+    public Iterator<Expression> iterator(){
+        return expressionList.iterator();
+    }
+
+    public Expression get(int i){
+        return expressionList.get(i);
+    }
+
+    public int size(){
+        return expressionList.size();
+    }
 
 }

@@ -63,7 +63,7 @@ public class BlocInstruction extends Instruction implements Iterable<Instruction
 	}
 
 	/**
-	 * @description: se we can use the class like this: for(Instruction instruction : BlocInstruction){;}
+	 * @description: so we can use the class like this: for(Instruction instruction : BlocInstruction){;}
 	 */
 	@Override
     public Iterator<Instruction> iterator(){
