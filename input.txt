@@ -1,11 +1,21 @@
 programme hepial1
 
 booleen z;
-entier e,i;
-//entier [123..e + 56] array;
+entier e,i,z;
+  
+entier [123..s + 56] array;
+entier facto( entier n)
+entier e;
+debutfonc
+ 				retourne facto(1);
+finfonc
 
 debutprg
-	e = 1234;
+
+
+
+	array[2] = facto(z);
+	array[vrai] = facto(z); 
 finprg
 
 /*
