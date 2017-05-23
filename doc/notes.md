@@ -314,13 +314,25 @@ ecrire "ceci est une chaine de caractères \" avec un guilllemet au milieu";
 
 
 
+## Production du Code
+
+Examples:  [http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html)
+
+Build the jasmin code: 
+
+```bash
+    java -jar jasmin.jar examples/HelloWorld.j         [Unix/MacOsX]
+```
+
+
+
 ## Questions
 
-- < > <= acceptent des booléens??
+- < > <= acceptent des booléens?? __bof... utiliser le bon sens..__
 
-- qu'est-ce que c'est que ça? <>
+- qu'est-ce que c'est que ça? <> __C'est le !=__
 
-- qu'est-ce que ça veut dire? Quel opérateur conditionnel? Relationnel?
+- qu'est-ce que ça veut dire? Quel opérateur conditionnel? Relationnel? __PAS A CONSIDÉRER__
 
   ```
   C7: L'opérateur	 conditionnel	 accepte	 un	 premier	 opérande	 booléen.	 Si	 les	 deux derniers	opérandes	sont	entiers	(resp.	booléens),	le	type	de	l'expression	est	entier	(resp.	
