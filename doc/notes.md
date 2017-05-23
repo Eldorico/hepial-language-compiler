@@ -316,15 +316,16 @@ ecrire "ceci est une chaine de caractères \" avec un guilllemet au milieu";
 
 ## Production du Code
 
-Examples:  [http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html)
+- Examples:  [http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/demos/demos.html)
 
-Build the jasmin code: 
+
+- Build the jasmin code: 
 
 ```bash
     java -jar jasmin.jar examples/HelloWorld.j         [Unix/MacOsX]
 ```
 
-
+- Dans Hepial, on va déclarer que des fonctions statiques.  _du coup, elles ne prennent pas de place dans le stack?_ 
 
 ## Questions
 
