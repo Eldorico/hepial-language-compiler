@@ -9,6 +9,9 @@ import utils.ErrorPrinter;
 
 public class SymbolTable {
 
+    //private String [] programName = {"null"};
+    private String programName;
+
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
 	private ArrayList<Symbol> symbolsList; // used to browse quickly every symbol added to symbolTable, in the order they have been added
@@ -27,6 +30,14 @@ public class SymbolTable {
 
 	public static SymbolTable getInstance(){
 		return instance;
+	}
+
+	public String getProgramName(){
+	    return programName;
+	}
+
+	public void setProgramName(String progName){
+	    programName = progName;
 	}
 
 	/**

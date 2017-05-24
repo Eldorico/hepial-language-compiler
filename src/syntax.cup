@@ -118,6 +118,7 @@ PROGRAMME  ::= ENTETE:e LISTE_DECLA:l keyword_debutprg CORPS keyword_finprg {:
               ;
 
 ENTETE     ::= keyword_programme ident:i {:
+                  SymbolTable.getInstance().setProgramName(i.getKey());
                   RESULT = i.getKey();
               :}
               ;

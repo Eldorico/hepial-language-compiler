@@ -4,6 +4,8 @@ import java.io.FileReader;
 import symbol.SymbolTable;
 import utils.ErrorPrinter;
 import abstractTree.instruction.Instruction;
+//import java_cup.parser;
+//import java_cup.parser;
 
 public class HepialCompilateur {
 
@@ -49,12 +51,17 @@ public class HepialCompilateur {
 
 			if(errorsDetected){
 				ErrorPrinter.getInstance().printErrors();
+				System.exit(1);
 			}
+
+			// start code production
+			System.out.println("Starting code production of "+SymbolTable.getInstance().getProgramName()+"...");
+
 
 
 		}
 		catch (Exception e){
-			System.out.println("invalid file");
+			System.out.println("Compilation error: "+e.getMessage());
 		}
 	}
 }
