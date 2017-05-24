@@ -8,7 +8,7 @@ fi
 
 java -jar ../lib/jasmin.jar $1
 
-echo 
+echo -----------------------------------
 fileName=$1
 fileName=${fileName%".j"}
 java $fileName
