@@ -1,24 +1,23 @@
-programme hepial1
+programme hepial
 
-booleen z;
-entier e,i,z;
+entier e;
+
+debutprg
+	e = 123;
+	ecrire e;
+finprg
+
+/*
   
-entier [123..s + 56] array;
-entier facto( entier n)
+facto( entier n)
 entier e;
 debutfonc
  				retourne facto(1);
 finfonc
 
-debutprg
 
 
 
-	array[2] = facto(z);
-	array[vrai] = facto(z); 
-finprg
-
-/*
 programme hepial3
 constante entier FIXE = 50;
 entier nombreEntier;

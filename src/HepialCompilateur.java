@@ -4,6 +4,7 @@ import java.io.FileReader;
 import symbol.SymbolTable;
 import utils.ErrorPrinter;
 import abstractTree.instruction.Instruction;
+import codeProduction.CodeProducer;
 //import java_cup.parser;
 //import java_cup.parser;
 
@@ -54,8 +55,9 @@ public class HepialCompilateur {
 				System.exit(1);
 			}
 
-			// start code production
+			// produce the code
 			System.out.println("Starting code production of "+SymbolTable.getInstance().getProgramName()+"...");
+			CodeProducer.getInstance().produceProgram(SymbolTable.getInstance().getProgramName(), "compiledBin");
 
 
 

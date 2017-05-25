@@ -7,10 +7,14 @@ import java.util.Stack;
 
 import utils.ErrorPrinter;
 
+/**
+ * @description: The symbol Table Instance. It uses the singleton pattern
+ *
+ */
 public class SymbolTable {  // TODO: avoid declaration of blocks called programName
                             // TODO: avoid declaration of blocks called 'mainFunction' (because it is reserved for the code production)
-
     private String programName;
+    private String mainFunctionName = new String("mainFunction");
 
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
@@ -18,7 +22,7 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	private HashMap<String, Integer> declaredFunctionsNameList = new HashMap<String, Integer>(); // used to detected functions redefinitions. HashMap<functionName, declarationLineNumber>
 
 	private Stack<String> openedBlocs = new Stack<String>();
-	private String mainBlocName = new String("main");
+	private String mainBlocName = new String("MainBlock");
 	private String currentBlocName;
 
 	private boolean duplicateSymbolsFound = false;
@@ -39,6 +43,14 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 
 	public void setProgramName(String progName){
 	    programName = progName;
+	}
+
+	public String getMainBlockName(){
+	    return mainBlocName;
+	}
+
+	public String getMainFunctionName(){
+	    return mainFunctionName;
 	}
 
 	/**

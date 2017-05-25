@@ -10,10 +10,11 @@ bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLE
 
 # Cup ...
 bin/sym.class : src/${CUPFILENAME}.cup src/$(JFLEXFILENAME).flex
-	# compile every abstractTree class
+	# compile every java class
 	find -path "*/src/abstractTree/*.java" > sources.txt
 	find -path "*/src/symbol/*.java" >> sources.txt
 	find -path "*/src/utils/*.java" >> sources.txt
+	find -path "*/src/codeProduction/*.java" >> sources.txt
 	javac -d bin @sources.txt
 	rm sources.txt
 
@@ -35,7 +36,7 @@ bin/$(JFLEXFILENAME).java: src/$(JFLEXFILENAME).flex
 
 # Clean
 clean:
-	rm -f -r bin sources.txt
+	rm -f -r bin sources.txt compiledBin
 
 # Remake 
 remake: 
