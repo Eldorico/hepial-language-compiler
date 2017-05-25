@@ -30,15 +30,12 @@
    getfield MainBlock/myInt I
    invokevirtual MainBlock/myPrint(I)V
 
-  
-   ; invoque function1
+   ; invoke function1
    new Function1 
    dup 
    aload 0
    invokespecial Function1/<init>(LMainBlock;)V ; call constructor 
    invokevirtual Function1/mainFunction()V ; call function1
-;   astore 1
-   
 
    return
 

@@ -22,7 +22,6 @@
 .end method
 
 
-
 .method mainFunction()V
    .limit stack 4
 
@@ -48,6 +47,14 @@
    getfield Function1/mainBlock LMainBlock;
    getfield MainBlock/wesh I
    invokevirtual java/io/PrintStream/println(I)V
+
+   ; invoke this.MainBlock.myPrint(this.myInt)
+   aload 0 ; stack = this
+   getfield Function1/mainBlock LMainBlock;  ; stack = this.MainBlock
+   aload 0 ; stack = this.MainBlock, this
+   getfield Function1/myInt I ; stack = this.MainBlock, this.myInt
+   invokevirtual MainBlock/myPrint(I)V
+
 
    return
 
