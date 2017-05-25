@@ -7,14 +7,15 @@ import java.util.Stack;
 
 import utils.ErrorPrinter;
 
-public class SymbolTable {
+public class SymbolTable {  // TODO: avoid declaration of blocks called programName
+                            // TODO: avoid declaration of blocks called 'mainFunction' (because it is reserved for the code production)
 
-    //private String [] programName = {"null"};
     private String programName;
 
 	private static SymbolTable instance = new SymbolTable();
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
 	private ArrayList<Symbol> symbolsList; // used to browse quickly every symbol added to symbolTable, in the order they have been added
+	private HashMap<String, Integer> declaredFunctionsNameList = new HashMap<String, Integer>(); // used to detected functions redefinitions. HashMap<functionName, declarationLineNumber>
 
 	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("main");
@@ -54,12 +55,19 @@ public class SymbolTable {
 			ErrorPrinter.getInstance().logError(symbolIdentifier+" : symbol allready defined on line "+getSymbol(symbolIdentifier).declarationLineNumber, symbol.declarationLineNumber);
 			duplicateSymbolsFound = true;
 			return false;
+	    }else if(symbol instanceof FunctionSymbol && declaredFunctionsNameList.containsKey(symbolIdentifier)){
+	        ErrorPrinter.getInstance().logError(symbolIdentifier+" : function allready defined on line "+declaredFunctionsNameList.get(symbolIdentifier), symbol.declarationLineNumber);
+	        duplicateSymbolsFound = true;
+	        return false;
 		// else, add the symbol into the table
 		}else{
 
-		    // if the symbol is a function, add the parameters of the function
+		    // if the symbol is a function
 			if(symbol instanceof FunctionSymbol){
+			    // add the parameters of the function
 			    addFunctionParameters(symbolIdentifier, (FunctionSymbol)symbol);
+			    // register function name to avoid functions redefinitions
+			    declaredFunctionsNameList.put(symbolIdentifier, symbol.declarationLineNumber);
 			}
 
 			// add the symbol to the table

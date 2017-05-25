@@ -72,7 +72,8 @@ public class ExpressionEvaluator {
 
         // hope we dont arrive here...
         System.err.println("ExpressionEvaluator.expressionContainsOnly(): case not managed!");
-        return false;
+        System.exit(-1);
+        return false; // hahaha...
     }
 
     /**
