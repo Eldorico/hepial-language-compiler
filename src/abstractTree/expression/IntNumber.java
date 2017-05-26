@@ -25,4 +25,9 @@ public class IntNumber extends Expression {
 	    return Type.INTEGER;
 	}
 
+	@Override
+	public Integer evaluateIntValue(){
+	    return new Integer(value);
+	}
+
 }

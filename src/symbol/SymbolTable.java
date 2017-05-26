@@ -23,6 +23,7 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	private HashMap<String, HashMap<String, Symbol>> symbolTable; // HashMap<BlocName, HashMap<VarName, SymbolVariable>>
 	private ArrayList<Symbol> symbolsList; // used to browse quickly every symbol added to symbolTable, in the order they have been added
 	private HashMap<String, Integer> declaredFunctionsNameList = new HashMap<String, Integer>(); // used to detected functions redefinitions. HashMap<functionName, declarationLineNumber>
+	private HashMap<String, ArrayList<SimpleEntry<String, VariableSymbol>>> declaredFields = new HashMap<String, ArrayList<SimpleEntry<String, VariableSymbol>>>(); // HashMap<BlocName, ArrayList<SimpleEntry<identificator, VariableSymbol>>// used to store the variables declared in each block. (We dont stock FunctionSymbols and symbols that are parameters)
 
 	private Stack<String> openedBlocs = new Stack<String>();
 	private String mainBlocName = new String("MainBlock");
@@ -92,6 +93,9 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 			    addFunctionParameters(symbolIdentifier, (FunctionSymbol)symbol);
 			    // register function name to avoid functions redefinitions
 			    declaredFunctionsNameList.put(symbolIdentifier, symbol.declarationLineNumber);
+			// if the symbol is not a function, add the symbol in this list. (it wont be a parameter symbol because they are added in the block above)
+			}else{
+			    declaredFields.get(currentBlocName).add(new SimpleEntry<String, VariableSymbol>(symbolIdentifier, (VariableSymbol)symbol));
 			}
 
 			// add the symbol to the table
@@ -111,6 +115,10 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 		}
 	}
 
+	public String getCurrentBlockLocation(){
+	    return currentBlocName;
+	}
+
 	/**
 	 * @description: enters the block desired. If the block doesnt exists, it is created.
 	 * @param blocName : the block name to enter
@@ -118,6 +126,8 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	public void enterBloc(String blocName){
 		if(!symbolTable.containsKey(blocName)){
 			symbolTable.put(blocName, new HashMap<String, Symbol>());
+			ArrayList<SimpleEntry<String, VariableSymbol>> fieldsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
+			declaredFields.put(blocName, fieldsList);
 		}
 		openedBlocs.add(blocName);
 		currentBlocName = blocName;
@@ -130,6 +140,16 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 			openedBlocs.pop();
 			currentBlocName = openedBlocs.peek();
 		}
+	}
+
+	/**
+	 * @description: returns the declared variables symbol that are not a function symbol,
+	 * neither the parameters of a function symbol.
+	 * @param blockName
+	 * @return
+	 */
+	public ArrayList<SimpleEntry<String, VariableSymbol>> getNormalFieldsOf(String blockName){
+	    return declaredFields.get(blockName);
 	}
 
 	/**

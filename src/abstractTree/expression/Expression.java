@@ -10,4 +10,12 @@ public abstract class Expression extends AbstractTree {
     public boolean semanticErrorsDetected(int declarationLineNumber){
         return false;
     }
+
+    /**
+     * @description: only arithmetic expressions, Int number and identifier can return another value.
+     * @return
+     */
+    public Integer evaluateIntValue(){
+        return null;
+    }
 }

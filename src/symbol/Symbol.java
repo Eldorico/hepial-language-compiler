@@ -7,9 +7,11 @@ package symbol;
 public abstract class Symbol {
 
 	int declarationLineNumber;
+	String blockName;
 
-	public Symbol(int declarationLinesNumber) {
+	public Symbol(int declarationLinesNumber, String blockName) {
 		this.declarationLineNumber = declarationLinesNumber+1;
+		this.blockName = blockName;
 	}
 
 	public int getDeclarationLinesNumber(){

@@ -9,9 +9,12 @@ import abstractTree.expression.Expression;
 public class ArraySymbol extends VariableSymbol {
 
 	ArrayList<SimpleEntry< Expression, Expression>> dimensionsList; // Array[Expression .. Expression]
+	ArrayList<Integer> lowerBoundValues = new ArrayList<Integer>();
+	ArrayList<Integer> upperBoundValues = new ArrayList<Integer>();
 
-	public ArraySymbol(int declarationLinesNumber, Type type, ArrayList< SimpleEntry< Expression, Expression>> dimensionsList) {
-		super(declarationLinesNumber, type);
+
+	public ArraySymbol(int declarationLinesNumber, Type type, ArrayList< SimpleEntry< Expression, Expression>> dimensionsList, String blockName) {
+		super(declarationLinesNumber, type, blockName);
 		this.dimensionsList = dimensionsList;
 	}
 
@@ -53,8 +56,27 @@ public class ArraySymbol extends VariableSymbol {
                 ErrorPrinter.getInstance().logError(upperBound.toString()+" : upperbound of dimension "+i+" has to be an Integer type", declarationLineNumber);
                 errorsDetected = true;
             }
+            if(errorsDetected){
+                return errorsDetected;
+            }
+
+            // try to evaluate the dimension of the array
+            lowerBoundValues.add(i, evaluateIntValue(lowerBound));
+            if(lowerBoundValues.get(i) == null){
+                ErrorPrinter.getInstance().logError(lowerBound.toString()+" : lowerbound of dimension "+i+" could not have been evaluated", declarationLineNumber);
+                errorsDetected = true;
+            }
+            upperBoundValues.add(i, evaluateIntValue(upperBound));
+            if(upperBoundValues.get(i) == null){
+                ErrorPrinter.getInstance().logError(lowerBound.toString()+" : upperBound of dimension "+i+" could not have been evaluated", declarationLineNumber);
+                errorsDetected = true;
+            }
         }
         return errorsDetected;
+    }
+
+    private Integer evaluateIntValue(Expression expression){
+        return expression.evaluateIntValue();
     }
 
     /**

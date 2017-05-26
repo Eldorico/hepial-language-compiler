@@ -34,6 +34,9 @@ public abstract class ArithmeticExpression extends BinaryExpression {
        return Type.INTEGER;
    }
 
+   @Override
+   public abstract Integer evaluateIntValue();
+
   /**
    * @description: checks for semantic errors for the left and right operand
    * checks that the Types of the left and right operand are Integers

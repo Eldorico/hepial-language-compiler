@@ -10,8 +10,8 @@ public abstract class VariableSymbol extends Symbol {
 
 	Type type;
 
-	public VariableSymbol(int declarationLinesNumber, Type type) {
-		super(declarationLinesNumber);
+	public VariableSymbol(int declarationLinesNumber, Type type, String blockName) {
+		super(declarationLinesNumber, blockName);
 		this.type = type;
 	}
 

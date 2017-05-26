@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import symbol.CstIntBoolSymbol;
+import symbol.Symbol;
 import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
@@ -52,6 +54,18 @@ public class Identifier extends Expression {
 	        }else{
 	            return  false;
 	        }
+	}
+
+	@Override
+    public Integer evaluateIntValue(){
+	    Symbol symbolAssociated = SymbolTable.getInstance().getSymbol(name);
+	    if(symbolAssociated instanceof CstIntBoolSymbol){
+	        CstIntBoolSymbol cstIntBoolSymbol = (CstIntBoolSymbol) symbolAssociated;
+	        return cstIntBoolSymbol.getExpression().evaluateIntValue();
+	    }else{
+	        return null;
+	    }
+
 	}
 
 }

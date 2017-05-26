@@ -14,14 +14,18 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 
 	Expression value;
 
-	public CstIntBoolSymbol(int declarationLinesNumber, Type type, Expression value) {
-		super(declarationLinesNumber, type);
+	public CstIntBoolSymbol(int declarationLinesNumber, Type type, Expression value, String blockName) {
+		super(declarationLinesNumber, type, blockName);
 		this.value = value;
 	}
 
 	@Override
 	public String toString(){
 		return String.format("Const Variable %s. No Ligne: %d. Valeur: %s", getType(), declarationLineNumber, value.toString());
+	}
+
+	public Expression getExpression(){
+	    return value;
 	}
 
 	/**
