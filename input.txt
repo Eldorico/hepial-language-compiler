@@ -9,11 +9,7 @@ finprg
 
 /*
   
-facto( entier n)
-entier e;
-debutfonc
- 				retourne facto(1);
-finfonc
+
 
 
 

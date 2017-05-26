@@ -1,9 +1,6 @@
 package codeProduction;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-
-import symbol.Type;
+import symbol.VariableSymbol;
 
 
 /**
@@ -12,15 +9,18 @@ import symbol.Type;
  */
 class Fields extends JasminCodeProducer{
 
-    private ArrayList<SimpleEntry<String, Type>> fields = new ArrayList<SimpleEntry<String, Type>>();
+    void addField(String fieldName, VariableSymbol symbol){
 
-    void addField(String fieldName, Type fieldType){
-
+        jtext.addLine(".field "+fieldName+" "+Block.getJTypeAsStr(symbol, symbol.type()));
+        // TODO: if it is an array, add something in the constructor hook
     }
 
     @Override
     String getJCodeAsString() {
-         return new String(); // TODO!
+        if(!jtext.isEmpty()){
+            jtext.insertBefore("\n");
+        }
+        return jtext.getJCodeAsString();
     }
 
 }

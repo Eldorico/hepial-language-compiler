@@ -28,6 +28,14 @@ public class AffectationInstruction extends Instruction {
 	Expression src;
 	Identifier dst;
 
+	public Identifier getDestination(){
+	    return dst;
+	}
+
+	public Expression getSource(){
+	    return src;
+	}
+
 	/**
 	 * @description: Affectation is like: dst = src;
 	 * @param dst

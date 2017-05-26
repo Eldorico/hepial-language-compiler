@@ -58,6 +58,10 @@ public class FunctionSymbol extends Symbol {
 	    return parameters;
 	}
 
+	public BlocInstruction getInstructions(){
+	    return instructions;
+	}
+
     /**
      * @description:
      * checks for semantic errors into the function instruction

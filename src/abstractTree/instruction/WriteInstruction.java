@@ -10,6 +10,10 @@ public class WriteInstruction extends Instruction {
 
 	Expression output;
 
+	public Expression getOutputExpression(){
+	    return output;
+	}
+
 	public WriteInstruction(Expression output, int declarationLineNumber) {
 	    super(declarationLineNumber);
 		this.output = output;
@@ -27,5 +31,6 @@ public class WriteInstruction extends Instruction {
     public boolean semanticErrorsDetected(){
         return output.semanticErrorsDetected(declarationLineNumber);
     }
+
 
 }

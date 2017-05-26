@@ -3,9 +3,8 @@ import java.io.FileReader;
 
 import symbol.SymbolTable;
 import utils.ErrorPrinter;
-import abstractTree.instruction.Instruction;
+import abstractTree.instruction.BlocInstruction;
 import codeProduction.CodeProducer;
-//import java_cup.parser;
 //import java_cup.parser;
 
 public class HepialCompilateur {
@@ -30,12 +29,12 @@ public class HepialCompilateur {
 			    System.exit(-2);
 			}
 			// the abstractTreeStack generated from the parser has to be an instance of Instruction
-			Instruction abstractTreeElement = null;
-			if(!(myP.abstractTreeStack.peek() instanceof Instruction)){
-                System.err.println("The element in the abstractTreeStack is not an instance of Instruction. Compilation will exit");
+			BlocInstruction abstractTreeElement = null;
+			if(!(myP.abstractTreeStack.peek() instanceof BlocInstruction)){
+                System.err.println("The element in the abstractTreeStack is not an instance of BlocInstruction. Compilation will exit");
                 System.exit(-2);
 			}else{
-			    abstractTreeElement = (Instruction) myP.abstractTreeStack.peek();
+			    abstractTreeElement = (BlocInstruction) myP.abstractTreeStack.peek();
 			}
 
 			// debug
@@ -57,7 +56,7 @@ public class HepialCompilateur {
 
 			// produce the code
 			System.out.println("Starting code production of "+SymbolTable.getInstance().getProgramName()+"...");
-			CodeProducer.getInstance().produceProgram(SymbolTable.getInstance().getProgramName(), "compiledBin");
+			CodeProducer.getInstance().produceProgram(SymbolTable.getInstance().getProgramName(), "compiledBin", abstractTreeElement);
 
 
 

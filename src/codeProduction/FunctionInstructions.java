@@ -8,6 +8,8 @@ import symbol.Type;
 import symbol.VariableSymbol;
 import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
+import abstractTree.instruction.AffectationInstruction;
+import abstractTree.instruction.WriteInstruction;
 
 
 /**
@@ -32,6 +34,10 @@ class FunctionInstructions extends JasminCodeProducer{
 
     // default constructor needed by the child StaticMainInstructions
     protected FunctionInstructions(){}
+
+    String getBlockFunctionSignature(){
+        return blockFunctionSignature;
+    }
 
     /**
      * @description:
@@ -68,6 +74,22 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addIndentedLine(getReturnKeyWord());
     }
 
+    void addAffectationInstruction(AffectationInstruction instruction){
+        // write comment
+        jtext.addLine("");
+        jtext.addIndentedLine("; compute "+instruction.toString());
+
+        // load this
+        jtext.addIndentedLine("aload 0");
+
+        // get the jtext representing the computation of the source expression
+
+    }
+
+    void addWriteInstruction(WriteInstruction instruction){
+
+    }
+
     /**
      * @description: returns the signature of the block's main function.
      * Signature is like : (III)V
@@ -75,8 +97,12 @@ class FunctionInstructions extends JasminCodeProducer{
      * @return
      */
     protected String computeBlockFunctionSignature(ArrayList<SimpleEntry<String, VariableSymbol>> parameters, Type returnType){
-        // TODO: computeBlockFunctionSignature
-        return null;
+        String signature = new String("(");
+        for(SimpleEntry<String, VariableSymbol> entry : parameters){
+            signature += Block.getJTypeAsStr(entry.getValue(), entry.getValue().type());
+        }
+        signature += ")"+Type.jTypeObject(returnType);
+        return signature;
     }
 
     private String getReturnKeyWord(){

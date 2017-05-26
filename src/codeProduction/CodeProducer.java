@@ -2,21 +2,29 @@ package codeProduction;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 import symbol.Type;
+import symbol.VariableSymbol;
+import abstractTree.instruction.AffectationInstruction;
+import abstractTree.instruction.BlocInstruction;
+import abstractTree.instruction.Instruction;
+import abstractTree.instruction.WriteInstruction;
 
 public class CodeProducer {
 
     private String outputFolderName;
     private static CodeProducer instance = new CodeProducer();
+    private BlocInstruction mainInstructions;
 
     /**
      * @description:
      */
-    public void produceProgram(String programName, String outputFolderName){
+    public void produceProgram(String programName, String outputFolderName, BlocInstruction mainInstructions){
+        this.mainInstructions = mainInstructions;
 
         // create outputFolder
         this.outputFolderName = outputFolderName;
@@ -29,7 +37,7 @@ public class CodeProducer {
         staticMainBlock.instructions.addReturnInstruction(null);
         staticMainBlock.produceJasminFile();
 
-        // for each block (mainblock and functions), produce a new block
+        // for each block (functions), produce a new block
         ArrayList<String> blockLists = SymbolTable.getInstance().getBlocNameList();
         String mainBlockName = SymbolTable.getInstance().getMainBlockName();
         for(String blocName : blockLists){
@@ -60,18 +68,45 @@ public class CodeProducer {
      */
     private void produceFunctionBlock(String blockName, String parentBlockName){
         // create the block
-        FunctionSymbol fSymbol = (FunctionSymbol) SymbolTable.getInstance().getSymbol(blockName);
-        Block block = new Block(blockName, parentBlockName, fSymbol.getParameters(), outputFolderName, false, fSymbol.returnType());
+        Block block;
+        if(blockName.equals(SymbolTable.getInstance().getMainBlockName())){
+            block = new Block(blockName, null, new ArrayList<SimpleEntry<String, VariableSymbol>>(), outputFolderName, false, Type.VOID);
+        }else{
+            FunctionSymbol fSymbol = (FunctionSymbol) SymbolTable.getInstance().getSymbol(blockName);
+            block = new Block(blockName, parentBlockName, fSymbol.getParameters(), outputFolderName, false, fSymbol.returnType());
+        }
 
         // add fields
         SymbolTable.getInstance().enterBloc(blockName);
-
+        ArrayList<SimpleEntry<String, VariableSymbol>> fieldsList = SymbolTable.getInstance().getNormalFieldsOf(blockName);
+        for(SimpleEntry<String, VariableSymbol> entry : fieldsList){
+            block.localFields.addField(entry.getKey(), entry.getValue());
+        }
         SymbolTable.getInstance().exitCurrentBloc();
 
-
         // add instructions
+        BlocInstruction instructionsList;
+        if(blockName.equals(SymbolTable.getInstance().getMainBlockName())){
+            instructionsList = mainInstructions;
+        }else{
+            FunctionSymbol fSymbol = (FunctionSymbol)SymbolTable.getInstance().getSymbol(blockName);
+            instructionsList = fSymbol.getInstructions();
+        }
+
+        for(Instruction instruction: instructionsList){
+            addInstructionToBlock(block, instruction);
+        }
 
         // produce block
+        block.produceJasminFile();
+    }
+
+    private void addInstructionToBlock(Block block, Instruction instruction){
+        if(instruction instanceof AffectationInstruction){
+            block.instructions.addAffectationInstruction((AffectationInstruction) instruction);
+        }else if(instruction instanceof WriteInstruction){
+            block.instructions.addWriteInstruction((WriteInstruction) instruction);
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
+import symbol.ArraySymbol;
 import symbol.Type;
 import symbol.VariableSymbol;
 
@@ -18,16 +19,27 @@ class Block {
     private String blockName;
     private String parentName;
     private String outputFolderPath;
+    private boolean isStaticMainBlock;
 
     FunctionInstructions instructions;
     Fields localFields = new Fields();  // represents the variables that we declare in a block declaration.
+    ConstructorProducer constructor;
 
     Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock, Type returnType) {
         this.blockName = CodeProducer.capitaliseFirstChar(blockName);
         this.parentName = (parentName == null) ? null : CodeProducer.capitaliseFirstChar(parentName);
         this.outputFolderPath = outputFolderPath;
+        this.isStaticMainBlock = isStaticMainBlock;
         instructions = isStaticMainBlock ? new StaticMainInstructions() : new FunctionInstructions(parameters, returnType);
-        // TODO: write the jasmin code to put the locals into the fields, before we add more instructions via add functions
+        constructor = new ConstructorProducer(this.blockName, parentName, instructions, localFields);
+    }
+
+    static String getJTypeAsStr(VariableSymbol variableSymbol, Type type){
+        if(variableSymbol instanceof ArraySymbol){
+            return new String("["+Type.jTypeObject(type));
+        }else{
+            return new String(Type.jTypeObject(type));
+        }
     }
 
     /**
@@ -46,8 +58,12 @@ class Block {
             writer.printf(".super java/lang/Object\n");
 
             // write the fields
+            writer.println(localFields.getJCodeAsString());
 
             // write the constructor (used to manage the variables scope)
+            if(!isStaticMainBlock){
+                writer.println(constructor.getJCodeAsString());
+            }
 
             // write the instructions
             writer.println(instructions.getJCodeAsString());

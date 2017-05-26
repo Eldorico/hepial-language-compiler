@@ -22,4 +22,8 @@ class JasminCodeText {
     void insertBefore(String prefix){
         jInstructions = prefix + jInstructions;
     }
+
+    boolean isEmpty(){
+        return jInstructions.isEmpty();
+    }
 }
