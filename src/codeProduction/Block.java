@@ -2,8 +2,10 @@ package codeProduction;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 
-import symbol.Type;
+import symbol.VariableSymbol;
 
 /**
  * @description: This class is a representation of the .j file that will be written.
@@ -18,28 +20,12 @@ class Block {
 
     FunctionInstructions instructions;
     Fields localFields = new Fields();  // represents the variables that we declare in a block declaration.
-    Fields parameters = new Fields();  // represents the variables that will come as parameters when the block (function) will be instanciated.
 
-    Block(String blockName, String parentName, String outputFolderPath, boolean isStaticMainBlock) {
+    Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock) {
         this.blockName = CodeProducer.capitaliseFirstChar(blockName);
         this.parentName = (parentName == null) ? null : CodeProducer.capitaliseFirstChar(parentName);
         this.outputFolderPath = outputFolderPath;
         instructions = isStaticMainBlock ? new StaticMainInstructions() : new FunctionInstructions();
-    }
-
-    /**
-     * @description: this function is used to add variable comming from the parameters of the block.
-     * Example, in this code, we use this function to add the fields from n and m.
-     * entier maFct(entier n, entier m)
-     *  booleen b;
-     * debutfct
-     *  [...]
-     * finfct
-     * @param fieldName
-     * @param fieldType
-     */
-    void addFunctionParameterField(String fieldName, Type fieldType){
-        // TODO: check if we have to
     }
 
     /**

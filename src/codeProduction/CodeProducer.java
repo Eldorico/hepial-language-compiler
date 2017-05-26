@@ -22,7 +22,7 @@ public class CodeProducer {
         executeShellProcess("mkdir "+outputFolderName);
 
         // create the jasmin file that will contain the static main method. (The file will have te name of the program)
-        Block staticMainBlock = new Block(programName, null, outputFolderName, true);
+        Block staticMainBlock = new Block(programName, null, null, outputFolderName, true);
         staticMainBlock.instructions.addFunctionCall(SymbolTable.getInstance().getMainBlockName(), null, null, Type.VOID);
         staticMainBlock.instructions.addReturnInstruction(null);
         staticMainBlock.produceJasminFile();

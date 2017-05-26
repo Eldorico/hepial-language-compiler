@@ -27,7 +27,7 @@ class FunctionInstructions extends JasminCodeProducer{
     FunctionInstructions(ArrayList<SimpleEntry<String, Type>> parametersType, Type returnType){
         this.parametersType = parametersType;
         this.blockMainFunctionName = SymbolTable.getInstance().getMainFunctionName();
-        this.blockFunctionSignature = this.computeBlockFunctionSignature(parametersType);
+        this.blockFunctionSignature = this.computeBlockFunctionSignature(parametersType, returnType);
         this.returnType = returnType;
 
         // TODO: write the jasmin code to put the locals into the fields, before we add more instructions via add functions
@@ -50,25 +50,25 @@ class FunctionInstructions extends JasminCodeProducer{
 
         int nbOfElementsOnStackNeeded = 3;
 
-        addLine("");
-        addIndentedLine("; invoke "+blkNameToCall+fctInvocationSignature);
-        addIndentedLine("new "+blkNameToCall);
-        addIndentedLine("dup");
-        addIndentedLine("invokespecial "+blkNameToCall+"/<init>()V");
-        addIndentedLine("invokevirtual "+blkNameToCall+"/"+fctName+fctInvocationSignature);
+        jtext.addLine("");
+        jtext.addIndentedLine("; invoke "+blkNameToCall+fctInvocationSignature);
+        jtext.addIndentedLine("new "+blkNameToCall);
+        jtext.addIndentedLine("dup");
+        jtext.addIndentedLine("invokespecial "+blkNameToCall+"/<init>()V");
+        jtext.addIndentedLine("invokevirtual "+blkNameToCall+"/"+fctName+fctInvocationSignature);
 
         stackSizeNeeded = Math.max(stackSizeNeeded, nbOfElementsOnStackNeeded);
     }
 
     void addReturnInstruction(Expression returnExpression){
         String returnExpressionStrRepresentation = (returnExpression == null) ? "null" : returnExpression.toString();
-        addLine("");
-        addIndentedLine("; return the following expression: "+returnExpressionStrRepresentation);
+        jtext.addLine("");
+        jtext.addIndentedLine("; return the following expression: "+returnExpressionStrRepresentation);
         // TODO: addReturnInstruction(): evaluate expression!
         // put the return value on the stack
 
         // add the correct return expression
-        addIndentedLine(getReturnKeyWord());
+        jtext.addIndentedLine(getReturnKeyWord());
     }
 
     /**
@@ -77,7 +77,7 @@ class FunctionInstructions extends JasminCodeProducer{
      * @param parametersType
      * @return
      */
-    protected String computeBlockFunctionSignature(ArrayList<SimpleEntry<String, Type>> parametersType){
+    protected String computeBlockFunctionSignature(ArrayList<SimpleEntry<String, Type>> parametersType, Type returnType){
         // TODO: computeBlockFunctionSignature
         return null;
     }
@@ -108,11 +108,11 @@ class FunctionInstructions extends JasminCodeProducer{
     String getJCodeAsString(){
         String linesBefore = "\n; main function declaration\n";
         linesBefore += ".method public "+blockMainFunctionName+blockFunctionSignature+"\n";
-        linesBefore += (stackSizeNeeded > 0) ? indent()+".limit stack "+stackSizeNeeded+"\n" : "";
-        linesBefore += (localsSizeNeeded > 0) ? indent()+".limit locals "+localsSizeNeeded+"\n" : "";
-        jInstructions = linesBefore + jInstructions;
-        addLine(".end method");
+        linesBefore += (stackSizeNeeded > 0) ? jtext.indent()+".limit stack "+stackSizeNeeded+"\n" : "";
+        linesBefore += (localsSizeNeeded > 0) ? jtext.indent()+".limit locals "+localsSizeNeeded+"\n" : "";
+        jtext.insertBefore(linesBefore);
+        jtext.addLine(".end method");
 
-        return jInstructions;
+        return jtext.getJCodeAsString();
     }
 }
