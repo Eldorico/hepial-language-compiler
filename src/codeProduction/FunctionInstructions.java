@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import symbol.SymbolTable;
 import symbol.Type;
+import symbol.VariableSymbol;
 import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
 
@@ -22,15 +23,11 @@ class FunctionInstructions extends JasminCodeProducer{
     protected String blockMainFunctionName;
     protected String blockFunctionSignature;
     protected Type returnType;
-    protected ArrayList<SimpleEntry<String, Type>> parametersType;  // varName, type
 
-    FunctionInstructions(ArrayList<SimpleEntry<String, Type>> parametersType, Type returnType){
-        this.parametersType = parametersType;
+    FunctionInstructions(ArrayList<SimpleEntry<String, VariableSymbol>> parameters, Type returnType){
         this.blockMainFunctionName = SymbolTable.getInstance().getMainFunctionName();
-        this.blockFunctionSignature = this.computeBlockFunctionSignature(parametersType, returnType);
+        this.blockFunctionSignature = this.computeBlockFunctionSignature(parameters, returnType);
         this.returnType = returnType;
-
-        // TODO: write the jasmin code to put the locals into the fields, before we add more instructions via add functions
     }
 
     // default constructor needed by the child StaticMainInstructions
@@ -77,7 +74,7 @@ class FunctionInstructions extends JasminCodeProducer{
      * @param parametersType
      * @return
      */
-    protected String computeBlockFunctionSignature(ArrayList<SimpleEntry<String, Type>> parametersType, Type returnType){
+    protected String computeBlockFunctionSignature(ArrayList<SimpleEntry<String, VariableSymbol>> parameters, Type returnType){
         // TODO: computeBlockFunctionSignature
         return null;
     }

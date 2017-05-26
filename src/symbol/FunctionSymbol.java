@@ -54,6 +54,10 @@ public class FunctionSymbol extends Symbol {
 		return this.returnType;
 	}
 
+	public ArrayList<SimpleEntry<String, VariableSymbol>> getParameters(){
+	    return parameters;
+	}
+
     /**
      * @description:
      * checks for semantic errors into the function instruction

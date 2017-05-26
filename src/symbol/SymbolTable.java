@@ -3,6 +3,7 @@ package symbol;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 import utils.ErrorPrinter;
@@ -13,6 +14,8 @@ import utils.ErrorPrinter;
  */
 public class SymbolTable {  // TODO: avoid declaration of blocks called programName
                             // TODO: avoid declaration of blocks called 'mainFunction' (because it is reserved for the code production)
+                            // TODO: avoid function declaration in function declaration
+
     private String programName;
     private String mainFunctionName = new String("mainFunction");
 
@@ -51,6 +54,15 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 
 	public String getMainFunctionName(){
 	    return mainFunctionName;
+	}
+
+	public ArrayList<String> getBlocNameList(){
+	    ArrayList<String> toReturn = new ArrayList<String>();
+	    toReturn.add(getMainBlockName());
+	    for(Entry<String, Integer> entry : declaredFunctionsNameList.entrySet()){
+	        toReturn.add(entry.getKey());
+	    }
+	    return toReturn;
 	}
 
 	/**
@@ -99,6 +111,10 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 		}
 	}
 
+	/**
+	 * @description: enters the block desired. If the block doesnt exists, it is created.
+	 * @param blocName : the block name to enter
+	 */
 	public void enterBloc(String blocName){
 		if(!symbolTable.containsKey(blocName)){
 			symbolTable.put(blocName, new HashMap<String, Symbol>());

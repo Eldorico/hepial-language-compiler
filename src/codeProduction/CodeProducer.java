@@ -2,7 +2,9 @@ package codeProduction;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 import symbol.Type;
 
@@ -22,11 +24,18 @@ public class CodeProducer {
         executeShellProcess("mkdir "+outputFolderName);
 
         // create the jasmin file that will contain the static main method. (The file will have te name of the program)
-        Block staticMainBlock = new Block(programName, null, null, outputFolderName, true);
+        Block staticMainBlock = new Block(programName, null, null, outputFolderName, true, null);
         staticMainBlock.instructions.addFunctionCall(SymbolTable.getInstance().getMainBlockName(), null, null, Type.VOID);
         staticMainBlock.instructions.addReturnInstruction(null);
         staticMainBlock.produceJasminFile();
 
+        // for each block (mainblock and functions), produce a new block
+        ArrayList<String> blockLists = SymbolTable.getInstance().getBlocNameList();
+        String mainBlockName = SymbolTable.getInstance().getMainBlockName();
+        for(String blocName : blockLists){
+            String parentBlocName = (blocName.equals(mainBlockName)) ? null : mainBlockName;
+            produceFunctionBlock(blocName, parentBlocName);
+        }
     }
 
     public static String capitaliseFirstChar(String str){
@@ -50,9 +59,19 @@ public class CodeProducer {
      * @param blockName
      */
     private void produceFunctionBlock(String blockName, String parentBlockName){
+        // create the block
+        FunctionSymbol fSymbol = (FunctionSymbol) SymbolTable.getInstance().getSymbol(blockName);
+        Block block = new Block(blockName, parentBlockName, fSymbol.getParameters(), outputFolderName, false, fSymbol.returnType());
+
+        // add fields
+        SymbolTable.getInstance().enterBloc(blockName);
+
+        SymbolTable.getInstance().exitCurrentBloc();
 
 
+        // add instructions
 
+        // produce block
     }
 
     /**

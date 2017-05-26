@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
+import symbol.Type;
 import symbol.VariableSymbol;
 
 /**
@@ -21,11 +22,12 @@ class Block {
     FunctionInstructions instructions;
     Fields localFields = new Fields();  // represents the variables that we declare in a block declaration.
 
-    Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock) {
+    Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock, Type returnType) {
         this.blockName = CodeProducer.capitaliseFirstChar(blockName);
         this.parentName = (parentName == null) ? null : CodeProducer.capitaliseFirstChar(parentName);
         this.outputFolderPath = outputFolderPath;
-        instructions = isStaticMainBlock ? new StaticMainInstructions() : new FunctionInstructions();
+        instructions = isStaticMainBlock ? new StaticMainInstructions() : new FunctionInstructions(parameters, returnType);
+        // TODO: write the jasmin code to put the locals into the fields, before we add more instructions via add functions
     }
 
     /**
