@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import codeProduction.JEvaluator;
+
 
 /**
  * @description:
@@ -18,5 +20,8 @@ public class GreaterThanExpression extends RelationalIntegerExpression {
 		return String.format("(%s) > (%s)", this.leftOperand.toString(), this.rightOperand.toString());
 	}
 
-
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

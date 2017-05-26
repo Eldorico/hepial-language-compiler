@@ -5,6 +5,7 @@ import symbol.Symbol;
 import symbol.SymbolTable;
 import symbol.Type;
 import utils.ErrorPrinter;
+import codeProduction.JEvaluator;
 
 
 /**
@@ -99,4 +100,8 @@ public class FctCallExpression extends Expression {
         return errorsDetected;
     }
 
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

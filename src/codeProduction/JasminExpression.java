@@ -2,7 +2,8 @@ package codeProduction;
 
 /**
  * @description this class represents the jasmin code of an expression.
- * It contains the jtextCode, the max stack size, and max locals size
+ * It contains the jtextCode (the jasmin code), the max stack size, and max locals size
+ * needed to produce the jasmin code.
  */
 class JasminExpression {
 

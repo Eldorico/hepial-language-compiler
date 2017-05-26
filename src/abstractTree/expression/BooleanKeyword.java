@@ -1,6 +1,7 @@
 package abstractTree.expression;
 
 import symbol.Type;
+import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -24,4 +25,8 @@ public class BooleanKeyword extends Expression {
 	    return Type.BOOLEAN;
 	}
 
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

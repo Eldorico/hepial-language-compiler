@@ -2,8 +2,10 @@ package abstractTree.expression;
 
 import symbol.Type;
 import abstractTree.AbstractTree;
+import codeProduction.JEvaluable;
+import codeProduction.JEvaluator;
 
-public abstract class Expression extends AbstractTree {
+public abstract class Expression extends AbstractTree implements JEvaluable{
 
     public abstract Type getType();
 
@@ -18,4 +20,7 @@ public abstract class Expression extends AbstractTree {
     public Integer evaluateIntValue(){
         return null;
     }
+
+    @Override
+    public abstract void accept(JEvaluator visitor);
 }

@@ -83,6 +83,8 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addIndentedLine("aload 0");
 
         // get the jtext representing the computation of the source expression
+        JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getSource());
+        System.out.println(jexpression.jtext.getJCodeAsString());
 
     }
 

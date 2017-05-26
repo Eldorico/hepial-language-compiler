@@ -1,6 +1,7 @@
 package abstractTree.expression;
 
 import symbol.Type;
+import codeProduction.JEvaluator;
 
 public class CstString extends Expression {
 
@@ -20,4 +21,8 @@ public class CstString extends Expression {
 	    return Type.CST_STRING;
 	}
 
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

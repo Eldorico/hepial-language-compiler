@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import symbol.Type;
+import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -136,6 +137,11 @@ public class ExpressionList extends Expression  implements Iterable<Expression>{
 
     public int size(){
         return expressionList.size();
+    }
+
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
     }
 
 }

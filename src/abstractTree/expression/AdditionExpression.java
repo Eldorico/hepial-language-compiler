@@ -1,5 +1,8 @@
 package abstractTree.expression;
 
+import codeProduction.JEvaluator;
+
+
 /**
  * @description:
  * This class represents an addition expression such as:
@@ -28,5 +31,11 @@ public class AdditionExpression extends ArithmeticExpression {
 	        return left + right;
 	    }
 	}
+
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
+
 
 }

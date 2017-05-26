@@ -2,6 +2,7 @@ package abstractTree.expression;
 
 import symbol.Type;
 import utils.ErrorPrinter;
+import codeProduction.JEvaluator;
 
 public class NotExpression extends UnaryExpression {
 
@@ -30,4 +31,9 @@ public class NotExpression extends UnaryExpression {
 
 	       return errorsDetected;
 	}
+
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

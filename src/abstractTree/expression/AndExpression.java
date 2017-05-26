@@ -1,5 +1,7 @@
 package abstractTree.expression;
 
+import codeProduction.JEvaluator;
+
 
 /**
  * @description:
@@ -18,4 +20,8 @@ public class AndExpression extends RelationalBooleanExpression {
 		return String.format("(%s) && (%s)", leftOperand, rightOperand);
 	}
 
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

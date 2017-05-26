@@ -6,6 +6,7 @@ import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
 import utils.ErrorPrinter;
+import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -65,7 +66,11 @@ public class Identifier extends Expression {
 	    }else{
 	        return null;
 	    }
-
 	}
+
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 
 }
