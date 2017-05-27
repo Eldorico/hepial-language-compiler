@@ -6,6 +6,7 @@ constante entier z = 123;
 debutprg
 	e[0] = 321;
 	ecrire (e[0] + z) * 2;
+	ecrire "Wesh!";
 finprg
 
 /*

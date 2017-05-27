@@ -11,6 +11,7 @@ import abstractTree.expression.ExpressionList;
 import abstractTree.expression.Identifier;
 import abstractTree.expression.TabValueIdentifier;
 import abstractTree.instruction.AffectationInstruction;
+import abstractTree.instruction.Instruction;
 import abstractTree.instruction.WriteInstruction;
 
 
@@ -42,6 +43,18 @@ class FunctionInstructions extends JasminCodeProducer{
     }
 
     /**
+     * @description: We add instructions from here.
+     * @param instruction
+     */
+    void addInstruction(Instruction instruction){
+        if(instruction instanceof AffectationInstruction){
+            addAffectationInstruction((AffectationInstruction) instruction);
+        }else if(instruction instanceof WriteInstruction){
+            addWriteInstruction((WriteInstruction) instruction);
+        }
+    }
+
+    /**
      * @description:
      * @param blockNameToCall
      * @param blockNameOfFctOwner
@@ -65,7 +78,7 @@ class FunctionInstructions extends JasminCodeProducer{
         stackSizeNeeded = Math.max(stackSizeNeeded, nbOfElementsOnStackNeeded);
     }
 
-    void addReturnInstruction(Expression returnExpression){
+    protected void addReturnInstruction(Expression returnExpression){
         String returnExpressionStrRepresentation = (returnExpression == null) ? "null" : returnExpression.toString();
         jtext.addLine("");
         jtext.addIndentedLine("; return the following expression: "+returnExpressionStrRepresentation);
@@ -76,7 +89,7 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addIndentedLine(getReturnKeyWord());
     }
 
-    void addAffectationInstruction(AffectationInstruction instruction){
+    protected void addAffectationInstruction(AffectationInstruction instruction){
         int stackSizeNeededForInstruction = 0;
         int localsSizeNeededForInstruction = 0;
         VariableSymbol destinationSymbol =  (VariableSymbol)SymbolTable.getInstance().getSymbol(instruction.getDestination().getName());
@@ -136,7 +149,7 @@ class FunctionInstructions extends JasminCodeProducer{
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
 
-    void addWriteInstruction(WriteInstruction instruction){
+    protected void addWriteInstruction(WriteInstruction instruction){
         int stackSizeNeededForInstruction = 0;
         int localsSizeNeededForInstruction = 0;
 
@@ -155,7 +168,13 @@ class FunctionInstructions extends JasminCodeProducer{
         localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
 
         // invoke the print function
-        jtext.addIndentedLine("invokevirtual java/io/PrintStream/println(I)V");
+        if(instruction.getOutputExpression().getType() == Type.CST_STRING){
+            jtext.addIndentedLine("invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+        }else{
+            jtext.addIndentedLine("invokevirtual java/io/PrintStream/println(I)V");
+        }
+
+
 
         // update the stack and locals size needed
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);

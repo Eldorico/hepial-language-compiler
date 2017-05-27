@@ -9,10 +9,8 @@ import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
-import abstractTree.instruction.AffectationInstruction;
 import abstractTree.instruction.BlocInstruction;
 import abstractTree.instruction.Instruction;
-import abstractTree.instruction.WriteInstruction;
 
 public class CodeProducer {
 
@@ -120,7 +118,7 @@ public class CodeProducer {
         }
 
         for(Instruction instruction: instructionsList){
-            addInstructionToBlock(block, instruction);
+            block.instructions.addInstruction(instruction);
         }
 
         // add return value if we are in MainBlock
@@ -131,14 +129,6 @@ public class CodeProducer {
 
         // produce block
         block.produceJasminFile();
-    }
-
-    private void addInstructionToBlock(Block block, Instruction instruction){
-        if(instruction instanceof AffectationInstruction){
-            block.instructions.addAffectationInstruction((AffectationInstruction) instruction);
-        }else if(instruction instanceof WriteInstruction){
-            block.instructions.addWriteInstruction((WriteInstruction) instruction);
-        }
     }
 
     private static int produceJasminToClass(String fileName, String outputFolderName, String jasminLibPath){

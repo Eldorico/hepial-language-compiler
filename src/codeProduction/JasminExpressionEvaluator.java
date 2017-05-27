@@ -152,7 +152,8 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(CstString evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("ldc "+evaluable.toString());
+        toReturn.maxStackSizeNeeded = 1;
         return toReturn;
 
     }
