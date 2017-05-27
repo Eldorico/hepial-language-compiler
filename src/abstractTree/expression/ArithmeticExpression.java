@@ -4,6 +4,7 @@ import symbol.Symbol;
 import symbol.Type;
 import utils.ErrorPrinter;
 import utils.ExpressionEvaluator;
+import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -75,5 +76,10 @@ public abstract class ArithmeticExpression extends BinaryExpression {
        }
 
        return errorsDetected;
+   }
+
+   @Override
+   public void accept(JEvaluator visitor) {
+       visitor.jEvaluate(this);
    }
 }

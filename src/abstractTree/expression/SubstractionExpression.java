@@ -1,6 +1,5 @@
 package abstractTree.expression;
 
-import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -28,10 +27,5 @@ public class SubstractionExpression extends ArithmeticExpression {
         }else{
             return left - right;
         }
-    }
-
-    @Override
-    public void accept(JEvaluator visitor) {
-        visitor.jEvaluate(this);
     }
 }

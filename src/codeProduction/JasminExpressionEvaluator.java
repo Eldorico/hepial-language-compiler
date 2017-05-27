@@ -8,6 +8,7 @@ import symbol.SymbolTable;
 import symbol.VariableSymbol;
 import abstractTree.expression.AdditionExpression;
 import abstractTree.expression.AndExpression;
+import abstractTree.expression.ArithmeticExpression;
 import abstractTree.expression.BooleanKeyword;
 import abstractTree.expression.CstString;
 import abstractTree.expression.DifferentThanExpression;
@@ -46,8 +47,8 @@ class JasminExpressionEvaluator implements JEvaluator {
      */
     @Override
     public JasminExpression jEvaluate(Expression evaluable) {
-        if(evaluable instanceof AdditionExpression){
-            return jEvaluate((AdditionExpression)evaluable);
+        if(evaluable instanceof ArithmeticExpression){
+            return jEvaluate((ArithmeticExpression)evaluable);
         }else if(evaluable instanceof AndExpression){
             return jEvaluate((AndExpression)evaluable);
         }else if(evaluable instanceof BooleanKeyword){
@@ -56,8 +57,6 @@ class JasminExpressionEvaluator implements JEvaluator {
             return jEvaluate((CstString)evaluable);
         }else if(evaluable instanceof DifferentThanExpression){
             return jEvaluate((DifferentThanExpression)evaluable);
-        }else if(evaluable instanceof DivideExpression){
-            return jEvaluate((DivideExpression)evaluable);
         }else if(evaluable instanceof EqualEqualExpression){
             return jEvaluate((EqualEqualExpression)evaluable);
         }else if(evaluable instanceof ExpressionList){
@@ -76,14 +75,10 @@ class JasminExpressionEvaluator implements JEvaluator {
             return jEvaluate((LesserEqualExpression)evaluable);
         }else if(evaluable instanceof LesserThanExpression){
             return jEvaluate((LesserThanExpression)evaluable);
-        }else if(evaluable instanceof MultiplyExpression){
-            return jEvaluate((MultiplyExpression)evaluable);
         }else if(evaluable instanceof NotExpression){
             return jEvaluate((NotExpression)evaluable);
         }else if(evaluable instanceof OrExpression){
             return jEvaluate((OrExpression)evaluable);
-        }else if(evaluable instanceof SubstractionExpression){
-            return jEvaluate((SubstractionExpression)evaluable);
         }else{
             System.out.println("JasminExpressionEvaluator: expression non evaluable: "+evaluable.getClass().getName());
             System.exit(-3);
@@ -92,14 +87,40 @@ class JasminExpressionEvaluator implements JEvaluator {
     }
 
     /**
-     *@description: evaluates an Addition Expression
+     *@description: evaluates an Arithmetic Expression
      */
     @Override
-    public JasminExpression jEvaluate(AdditionExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        return toReturn;
+    public JasminExpression jEvaluate(ArithmeticExpression evaluable) {
+        // evaluate the left and right operand
+        JasminExpression left  = jEvaluate(evaluable.getLeftOperand());
+        JasminExpression right = jEvaluate(evaluable.getRightOperand());
 
+        // merge the left and right operations
+        JasminExpression toReturn = new JasminExpression();
+        toReturn.jtext.addText(left.jtext.getJCodeAsString());
+        toReturn.jtext.addText(right.jtext.getJCodeAsString());
+        toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded;
+        toReturn.maxLocalsSizeNeeded += left.maxLocalsSizeNeeded + right.maxLocalsSizeNeeded;
+
+        // debug
+        toReturn.jtext.addIndentedLine("; left needed "+left.maxStackSizeNeeded+" for "+evaluable.getLeftOperand().toString());
+        toReturn.jtext.addIndentedLine("; right needed "+right.maxStackSizeNeeded+" for "+evaluable.getRightOperand().toString());
+
+        // do the math
+        if(evaluable instanceof AdditionExpression){
+            toReturn.jtext.addIndentedLine("iadd");
+        }else if(evaluable instanceof SubstractionExpression){
+            toReturn.jtext.addIndentedLine("isub");
+        }else if(evaluable instanceof MultiplyExpression){
+            toReturn.jtext.addIndentedLine("imul");
+        }else if(evaluable instanceof DivideExpression){
+            toReturn.jtext.addIndentedLine("idiv");
+        }
+
+        // update the stack size needed
+        toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, 2);
+
+        return toReturn;
     }
 
     /**
@@ -129,17 +150,6 @@ class JasminExpressionEvaluator implements JEvaluator {
      */
     @Override
     public JasminExpression jEvaluate(CstString evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-    /**
-     *@description: evaluates an Divide Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(DivideExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
         toReturn.jtext.addIndentedLine("TODO!");
         return toReturn;
@@ -294,16 +304,6 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     }
 
-    /**
-     *@description: evaluates an Multiply Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(MultiplyExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
 
     /**
      *@description: evaluates an Not Expression
@@ -327,15 +327,7 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     }
 
-    /**
-     *@description: evaluates an Substraction Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(SubstractionExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        return toReturn;
-    }
+
 
 
 

@@ -1,6 +1,5 @@
 package abstractTree.expression;
 
-import codeProduction.JEvaluator;
 
 public class DivideExpression extends ArithmeticExpression {
 
@@ -22,10 +21,5 @@ public class DivideExpression extends ArithmeticExpression {
         }else{
             return left / right;
         }
-    }
-
-    @Override
-    public void accept(JEvaluator visitor) {
-        visitor.jEvaluate(this);
     }
 }
