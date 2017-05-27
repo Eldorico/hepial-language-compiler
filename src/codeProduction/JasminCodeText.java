@@ -19,6 +19,10 @@ class JasminCodeText {
         jInstructions = jInstructions+txtToAdd;
     }
 
+    protected void addIndentedText(String txtToAdd){
+        jInstructions = jInstructions+indent()+txtToAdd;
+    }
+
     String getJCodeAsString(){
         return jInstructions;
     }

@@ -41,8 +41,10 @@ class ConstructorProducer extends JasminCodeProducer {
     @Override
     String getJCodeAsString() {
         // update the locals size needed with the field hook
-        stackSizeNeeded = Math.max(stackSizeNeeded, blockFields.constructorHook.maxStackSizeNeeded);
-        localsSizeNeeded = Math.max(localsSizeNeeded, blockFields.constructorHook.maxLocalsSizeNeeded);
+        stackSizeNeeded = Math.max(stackSizeNeeded, blockFields.constructorConstantsHook.maxStackSizeNeeded);
+        localsSizeNeeded = Math.max(localsSizeNeeded, blockFields.constructorConstantsHook.maxLocalsSizeNeeded);
+        stackSizeNeeded = Math.max(stackSizeNeeded, blockFields.constructorArraysHook.maxStackSizeNeeded);
+        localsSizeNeeded = Math.max(localsSizeNeeded, blockFields.constructorArraysHook.maxLocalsSizeNeeded);
 
         // open the constructor method
         String linesBefore = "\n; constructor declaration. This = "+blockNameWithCapital+", parent = "+parentNameWithCapital+"\n";
@@ -52,10 +54,12 @@ class ConstructorProducer extends JasminCodeProducer {
         linesBefore += (localsSizeNeeded > 0) ? jtext.indent()+".limit locals "+localsSizeNeeded+"\n" : "";
         jtext.insertBefore(linesBefore);
 
-        // add the field hook
-        jtext.addText(blockFields.constructorHook.getJCodeAsString());
-
-        // close the constructor method
+        // add the field hook (the constants before, because arrays can be defined with constants expressions.
+        jtext.addText(blockFields.constructorConstantsHook.getJCodeAsString());
+        jtext.addText(blockFields.constructorConstantsHook.getJCodeAsString());  // we have to add it twice because it is possible to declare a constant using another constant declared after.
+        jtext.addText(blockFields.constructorArraysHook.getJCodeAsString());                                        // constant y = x +2;
+                                                                                                                    // constant x = 2;
+        // close the constructor method                                                                             // if we only run once, y would be equal to 2, and not 4.
         jtext.addLine("");
         jtext.addIndentedLine("return");
         jtext.addLine(".end method");

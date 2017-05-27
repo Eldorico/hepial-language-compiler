@@ -75,6 +75,9 @@ public class ArraySymbol extends VariableSymbol {
                 ErrorPrinter.getInstance().logError(lowerBound.toString()+" : upperBound of dimension "+i+" could not have been evaluated", declarationLineNumber);
                 errorsDetected = true;
             }
+            if(errorsDetected){
+                return errorsDetected;
+            }
 
             // return error if the lowerBound and UpperBound are the same, or if the lowerBound is greater than upperBound
             int diff = upperBoundValues.get(i) - lowerBoundValues.get(i);
