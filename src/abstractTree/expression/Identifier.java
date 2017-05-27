@@ -1,5 +1,6 @@
 package abstractTree.expression;
 
+import symbol.ArraySymbol;
 import symbol.CstIntBoolSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -52,9 +53,21 @@ public class Identifier extends Expression {
 	        if(identifiersSymbol == null){
 	            ErrorPrinter.getInstance().logError(name+" : expresssion undefined.", declarationLineNumber);
 	            return true;
-	        }else{
-	            return  false;
 	        }
+
+	        boolean errorsDetected = false;
+
+	        // if the symbol associated to dist is
+	        Symbol symbol = SymbolTable.getInstance().getSymbol(name);
+	        if(symbol instanceof ArraySymbol){
+	            if( !(this instanceof TabValueIdentifier) ){
+	                ErrorPrinter.getInstance().logError(this.name+" is an array and should be accessed like it. ", declarationLineNumber);
+	                errorsDetected =  true;
+	            }
+	        }
+
+	        return errorsDetected;
+
 	}
 
 	@Override

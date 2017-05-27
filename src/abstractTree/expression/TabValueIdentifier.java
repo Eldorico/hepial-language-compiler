@@ -15,11 +15,11 @@ import utils.ErrorPrinter;
  * name[indexes] or name[indexes.get(0)][indexes.get(1) etc..
  *
  */
-public class TabValueIndentifier extends Identifier {
+public class TabValueIdentifier extends Identifier {
 
 	ExpressionList indexes;
 
-	public TabValueIndentifier(String value, ExpressionList indexes) {
+	public TabValueIdentifier(String value, ExpressionList indexes) {
 		super(value);
 		this.indexes = indexes;
 	}
@@ -77,5 +77,13 @@ public class TabValueIndentifier extends Identifier {
 	    }
 
 	    return errorsDetected;
+	}
+
+	public int getNbIndexes(){
+	    return indexes.getSize();
+	}
+
+	public Expression getIndex(int i){
+	    return indexes.get(i);
 	}
 }

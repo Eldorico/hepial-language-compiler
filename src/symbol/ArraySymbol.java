@@ -27,6 +27,10 @@ public class ArraySymbol extends VariableSymbol {
 		return strToReturn;
 	}
 
+	public int getDimensionSizeOf(int dimensionNumber){
+	    return upperBoundValues.get(dimensionNumber) - lowerBoundValues.get(dimensionNumber);
+	}
+
     /**
      * @descrpition: check that every [Expression .. Expression] is a Number or an Arithmetic expression.
      *  if errors or incoherences are found, logs the errors and return true
@@ -69,6 +73,16 @@ public class ArraySymbol extends VariableSymbol {
             upperBoundValues.add(i, evaluateIntValue(upperBound));
             if(upperBoundValues.get(i) == null){
                 ErrorPrinter.getInstance().logError(lowerBound.toString()+" : upperBound of dimension "+i+" could not have been evaluated", declarationLineNumber);
+                errorsDetected = true;
+            }
+
+            // return error if the lowerBound and UpperBound are the same, or if the lowerBound is greater than upperBound
+            int diff = upperBoundValues.get(i) - lowerBoundValues.get(i);
+            if(diff == 0){
+                ErrorPrinter.getInstance().logError(lowerBound.toString()+".."+upperBoundValues.get(i)+" : lowerbound and upperbound of dimension "+i+" cant be equals.", declarationLineNumber);
+                errorsDetected = true;
+            }else if(diff < 0){
+                ErrorPrinter.getInstance().logError(lowerBound.toString()+".."+upperBoundValues.get(i)+" : dimension "+i+": lowerbound must be smaller than upperbound", declarationLineNumber);
                 errorsDetected = true;
             }
         }

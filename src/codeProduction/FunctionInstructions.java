@@ -9,6 +9,7 @@ import symbol.VariableSymbol;
 import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
 import abstractTree.expression.Identifier;
+import abstractTree.expression.TabValueIdentifier;
 import abstractTree.instruction.AffectationInstruction;
 import abstractTree.instruction.WriteInstruction;
 
@@ -101,14 +102,35 @@ class FunctionInstructions extends JasminCodeProducer{
             stackSizeNeededForInstruction = Math.max(stackSizeNeededForInstruction, 1);
         }
 
+        // if we affect an array, the array must come first
+        if(instruction.getDestination() instanceof TabValueIdentifier){
+            // get the array
+            TabValueIdentifier tabIdentifier = (TabValueIdentifier) instruction.getDestination();
+            jtext.addIndentedLine("getfield "+destinationBlockName+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+
+            // get the values of the indexes
+            for(int i=0; i<tabIdentifier.getNbIndexes(); i++){
+                JasminExpression indexJExpression = JasminExpressionEvaluator.getInstance().jEvaluate(tabIdentifier.getIndex(i));
+                jtext.addText(indexJExpression.getJCodeAsString());
+                stackSizeNeededForInstruction = Math.max(stackSizeNeededForInstruction, 1+indexJExpression.maxStackSizeNeeded);
+                localsSizeNeededForInstruction = Math.max(localsSizeNeededForInstruction, 1+indexJExpression.maxLocalsSizeNeeded);
+            }
+
+        }
+
         // get the jtext representing the computation of the source expression and add it to the instructions
         JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getSource());
-        jtext.addText(jexpression.jtext.getJCodeAsString());
+        jtext.addText(jexpression.getJCodeAsString());
         stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
         localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
 
         // affect to the destination field
-        jtext.addIndentedLine("putfield "+destinationBlockName+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+        if(instruction.getDestination() instanceof TabValueIdentifier){
+            jtext.addIndentedLine("iastore");
+        }else{
+            jtext.addIndentedLine("putfield "+destinationBlockName+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+        }
+
 
         // update the stack and locals size needed
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
@@ -128,7 +150,7 @@ class FunctionInstructions extends JasminCodeProducer{
 
         // get the jasmin representation of the expression to write
         JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getOutputExpression());
-        jtext.addText(jexpression.jtext.getJCodeAsString());
+        jtext.addText(jexpression.getJCodeAsString());
         stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
         localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
 

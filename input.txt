@@ -1,13 +1,11 @@
 programme hepial
 
-entier e;
+entier [2..8] e;
+constante entier z = 123;
 
 debutprg
-	e = 321;
-	ecrire e;
-	e = 123;
-	ecrire e;
-	ecrire 123456;
+	e[0] = 321;
+	ecrire (e[0] + z) * 2;
 finprg
 
 /*

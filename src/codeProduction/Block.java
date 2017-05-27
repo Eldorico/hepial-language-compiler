@@ -22,7 +22,7 @@ class Block {
     private boolean isStaticMainBlock;
 
     FunctionInstructions instructions;
-    Fields localFields = new Fields();  // represents the variables that we declare in a block declaration.
+    Fields localFields;  // represents the variables that we declare in a block declaration.
     ConstructorProducer constructor;
 
     Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock, Type returnType) {
@@ -31,6 +31,7 @@ class Block {
         this.outputFolderPath = outputFolderPath;
         this.isStaticMainBlock = isStaticMainBlock;
         instructions = isStaticMainBlock ? new StaticMainInstructions() : new FunctionInstructions(parameters, returnType);
+        this.localFields = new Fields(blockName);
         constructor = new ConstructorProducer(this.blockName, parentName, instructions, localFields);
     }
 
@@ -38,13 +39,19 @@ class Block {
      * @description: returns a type like:
      * I
      * [I
+     * [[I
      * @param variableSymbol
      * @param type
      * @return
      */
     static String getJTypeAsStr(VariableSymbol variableSymbol, Type type){
         if(variableSymbol instanceof ArraySymbol){
-            return new String("["+Type.jTypeObject(type));
+            ArraySymbol arraySymbol = (ArraySymbol) variableSymbol;
+            String bracketChar = "";
+            for(int i=0; i<arraySymbol.getNbDimensions(); i++){
+                bracketChar += "[";
+            }
+            return new String(bracketChar+Type.jTypeObject(type));
         }else{
             return new String(Type.jTypeObject(type));
         }

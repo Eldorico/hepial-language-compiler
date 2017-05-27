@@ -5,10 +5,9 @@ package codeProduction;
  * It contains the jtextCode (the jasmin code), the max stack size, and max locals size
  * needed to produce the jasmin code.
  */
-class JasminExpression {
+class JasminExpression extends JasminCodeText{
 
     int maxStackSizeNeeded = 0;
     int maxLocalsSizeNeeded = 0;
-    JasminCodeText jtext = new JasminCodeText();
 
 }

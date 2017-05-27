@@ -27,6 +27,7 @@ import abstractTree.expression.MultiplyExpression;
 import abstractTree.expression.NotExpression;
 import abstractTree.expression.OrExpression;
 import abstractTree.expression.SubstractionExpression;
+import abstractTree.expression.TabValueIdentifier;
 
 
 /**
@@ -97,24 +98,24 @@ class JasminExpressionEvaluator implements JEvaluator {
 
         // merge the left and right operations
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addText(left.jtext.getJCodeAsString());
-        toReturn.jtext.addText(right.jtext.getJCodeAsString());
+        toReturn.addText(left.getJCodeAsString());
+        toReturn.addText(right.getJCodeAsString());
         toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded;
         toReturn.maxLocalsSizeNeeded += left.maxLocalsSizeNeeded + right.maxLocalsSizeNeeded;
 
         // debug
-        toReturn.jtext.addIndentedLine("; left needed "+left.maxStackSizeNeeded+" for "+evaluable.getLeftOperand().toString());
-        toReturn.jtext.addIndentedLine("; right needed "+right.maxStackSizeNeeded+" for "+evaluable.getRightOperand().toString());
+        toReturn.addIndentedLine("; left needed "+left.maxStackSizeNeeded+" for "+evaluable.getLeftOperand().toString());
+        toReturn.addIndentedLine("; right needed "+right.maxStackSizeNeeded+" for "+evaluable.getRightOperand().toString());
 
         // do the math
         if(evaluable instanceof AdditionExpression){
-            toReturn.jtext.addIndentedLine("iadd");
+            toReturn.addIndentedLine("iadd");
         }else if(evaluable instanceof SubstractionExpression){
-            toReturn.jtext.addIndentedLine("isub");
+            toReturn.addIndentedLine("isub");
         }else if(evaluable instanceof MultiplyExpression){
-            toReturn.jtext.addIndentedLine("imul");
+            toReturn.addIndentedLine("imul");
         }else if(evaluable instanceof DivideExpression){
-            toReturn.jtext.addIndentedLine("idiv");
+            toReturn.addIndentedLine("idiv");
         }
 
         // update the stack size needed
@@ -129,7 +130,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(AndExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -140,7 +141,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(BooleanKeyword evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -151,7 +152,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(CstString evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -162,7 +163,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(DifferentThanExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -173,7 +174,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(EqualEqualExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -195,7 +196,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(FctCallExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -206,7 +207,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(GreaterEqualExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -217,7 +218,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(GreaterThanExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -233,34 +234,43 @@ class JasminExpressionEvaluator implements JEvaluator {
         //String identifierOwnerBlockName = identifierDefinedInCurrentBlock ? CodeProducer.capitaliseFirstChar(identifierSymbol.)
         String identifierOwnerBlockName = CodeProducer.capitaliseFirstChar(identifierSymbol.getBlockName());
         String currentBlockNameWithCapitals = CodeProducer.capitaliseFirstChar(SymbolTable.getInstance().getCurrentBlockLocation());
-        String identifierJTypeAsStr = Block.getJTypeAsStr((VariableSymbol)identifierSymbol, ((IntBoolSymbol) identifierSymbol).type());
+        String identifierJTypeAsStr = Block.getJTypeAsStr((VariableSymbol)identifierSymbol, ((VariableSymbol) identifierSymbol).type());
 
-        // if identifier represents an IntBoolSymbol
-        if(identifierSymbol instanceof IntBoolSymbol){
+        // if identifier represents an IntBoolSymbol or an array
+        if(identifierSymbol instanceof IntBoolSymbol || identifierSymbol instanceof ArraySymbol){
             // if identifier is defined in the current block, get the field from the current block
             if(identifierDefinedInCurrentBlock){
-                toReturn.jtext.addIndentedLine("aload 0");
-                toReturn.jtext.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
+                toReturn.addIndentedLine("aload 0");
+                toReturn.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
                 toReturn.maxStackSizeNeeded += 2;
-                return toReturn;
 
             // else, get the field from the parents block
             }else{
-                toReturn.jtext.addIndentedLine("aload 0");
-                toReturn.jtext.addIndentedLine("getfield "+currentBlockNameWithCapitals+"/"+CodeProducer.lowerCaseFirstChar(identifierSymbol.getBlockName())+" L"+SymbolTable.getInstance().getMainBlockName()+";");
-                toReturn.jtext.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
+                toReturn.addIndentedLine("aload 0");
+                toReturn.addIndentedLine("getfield "+currentBlockNameWithCapitals+"/"+CodeProducer.lowerCaseFirstChar(identifierSymbol.getBlockName())+" L"+SymbolTable.getInstance().getMainBlockName()+";");
+                toReturn.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
                 toReturn.maxStackSizeNeeded += 3;
-                return toReturn;
             }
 
-        // if identifier represents an ArraySymbol
-        }else if(identifierSymbol instanceof ArraySymbol){
-            toReturn.jtext.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier ArraySymbol");
+            //if identifier represents an Array:
+            if(evaluable instanceof TabValueIdentifier){
+                // load the dimensions
+                TabValueIdentifier tabValueIdentifier = (TabValueIdentifier) evaluable;
+                for(int i=0; i<tabValueIdentifier.getNbIndexes(); i++){
+                    JasminExpression indexJExpression = JasminExpressionEvaluator.getInstance().jEvaluate(tabValueIdentifier.getIndex(i));
+                    toReturn.addText(indexJExpression.getJCodeAsString());
+                    toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, 1+indexJExpression.maxStackSizeNeeded);
+                    toReturn.maxLocalsSizeNeeded = Math.max(toReturn.maxLocalsSizeNeeded, 1+indexJExpression.maxLocalsSizeNeeded);
+                }
+                // load the array value
+                toReturn.addIndentedLine("iaload");
+            }
+
             return toReturn;
 
         // if identifier represents a FunctionSymbol
         }else if(identifierSymbol instanceof FunctionSymbol){
-            toReturn.jtext.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier FunctionSymbol");
+            toReturn.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier FunctionSymbol");
             return toReturn;
 
         // hope we dont arrive here...
@@ -277,7 +287,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(IntNumber evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("ldc "+evaluable.getValue());
+        toReturn.addIndentedLine("ldc "+evaluable.getValue());
         toReturn.maxStackSizeNeeded = 1;
         return toReturn;
     }
@@ -288,7 +298,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(LesserThanExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -299,7 +309,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(LesserEqualExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -311,7 +321,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(NotExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }
@@ -322,7 +332,7 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(OrExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
+        toReturn.addIndentedLine("TODO!");
         return toReturn;
 
     }

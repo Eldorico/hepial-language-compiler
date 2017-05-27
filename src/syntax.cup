@@ -443,9 +443,9 @@ ACCES      ::= ident:i{:
                   parser.abstractTreeStack.add(new Identifier(i.getKey()));
               :}
               | ident:i LISTE_INDEX {:
-                  // pop the ExpressionListpression from the stack and create a new TabValueIndentifier
+                  // pop the ExpressionListpression from the stack and create a new TabValueIdentifier
                   ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
-                  parser.abstractTreeStack.add(new TabValueIndentifier(i.getKey(), indexes));
+                  parser.abstractTreeStack.add(new TabValueIdentifier(i.getKey(), indexes));
               :}
               ;
 

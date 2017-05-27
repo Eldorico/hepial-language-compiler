@@ -13,6 +13,7 @@ class ConstructorProducer extends JasminCodeProducer {
 
     public ConstructorProducer(String blockName, String parentBlockName, FunctionInstructions blockInstructions, Fields blockFields)  {
         blockNameWithCapital = CodeProducer.capitaliseFirstChar(blockName);
+        this.blockFields = blockFields;
 
         // write the constructor here
 
@@ -39,12 +40,23 @@ class ConstructorProducer extends JasminCodeProducer {
 
     @Override
     String getJCodeAsString() {
+        // update the locals size needed with the field hook
+        stackSizeNeeded = Math.max(stackSizeNeeded, blockFields.constructorHook.maxStackSizeNeeded);
+        localsSizeNeeded = Math.max(localsSizeNeeded, blockFields.constructorHook.maxLocalsSizeNeeded);
+
+        // open the constructor method
         String linesBefore = "\n; constructor declaration. This = "+blockNameWithCapital+", parent = "+parentNameWithCapital+"\n";
         String parentStr = (parentNameWithCapital == null) ? "" : "L"+parentNameWithCapital+";";
         linesBefore += ".method public <init>("+parentStr+")V\n";
         linesBefore += (stackSizeNeeded > 0) ? jtext.indent()+".limit stack "+stackSizeNeeded+"\n" : "";
         linesBefore += (localsSizeNeeded > 0) ? jtext.indent()+".limit locals "+localsSizeNeeded+"\n" : "";
         jtext.insertBefore(linesBefore);
+
+        // add the field hook
+        jtext.addText(blockFields.constructorHook.getJCodeAsString());
+
+        // close the constructor method
+        jtext.addLine("");
         jtext.addIndentedLine("return");
         jtext.addLine(".end method");
         return jtext.getJCodeAsString();
