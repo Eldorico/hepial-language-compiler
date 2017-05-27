@@ -34,6 +34,14 @@ class Block {
         constructor = new ConstructorProducer(this.blockName, parentName, instructions, localFields);
     }
 
+    /**
+     * @description: returns a type like:
+     * I
+     * [I
+     * @param variableSymbol
+     * @param type
+     * @return
+     */
     static String getJTypeAsStr(VariableSymbol variableSymbol, Type type){
         if(variableSymbol instanceof ArraySymbol){
             return new String("["+Type.jTypeObject(type));

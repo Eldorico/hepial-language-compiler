@@ -49,7 +49,7 @@ public class AffectationInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return String.format("Affectation: %s<-%s\n", dst.toString(), src.toString());
+		return String.format("Affectation: %s<-%s", dst.toString(), src.toString());
 	}
 
 	/**

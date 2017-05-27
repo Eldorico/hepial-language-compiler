@@ -8,6 +8,7 @@ import symbol.Type;
 import symbol.VariableSymbol;
 import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
+import abstractTree.expression.Identifier;
 import abstractTree.instruction.AffectationInstruction;
 import abstractTree.instruction.WriteInstruction;
 
@@ -75,21 +76,67 @@ class FunctionInstructions extends JasminCodeProducer{
     }
 
     void addAffectationInstruction(AffectationInstruction instruction){
+        int stackSizeNeededForInstruction = 0;
+        int localsSizeNeededForInstruction = 0;
+        VariableSymbol destinationSymbol =  (VariableSymbol)SymbolTable.getInstance().getSymbol(instruction.getDestination().getName());
+        Identifier destinationIdentifier = instruction.getDestination();
+        String currentBlockName = SymbolTable.getInstance().getCurrentBlockLocation();
+        boolean destinationInParentBlock = (!destinationSymbol.getBlockName().equals(currentBlockName)) ? true : false;
+        String destinationBlockName = destinationInParentBlock ? SymbolTable.getInstance().getMainBlockName() : CodeProducer.capitaliseFirstChar(currentBlockName);
+
         // write comment
         jtext.addLine("");
         jtext.addIndentedLine("; compute "+instruction.toString());
 
-        // load this
-        jtext.addIndentedLine("aload 0");
+        // if the destination is in the parent block, load the parent
+        if(destinationInParentBlock){
+            jtext.addIndentedLine("aload 0");
+            jtext.addIndentedLine("aload 0");
+            jtext.addIndentedLine("getfield "+SymbolTable.getInstance().getMainBlockName()+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+            stackSizeNeededForInstruction = Math.max(stackSizeNeededForInstruction, 2);
 
-        // get the jtext representing the computation of the source expression
+        // else load this
+        }else{
+            jtext.addIndentedLine("aload 0");
+            stackSizeNeededForInstruction = Math.max(stackSizeNeededForInstruction, 1);
+        }
+
+        // get the jtext representing the computation of the source expression and add it to the instructions
         JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getSource());
-        System.out.println(jexpression.jtext.getJCodeAsString());
+        jtext.addText(jexpression.jtext.getJCodeAsString());
+        stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
+        localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
 
+        // affect to the destination field
+        jtext.addIndentedLine("putfield "+destinationBlockName+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+
+        // update the stack and locals size needed
+        updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
 
     void addWriteInstruction(WriteInstruction instruction){
+        int stackSizeNeededForInstruction = 0;
+        int localsSizeNeededForInstruction = 0;
 
+        // write comment
+        jtext.addLine("");
+        jtext.addIndentedLine("; compute "+instruction.toString());
+
+        // load the static print ln
+        jtext.addIndentedLine("getstatic java/lang/System/out Ljava/io/PrintStream;");
+        stackSizeNeededForInstruction += 1;
+
+        // get the jasmin representation of the expression to write
+        JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getOutputExpression());
+        jtext.addText(jexpression.jtext.getJCodeAsString());
+        stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
+        localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
+
+        // invoke the print function
+        jtext.addIndentedLine("invokevirtual java/io/PrintStream/println(I)V");
+
+        // update the stack and locals size needed
+        updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
 
     /**
@@ -107,6 +154,15 @@ class FunctionInstructions extends JasminCodeProducer{
         return signature;
     }
 
+    private void updateLocalsAndStackNeeded(int potentialMaxStackNeeded, int potentialMaxLocalsNeeded){
+        stackSizeNeeded = Math.max(stackSizeNeeded, potentialMaxStackNeeded);
+        localsSizeNeeded = Math.max(localsSizeNeeded, potentialMaxLocalsNeeded);
+    }
+
+    /**
+     * @description:
+     * @return
+     */
     private String getReturnKeyWord(){
         if(returnType == Type.BOOLEAN || returnType == Type.INTEGER){
             return "ireturn";

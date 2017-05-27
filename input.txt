@@ -3,8 +3,11 @@ programme hepial
 entier e;
 
 debutprg
+	e = 321;
+	ecrire e;
 	e = 123;
 	ecrire e;
+	ecrire 123456;
 finprg
 
 /*

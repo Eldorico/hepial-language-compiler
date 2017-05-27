@@ -37,6 +37,8 @@ public class IntNumber extends Expression implements JEvaluable{
         visitor.jEvaluate(this);
     }
 
-
+    public int getValue(){
+        return value;
+    }
 
 }

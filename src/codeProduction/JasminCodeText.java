@@ -15,6 +15,10 @@ class JasminCodeText {
         jInstructions = jInstructions+txtToAdd+"\n";
     }
 
+    protected void addText(String txtToAdd){
+        jInstructions = jInstructions+txtToAdd;
+    }
+
     String getJCodeAsString(){
         return jInstructions;
     }

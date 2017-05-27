@@ -17,14 +17,22 @@ import abstractTree.instruction.WriteInstruction;
 public class CodeProducer {
 
     private String outputFolderName;
-    private static CodeProducer instance = new CodeProducer();
     private BlocInstruction mainInstructions;
+    private String jasminLibPath = "lib/jasmin.jar";
+    private String programStaticFileName;
+
+    // This class is a singleton because i wanted to use it statically
+    private static CodeProducer instance = new CodeProducer();
+    public static CodeProducer getInstance(){
+        return instance;
+    }
 
     /**
      * @description:
      */
     public void produceProgram(String programName, String outputFolderName, BlocInstruction mainInstructions){
         this.mainInstructions = mainInstructions;
+        this.programStaticFileName = capitaliseFirstChar(programName)+".j";
 
         // create outputFolder
         this.outputFolderName = outputFolderName;
@@ -37,17 +45,37 @@ public class CodeProducer {
         staticMainBlock.instructions.addReturnInstruction(null);
         staticMainBlock.produceJasminFile();
 
-        // for each block (functions), produce a new block
+        // produce the static main block .class
+        if(produceJasminToClass(programStaticFileName, outputFolderName, jasminLibPath) != 0){
+            System.exit(-3);
+        }
+
+        // for each block (functions), produce a new jasmin file
         ArrayList<String> blockLists = SymbolTable.getInstance().getBlocNameList();
         String mainBlockName = SymbolTable.getInstance().getMainBlockName();
         for(String blocName : blockLists){
             String parentBlocName = (blocName.equals(mainBlockName)) ? null : mainBlockName;
             produceFunctionBlock(blocName, parentBlocName);
         }
+
+        // for each block generated, compile it with jasmin
+        for(String blocName : blockLists){
+            produceJasminToClass(capitaliseFirstChar(blocName)+".j", outputFolderName, jasminLibPath);
+        }
+
+        // debug
+        System.out.println("\nLaunch compiled program for debugging...");
+        System.out.println("------------------------------------------");
+        executeShellProcess("java -cp "+outputFolderName+" "+capitaliseFirstChar(programName));
+
     }
 
     public static String capitaliseFirstChar(String str){
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+    public static String lowerCaseFirstChar(String str){
+        return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
 
     public static String getTab(){
@@ -58,18 +86,16 @@ public class CodeProducer {
         return outputFolderName;
     }
 
-    public static CodeProducer getInstance(){
-        return instance;
-    }
-
     /**
      * @description:
      * @param blockName
      */
     private void produceFunctionBlock(String blockName, String parentBlockName){
+        boolean blockIsMainBlock = blockName.equals(SymbolTable.getInstance().getMainBlockName()) ? true : false;
+
         // create the block
         Block block;
-        if(blockName.equals(SymbolTable.getInstance().getMainBlockName())){
+        if(blockIsMainBlock){
             block = new Block(blockName, null, new ArrayList<SimpleEntry<String, VariableSymbol>>(), outputFolderName, false, Type.VOID);
         }else{
             FunctionSymbol fSymbol = (FunctionSymbol) SymbolTable.getInstance().getSymbol(blockName);
@@ -97,6 +123,12 @@ public class CodeProducer {
             addInstructionToBlock(block, instruction);
         }
 
+        // add return value if we are in MainBlock
+        if(blockIsMainBlock){
+            block.instructions.addReturnInstruction(null);
+        }
+
+
         // produce block
         block.produceJasminFile();
     }
@@ -107,6 +139,10 @@ public class CodeProducer {
         }else if(instruction instanceof WriteInstruction){
             block.instructions.addWriteInstruction((WriteInstruction) instruction);
         }
+    }
+
+    private static int produceJasminToClass(String fileName, String outputFolderName, String jasminLibPath){
+        return executeShellProcess("java -jar "+jasminLibPath+" -d "+outputFolderName+" "+outputFolderName+"/"+fileName);
     }
 
     /**

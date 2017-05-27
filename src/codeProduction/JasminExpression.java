@@ -7,7 +7,7 @@ package codeProduction;
  */
 class JasminExpression {
 
-    int maxStrackSizeNeeded = 0;
+    int maxStackSizeNeeded = 0;
     int maxLocalsSizeNeeded = 0;
     JasminCodeText jtext = new JasminCodeText();
 

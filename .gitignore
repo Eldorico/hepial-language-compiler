@@ -1,5 +1,6 @@
 bin
 compiledBin
+eclipseClasses
 .classpath
 .project
 src/Asdf.java

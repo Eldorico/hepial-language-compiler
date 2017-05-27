@@ -1,5 +1,11 @@
 package codeProduction;
 
+import symbol.ArraySymbol;
+import symbol.FunctionSymbol;
+import symbol.IntBoolSymbol;
+import symbol.Symbol;
+import symbol.SymbolTable;
+import symbol.VariableSymbol;
 import abstractTree.expression.AdditionExpression;
 import abstractTree.expression.AndExpression;
 import abstractTree.expression.BooleanKeyword;
@@ -212,8 +218,47 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(Identifier evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        return toReturn;
+        Symbol identifierSymbol =  SymbolTable.getInstance().getSymbol(evaluable.getName());
+        boolean identifierDefinedInCurrentBlock = SymbolTable.getInstance().getCurrentBlockLocation().equals(identifierSymbol.getBlockName()) ? true : false;
+        //String identifierOwnerBlockName = identifierDefinedInCurrentBlock ? CodeProducer.capitaliseFirstChar(identifierSymbol.)
+        String identifierOwnerBlockName = CodeProducer.capitaliseFirstChar(identifierSymbol.getBlockName());
+        String currentBlockNameWithCapitals = CodeProducer.capitaliseFirstChar(SymbolTable.getInstance().getCurrentBlockLocation());
+        String identifierJTypeAsStr = Block.getJTypeAsStr((VariableSymbol)identifierSymbol, ((IntBoolSymbol) identifierSymbol).type());
+
+        // if identifier represents an IntBoolSymbol
+        if(identifierSymbol instanceof IntBoolSymbol){
+            // if identifier is defined in the current block, get the field from the current block
+            if(identifierDefinedInCurrentBlock){
+                toReturn.jtext.addIndentedLine("aload 0");
+                toReturn.jtext.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
+                toReturn.maxStackSizeNeeded += 2;
+                return toReturn;
+
+            // else, get the field from the parents block
+            }else{
+                toReturn.jtext.addIndentedLine("aload 0");
+                toReturn.jtext.addIndentedLine("getfield "+currentBlockNameWithCapitals+"/"+CodeProducer.lowerCaseFirstChar(identifierSymbol.getBlockName())+" L"+SymbolTable.getInstance().getMainBlockName()+";");
+                toReturn.jtext.addIndentedLine("getfield "+identifierOwnerBlockName+"/"+evaluable.getName()+" "+identifierJTypeAsStr);
+                toReturn.maxStackSizeNeeded += 3;
+                return toReturn;
+            }
+
+        // if identifier represents an ArraySymbol
+        }else if(identifierSymbol instanceof ArraySymbol){
+            toReturn.jtext.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier ArraySymbol");
+            return toReturn;
+
+        // if identifier represents a FunctionSymbol
+        }else if(identifierSymbol instanceof FunctionSymbol){
+            toReturn.jtext.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier FunctionSymbol");
+            return toReturn;
+
+        // hope we dont arrive here...
+        }else{
+            System.err.println("JasminExpressionEvaluator.jEvaluate(Idenfifier evaluable): symbol could not been identified. Program will exit now.");
+            System.exit(-3);
+            return null; // for compilator
+        }
     }
 
     /**
@@ -222,8 +267,8 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(IntNumber evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.jtext.addIndentedLine("TODO!");
-        toReturn.jtext.addIndentedLine("Wesh!");
+        toReturn.jtext.addIndentedLine("ldc "+evaluable.getValue());
+        toReturn.maxStackSizeNeeded = 1;
         return toReturn;
     }
 

@@ -19,4 +19,8 @@ public abstract class Symbol {
 	}
 
 	abstract public boolean semanticErrorsDetected();
+
+	public String getBlockName(){
+	    return blockName;
+	}
 }
