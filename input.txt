@@ -2,11 +2,14 @@ programme hepial
 
 entier [2..8] e;
 constante entier z = 123;
+entier y;
 
 debutprg
 	e[0] = 321;
 	ecrire (e[0] + z) * 2;
 	ecrire "Wesh!";
+	lire y;
+	ecrire y+1;
 finprg
 
 /*

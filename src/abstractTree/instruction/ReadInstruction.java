@@ -16,4 +16,12 @@ public class ReadInstruction extends Instruction {
 		return String.format("Read: destination = %s", dst.toString());
 	}
 
+	public Identifier getDestination(){
+	    return this.dst;
+	}
+
+	@Override
+    public boolean semanticErrorsDetected(){
+	    return this.dst.semanticErrorsDetected(declarationLineNumber);
+	};
 }

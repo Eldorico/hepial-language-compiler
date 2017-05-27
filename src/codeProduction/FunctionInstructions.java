@@ -12,6 +12,7 @@ import abstractTree.expression.Identifier;
 import abstractTree.expression.TabValueIdentifier;
 import abstractTree.instruction.AffectationInstruction;
 import abstractTree.instruction.Instruction;
+import abstractTree.instruction.ReadInstruction;
 import abstractTree.instruction.WriteInstruction;
 
 
@@ -48,9 +49,11 @@ class FunctionInstructions extends JasminCodeProducer{
      */
     void addInstruction(Instruction instruction){
         if(instruction instanceof AffectationInstruction){
-            addAffectationInstruction((AffectationInstruction) instruction);
+            addAffectationInstruction((AffectationInstruction) instruction, false);
         }else if(instruction instanceof WriteInstruction){
             addWriteInstruction((WriteInstruction) instruction);
+        }else if(instruction instanceof ReadInstruction){
+            addReadInstruction((ReadInstruction) instruction);
         }
     }
 
@@ -89,7 +92,7 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addIndentedLine(getReturnKeyWord());
     }
 
-    protected void addAffectationInstruction(AffectationInstruction instruction){
+    protected void addAffectationInstruction(AffectationInstruction instruction, boolean sourceIsReadInstruction){
         int stackSizeNeededForInstruction = 0;
         int localsSizeNeededForInstruction = 0;
         VariableSymbol destinationSymbol =  (VariableSymbol)SymbolTable.getInstance().getSymbol(instruction.getDestination().getName());
@@ -100,7 +103,11 @@ class FunctionInstructions extends JasminCodeProducer{
 
         // write comment
         jtext.addLine("");
-        jtext.addIndentedLine("; compute "+instruction.toString());
+        if(sourceIsReadInstruction){
+            jtext.addIndentedLine("; compute read <- "+instruction.getDestination().toString());
+        }else{
+            jtext.addIndentedLine("; compute "+instruction.toString());
+        }
 
         // if the destination is in the parent block, load the parent
         if(destinationInParentBlock){
@@ -132,10 +139,19 @@ class FunctionInstructions extends JasminCodeProducer{
         }
 
         // get the jtext representing the computation of the source expression and add it to the instructions
-        JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getSource());
-        jtext.addText(jexpression.getJCodeAsString());
-        stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
-        localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
+        if(sourceIsReadInstruction){
+            jtext.addIndentedLine("new java/util/Scanner");
+            jtext.addIndentedLine("dup");
+            jtext.addIndentedLine("getstatic java/lang/System/in Ljava/io/InputStream;");
+            jtext.addIndentedLine("invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V");
+            jtext.addIndentedLine("invokevirtual java/util/Scanner/nextInt()I");
+            stackSizeNeededForInstruction += 5;
+        }else{
+            JasminExpression jexpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getSource());
+            jtext.addText(jexpression.getJCodeAsString());
+            stackSizeNeededForInstruction += jexpression.maxStackSizeNeeded;
+            localsSizeNeededForInstruction += jexpression.maxLocalsSizeNeeded;
+        }
 
         // affect to the destination field
         if(instruction.getDestination() instanceof TabValueIdentifier){
@@ -178,6 +194,11 @@ class FunctionInstructions extends JasminCodeProducer{
 
         // update the stack and locals size needed
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
+    }
+
+    protected void addReadInstruction(ReadInstruction instruction){
+        AffectationInstruction instr = new AffectationInstruction(instruction.getDestination(), null, instruction.getDeclarationLineNumber());
+        addAffectationInstruction(instr, true);
     }
 
     /**
