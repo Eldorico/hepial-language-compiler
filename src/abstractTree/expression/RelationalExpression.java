@@ -1,6 +1,7 @@
 package abstractTree.expression;
 
 import symbol.Type;
+import codeProduction.JEvaluator;
 
 /**
  * @description:
@@ -29,4 +30,9 @@ public abstract class RelationalExpression extends BinaryExpression {
     public Type getType(){
 	    return Type.BOOLEAN;
 	}
+
+    @Override
+    public void accept(JEvaluator visitor) {
+        visitor.jEvaluate(this);
+    }
 }

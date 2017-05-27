@@ -26,6 +26,8 @@ import abstractTree.expression.LesserThanExpression;
 import abstractTree.expression.MultiplyExpression;
 import abstractTree.expression.NotExpression;
 import abstractTree.expression.OrExpression;
+import abstractTree.expression.RelationalBooleanExpression;
+import abstractTree.expression.RelationalExpression;
 import abstractTree.expression.SubstractionExpression;
 import abstractTree.expression.TabValueIdentifier;
 
@@ -37,6 +39,8 @@ import abstractTree.expression.TabValueIdentifier;
  * jasmin code.
  */
 class JasminExpressionEvaluator implements JEvaluator {
+
+    //int nbLocalsUsed = 1; // we have to start to 2 to leave some place for the this, and parent
 
     private static JasminExpressionEvaluator instance = new JasminExpressionEvaluator();
     public static JasminExpressionEvaluator getInstance(){
@@ -50,36 +54,24 @@ class JasminExpressionEvaluator implements JEvaluator {
     public JasminExpression jEvaluate(Expression evaluable) {
         if(evaluable instanceof ArithmeticExpression){
             return jEvaluate((ArithmeticExpression)evaluable);
-        }else if(evaluable instanceof AndExpression){
-            return jEvaluate((AndExpression)evaluable);
+        }else if(evaluable instanceof RelationalBooleanExpression){
+            return jEvaluate((RelationalBooleanExpression)evaluable);
+        }else if(evaluable instanceof RelationalExpression){
+            return jEvaluate((RelationalExpression)evaluable);
         }else if(evaluable instanceof BooleanKeyword){
             return jEvaluate((BooleanKeyword)evaluable);
         }else if(evaluable instanceof CstString){
             return jEvaluate((CstString)evaluable);
-        }else if(evaluable instanceof DifferentThanExpression){
-            return jEvaluate((DifferentThanExpression)evaluable);
-        }else if(evaluable instanceof EqualEqualExpression){
-            return jEvaluate((EqualEqualExpression)evaluable);
         }else if(evaluable instanceof ExpressionList){
             return jEvaluate((ExpressionList)evaluable);
         }else if(evaluable instanceof FctCallExpression){
             return jEvaluate((FctCallExpression)evaluable);
-        }else if(evaluable instanceof GreaterEqualExpression){
-            return jEvaluate((GreaterEqualExpression)evaluable);
-        }else if(evaluable instanceof GreaterThanExpression){
-            return jEvaluate((GreaterThanExpression)evaluable);
         }else if(evaluable instanceof Identifier){
             return jEvaluate((Identifier)evaluable);
         }else if(evaluable instanceof IntNumber){
             return jEvaluate((IntNumber)evaluable);
-        }else if(evaluable instanceof LesserEqualExpression){
-            return jEvaluate((LesserEqualExpression)evaluable);
-        }else if(evaluable instanceof LesserThanExpression){
-            return jEvaluate((LesserThanExpression)evaluable);
         }else if(evaluable instanceof NotExpression){
             return jEvaluate((NotExpression)evaluable);
-        }else if(evaluable instanceof OrExpression){
-            return jEvaluate((OrExpression)evaluable);
         }else{
             System.out.println("JasminExpressionEvaluator: expression non evaluable: "+evaluable.getClass().getName());
             System.exit(-3);
@@ -89,6 +81,7 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     /**
      *@description: evaluates an Arithmetic Expression
+     *It puts the result on the operation on the stack.
      */
     @Override
     public JasminExpression jEvaluate(ArithmeticExpression evaluable) {
@@ -100,7 +93,7 @@ class JasminExpressionEvaluator implements JEvaluator {
         JasminExpression toReturn = new JasminExpression();
         toReturn.addText(left.getJCodeAsString());
         toReturn.addText(right.getJCodeAsString());
-        toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded;
+        toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded +1;
         toReturn.maxLocalsSizeNeeded += left.maxLocalsSizeNeeded + right.maxLocalsSizeNeeded;
 
         // do the math
@@ -121,14 +114,132 @@ class JasminExpressionEvaluator implements JEvaluator {
     }
 
     /**
-     *@description: evaluates an And Expression
+     *@description: evaluates an Relational Expression.
+     *It puts a positive value on the stack if the result if true.
+     *(puts a 0 or negative on the stack if the result is false).
      */
     @Override
-    public JasminExpression jEvaluate(AndExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
+    public JasminExpression jEvaluate(RelationalExpression evaluable) {
+        // evaluate the left and right operand
+        JasminExpression left  = jEvaluate(evaluable.getLeftOperand());
+        JasminExpression right = jEvaluate(evaluable.getRightOperand());
 
+        // merge the left and right operations, adding a zero between. (we will do the comparisons with long variables, so 2 stacks of int)
+        JasminExpression toReturn = new JasminExpression();
+        toReturn.addText(left.getJCodeAsString());
+        toReturn.addIndentedLine("i2l");
+        toReturn.addText(right.getJCodeAsString());
+        toReturn.addIndentedLine("i2l");
+        toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded +2;
+        toReturn.maxLocalsSizeNeeded += left.maxLocalsSizeNeeded + right.maxLocalsSizeNeeded;
+
+        // add the relational element
+        if(evaluable instanceof EqualEqualExpression){
+            toReturn.addIndentedLine("lcmp ");
+            toReturn.addIndentedLine("dup ");
+            toReturn.addIndentedLine("imul ");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("ixor");
+        }else if(evaluable instanceof DifferentThanExpression){
+            toReturn.addIndentedLine("lcmp ");
+            toReturn.addIndentedLine("dup ");
+            toReturn.addIndentedLine("imul ");
+        }else if(evaluable instanceof LesserThanExpression){
+            toReturn.addIndentedLine("lcmp ");
+            toReturn.addIndentedLine("ineg ");
+        }else if(evaluable instanceof LesserEqualExpression){
+            toReturn.addIndentedLine("lcmp");
+            toReturn.addIndentedLine("ineg");
+            toReturn.addIndentedLine("ldc 2");
+            toReturn.addIndentedLine("imul");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("iadd");
+        }else if(evaluable instanceof GreaterThanExpression){
+            toReturn.addIndentedLine("lcmp");
+        }else if(evaluable instanceof GreaterEqualExpression){
+            toReturn.addIndentedLine("lcmp ");
+            toReturn.addIndentedLine("ldc 2");
+            toReturn.addIndentedLine("imul");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("iadd");
+        }
+        return toReturn;
+    }
+
+    @Override
+    public JasminExpression jEvaluate(RelationalBooleanExpression evaluable){
+        JasminExpression toReturn = new JasminExpression();
+
+
+        if(evaluable instanceof AndExpression){
+            // compute the left assignment.
+            JasminExpression jleft = jEvaluate(evaluable.getLeftOperand());
+            toReturn.maxLocalsSizeNeeded = Math.max(toReturn.maxLocalsSizeNeeded, jleft.maxLocalsSizeNeeded);
+            toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, jleft.maxStackSizeNeeded);
+            toReturn.addText(jleft.getJCodeAsString());
+            // on the stack, we should have a negative, positive, or 0 value. convert it to -1, 0, 1
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("ldc 0");
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("lcmp");
+
+            // compute the right assignment.
+            JasminExpression jright = jEvaluate(evaluable.getRightOperand());
+            toReturn.maxLocalsSizeNeeded += jright.maxLocalsSizeNeeded;
+            toReturn.maxStackSizeNeeded += jright.maxStackSizeNeeded;
+            toReturn.addText(jright.getJCodeAsString());
+
+            // on the stack, we should have two negative, positive, or 0 value. Convert the first it to -1, 0, 1
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("ldc 0");
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("lcmp");
+
+            // here, we have two int of values 1, 0, or -1
+            toReturn.addIndentedLine("iadd");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("isub");
+        }else if(evaluable instanceof OrExpression){
+            // compute the left assignment.
+            JasminExpression jleft = jEvaluate(evaluable.getLeftOperand());
+            toReturn.maxLocalsSizeNeeded = Math.max(toReturn.maxLocalsSizeNeeded, jleft.maxLocalsSizeNeeded);
+            toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, jleft.maxStackSizeNeeded);
+            toReturn.addText(jleft.getJCodeAsString());
+            // on the stack, we should have a negative, positive, or 0 value. convert it to -1, 0, 1
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("ldc 0");
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("lcmp");
+
+            // multiply by 2, and add 1
+            toReturn.addIndentedLine("ldc 2");
+            toReturn.addIndentedLine("imul");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("iadd");
+
+            // compute the right assignment.
+            JasminExpression jright = jEvaluate(evaluable.getRightOperand());
+            toReturn.maxLocalsSizeNeeded += jright.maxLocalsSizeNeeded;
+            toReturn.maxStackSizeNeeded += jright.maxStackSizeNeeded;
+            toReturn.addText(jright.getJCodeAsString());
+
+            // on the stack, we should have two negative, positive, or 0 value. Convert the first it to -1, 0, 1
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("ldc 0");
+            toReturn.addIndentedLine("i2l");
+            toReturn.addIndentedLine("lcmp");
+
+             // multiply by 2, and add 1
+            toReturn.addIndentedLine("ldc 2");
+            toReturn.addIndentedLine("imul");
+            toReturn.addIndentedLine("ldc 1");
+            toReturn.addIndentedLine("iadd");
+
+            // add the two numbers
+            toReturn.addIndentedLine("iadd");
+        }
+
+        return toReturn;
     }
 
     /**
@@ -144,6 +255,7 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     /**
      *@description: evaluates an Cst String Expression
+     *It puts the result on the stack.
      */
     @Override
     public JasminExpression jEvaluate(CstString evaluable) {
@@ -155,29 +267,8 @@ class JasminExpressionEvaluator implements JEvaluator {
     }
 
     /**
-     *@description: evaluates an Different than Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(DifferentThanExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-    /**
-     *@description: evaluates an EqualEqual Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(EqualEqualExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-    /**
      *@description: this method should not be used
+     *It will exit the program and show an error
      */
     @Override
     public JasminExpression jEvaluate(ExpressionList evaluable) {
@@ -198,30 +289,10 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     }
 
-    /**
-     *@description: evaluates an Greather Equal Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(GreaterEqualExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-    /**
-     *@description: evaluates an Greather Than Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(GreaterThanExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
 
     /**
      *@description: evaluates an Identifier Expression
+     *It puts the value affected to the identifier on the stack.
      */
     @Override
     public JasminExpression jEvaluate(Identifier evaluable) {
@@ -279,6 +350,7 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     /**
      *@description: evaluates an Int number Expression
+     *It puts the value on the stack
      */
     @Override
     public JasminExpression jEvaluate(IntNumber evaluable) {
@@ -287,29 +359,6 @@ class JasminExpressionEvaluator implements JEvaluator {
         toReturn.maxStackSizeNeeded = 1;
         return toReturn;
     }
-
-    /**
-     *@description: evaluates an Lesser than Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(LesserThanExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-    /**
-     *@description: evaluates an Lesser Equal Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(LesserEqualExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
 
     /**
      *@description: evaluates an Not Expression
@@ -321,19 +370,6 @@ class JasminExpressionEvaluator implements JEvaluator {
         return toReturn;
 
     }
-
-    /**
-     *@description: evaluates an Or Expression
-     */
-    @Override
-    public JasminExpression jEvaluate(OrExpression evaluable) {
-        JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
-
-    }
-
-
 
 
 

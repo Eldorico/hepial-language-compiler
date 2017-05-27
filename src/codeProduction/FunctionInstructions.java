@@ -195,8 +195,6 @@ class FunctionInstructions extends JasminCodeProducer{
             jtext.addIndentedLine("invokevirtual java/io/PrintStream/println(I)V");
         }
 
-
-
         // update the stack and locals size needed
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
@@ -219,13 +217,17 @@ class FunctionInstructions extends JasminCodeProducer{
         // loads the condition representation and add the label to jump if
         JasminExpression jcondition = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getCondition());
         jtext.addText(jcondition.getJCodeAsString());
-        jtext.addText("Then"+labelsSuffix);
+        stackSizeNeededForInstruction += jcondition.maxStackSizeNeeded;
+        localsSizeNeededForInstruction += jcondition.maxLocalsSizeNeeded;
+
+        // we should have a positive value on the stack if the condition is true. jump to 'Then' if we have a positive value.
+        jtext.addIndentedLine("ifgt Then"+labelsSuffix);
 
         // produce the 'else' part and add jump to endif label
         for(Instruction elseInstruction: instruction.getElseBlockInstructions()){
             addInstruction(elseInstruction);
         }
-        jtext.addIndentedLine("goto endif"+labelsSuffix);
+        jtext.addIndentedLine("goto Endif"+labelsSuffix);
 
         // produce the 'then' part
         jtext.addText("Then"+labelsSuffix+":");
@@ -234,10 +236,9 @@ class FunctionInstructions extends JasminCodeProducer{
         }
 
         // add the endif label
-        jtext.addText("Endif"+labelsSuffix+":");
+        jtext.addLine("Endif"+labelsSuffix+":");
 
         // end routine...
-        nbThenLabelsUsed --;
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
 

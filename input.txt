@@ -1,20 +1,31 @@
 programme hepial
 
-entier y;
+constante entier y = 6;
+constante entier x = 8;
 
 debutprg
+ecrire y;
+ecrire x;		
 
-si 5 > 0 alors
-	ecrire "y plus grand que zero";
-sinon 
-	ecrire "y plus petit que zero";
+si y < 7 ou x < 7 alors
+	ecrire "y < 7 ou x < 7";
+sinon
+	ecrire "pas ok!"; 
 finsi
 
 finprg
 
 /*
   
-
+si y == (10 * 2) alors
+	ecrire "y == 20";
+sinon 
+  	si 5 > y alors
+		ecrire "y est plus petit que 5";
+	sinon
+		ecrire "y est plus petit que 10";
+	finsi
+finsi
 
 
 
