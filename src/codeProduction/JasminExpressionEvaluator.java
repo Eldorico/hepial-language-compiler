@@ -103,10 +103,6 @@ class JasminExpressionEvaluator implements JEvaluator {
         toReturn.maxStackSizeNeeded += left.maxStackSizeNeeded + right.maxStackSizeNeeded;
         toReturn.maxLocalsSizeNeeded += left.maxLocalsSizeNeeded + right.maxLocalsSizeNeeded;
 
-        // debug
-        toReturn.addIndentedLine("; left needed "+left.maxStackSizeNeeded+" for "+evaluable.getLeftOperand().toString());
-        toReturn.addIndentedLine("; right needed "+right.maxStackSizeNeeded+" for "+evaluable.getRightOperand().toString());
-
         // do the math
         if(evaluable instanceof AdditionExpression){
             toReturn.addIndentedLine("iadd");
@@ -232,7 +228,6 @@ class JasminExpressionEvaluator implements JEvaluator {
         JasminExpression toReturn = new JasminExpression();
         Symbol identifierSymbol =  SymbolTable.getInstance().getSymbol(evaluable.getName());
         boolean identifierDefinedInCurrentBlock = SymbolTable.getInstance().getCurrentBlockLocation().equals(identifierSymbol.getBlockName()) ? true : false;
-        //String identifierOwnerBlockName = identifierDefinedInCurrentBlock ? CodeProducer.capitaliseFirstChar(identifierSymbol.)
         String identifierOwnerBlockName = CodeProducer.capitaliseFirstChar(identifierSymbol.getBlockName());
         String currentBlockNameWithCapitals = CodeProducer.capitaliseFirstChar(SymbolTable.getInstance().getCurrentBlockLocation());
         String identifierJTypeAsStr = Block.getJTypeAsStr((VariableSymbol)identifierSymbol, ((VariableSymbol) identifierSymbol).type());

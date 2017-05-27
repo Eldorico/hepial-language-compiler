@@ -50,6 +50,10 @@ public class IfInstruction extends Instruction {
         return errorsDetected;
     }
 
+    public Expression getCondition(){
+        return condition;
+    }
+
     public BlocInstruction getThenBlockInstructions(){
         return thenInstructions;
     }

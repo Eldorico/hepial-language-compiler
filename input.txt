@@ -1,15 +1,15 @@
 programme hepial
 
-entier [2..8] e;
-constante entier z = 123;
 entier y;
 
 debutprg
-	e[0] = 321;
-	ecrire (e[0] + z) * 2;
-	ecrire "Wesh!";
-	lire y;
-	ecrire y+1;
+
+si 5 > 0 alors
+	ecrire "y plus grand que zero";
+sinon 
+	ecrire "y plus petit que zero";
+finsi
+
 finprg
 
 /*

@@ -11,6 +11,7 @@ import abstractTree.expression.ExpressionList;
 import abstractTree.expression.Identifier;
 import abstractTree.expression.TabValueIdentifier;
 import abstractTree.instruction.AffectationInstruction;
+import abstractTree.instruction.IfInstruction;
 import abstractTree.instruction.Instruction;
 import abstractTree.instruction.ReadInstruction;
 import abstractTree.instruction.WriteInstruction;
@@ -25,6 +26,8 @@ class FunctionInstructions extends JasminCodeProducer{
 
     protected int stackSizeNeeded = 0;
     protected int localsSizeNeeded = 0;
+
+    protected int nbThenLabelsUsed = 0;
 
     protected String blockMainFunctionName;
     protected String blockFunctionSignature;
@@ -54,6 +57,8 @@ class FunctionInstructions extends JasminCodeProducer{
             addWriteInstruction((WriteInstruction) instruction);
         }else if(instruction instanceof ReadInstruction){
             addReadInstruction((ReadInstruction) instruction);
+        }else if(instruction instanceof IfInstruction){
+            addIfInstruction((IfInstruction) instruction);
         }
     }
 
@@ -199,6 +204,41 @@ class FunctionInstructions extends JasminCodeProducer{
     protected void addReadInstruction(ReadInstruction instruction){
         AffectationInstruction instr = new AffectationInstruction(instruction.getDestination(), null, instruction.getDeclarationLineNumber());
         addAffectationInstruction(instr, true);
+    }
+
+    protected void addIfInstruction(IfInstruction instruction){
+        int stackSizeNeededForInstruction = 0;
+        int localsSizeNeededForInstruction = 0;
+        int labelsSuffix = nbThenLabelsUsed;
+        nbThenLabelsUsed ++;
+
+        // write comment
+        jtext.addLine("");
+        jtext.addIndentedLine("; compute "+instruction.getCondition().toString());
+
+        // loads the condition representation and add the label to jump if
+        JasminExpression jcondition = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getCondition());
+        jtext.addText(jcondition.getJCodeAsString());
+        jtext.addText("Then"+labelsSuffix);
+
+        // produce the 'else' part and add jump to endif label
+        for(Instruction elseInstruction: instruction.getElseBlockInstructions()){
+            addInstruction(elseInstruction);
+        }
+        jtext.addIndentedLine("goto endif"+labelsSuffix);
+
+        // produce the 'then' part
+        jtext.addText("Then"+labelsSuffix+":");
+        for(Instruction thenInstruction: instruction.getThenBlockInstructions()){
+            addInstruction(thenInstruction);
+        }
+
+        // add the endif label
+        jtext.addText("Endif"+labelsSuffix+":");
+
+        // end routine...
+        nbThenLabelsUsed --;
+        updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
 
     /**
