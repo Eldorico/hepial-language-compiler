@@ -1,18 +1,19 @@
 programme hepial
 
-constante entier y = 6;
-constante entier x = 8;
+entier i;
+entier b;
 
 debutprg
-ecrire y;
-ecrire x;		
 
-si y < 7 ou x < 7 alors
-	ecrire "y < 7 ou x < 7";
-sinon
-	ecrire "pas ok!"; 
-finsi
+pour i allantde 0 a 10 faire
 
+	pour b allantde 0 a 10 faire
+		ecrire i;
+	finpour
+
+	ecrire i;
+
+finpour
 finprg
 
 /*

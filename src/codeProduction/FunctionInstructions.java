@@ -6,11 +6,17 @@ import java.util.ArrayList;
 import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
+import abstractTree.expression.AdditionExpression;
 import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
 import abstractTree.expression.Identifier;
+import abstractTree.expression.IntNumber;
+import abstractTree.expression.LesserThanExpression;
 import abstractTree.expression.TabValueIdentifier;
 import abstractTree.instruction.AffectationInstruction;
+import abstractTree.instruction.BlocInstruction;
+import abstractTree.instruction.ForLoopInstruction;
+import abstractTree.instruction.GoToInstruction;
 import abstractTree.instruction.IfInstruction;
 import abstractTree.instruction.Instruction;
 import abstractTree.instruction.ReadInstruction;
@@ -28,6 +34,7 @@ class FunctionInstructions extends JasminCodeProducer{
     protected int localsSizeNeeded = 0;
 
     protected int nbThenLabelsUsed = 0;
+    protected int nbForLabelsUsed = 0;
 
     protected String blockMainFunctionName;
     protected String blockFunctionSignature;
@@ -59,6 +66,10 @@ class FunctionInstructions extends JasminCodeProducer{
             addReadInstruction((ReadInstruction) instruction);
         }else if(instruction instanceof IfInstruction){
             addIfInstruction((IfInstruction) instruction);
+        }else if(instruction instanceof ForLoopInstruction){
+            addForLoopInstruction((ForLoopInstruction)instruction);
+        }else if(instruction instanceof GoToInstruction){
+            addGoToInstruction((GoToInstruction)instruction);
         }
     }
 
@@ -230,7 +241,7 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addIndentedLine("goto Endif"+labelsSuffix);
 
         // produce the 'then' part
-        jtext.addText("Then"+labelsSuffix+":");
+        jtext.addLine("Then"+labelsSuffix+":");
         for(Instruction thenInstruction: instruction.getThenBlockInstructions()){
             addInstruction(thenInstruction);
         }
@@ -241,6 +252,44 @@ class FunctionInstructions extends JasminCodeProducer{
         // end routine...
         updateLocalsAndStackNeeded(stackSizeNeededForInstruction, localsSizeNeededForInstruction);
     }
+
+    protected void addForLoopInstruction(ForLoopInstruction instruction){
+
+        Identifier i = instruction.getIdentifier();
+
+        // write comment
+        jtext.addLine("");
+        jtext.addIndentedLine("; compute for loop: "+instruction.getLowerBoundExpression().toString()+" -> "+instruction.getUpperBoundExpression().toString());
+
+        // add affectation instruction i = lowerBound
+        addAffectationInstruction(new AffectationInstruction(instruction.getIdentifier(), instruction.getLowerBoundExpression(), -1), false);
+
+        // add label For
+        int suffixLabel = nbForLabelsUsed;
+        nbForLabelsUsed ++;
+        jtext.addLine("For"+suffixLabel+":");
+
+        // update then instructions adding : i ++ and goto for
+        BlocInstruction thenInstructions = instruction.getInstructions();
+        thenInstructions.addInstructionAtEnd(new AffectationInstruction(i, new AdditionExpression(i, new IntNumber(1)), -1));
+        thenInstructions.addInstructionAtEnd(new GoToInstruction(-1, "For"+suffixLabel));
+
+        // add if condition: if identifier < upperBound, then instructions, else goto endFor
+        LesserThanExpression condition = new LesserThanExpression(i, instruction.getUpperBoundExpression());
+        GoToInstruction goToInstruction = new GoToInstruction(-1, "EndFor"+suffixLabel);
+        BlocInstruction elseInstructions  = new BlocInstruction(goToInstruction);
+        addIfInstruction(new IfInstruction(condition, thenInstructions, elseInstructions, -1));
+
+        // add the endFor label
+        jtext.addLine("EndFor"+suffixLabel+":");
+    }
+
+    protected void addGoToInstruction(GoToInstruction instruction){
+        jtext.addLine("");
+        jtext.addIndentedLine("; Go to: "+instruction.getLabel());
+        jtext.addIndentedLine("goto "+instruction.getLabel());
+    }
+
 
     /**
      * @description: returns the signature of the block's main function.

@@ -26,7 +26,7 @@ public class BlocInstruction extends Instruction implements Iterable<Instruction
 	}
 
 	/**
-	 * @description: adds the instruction to the list
+	 * @description: adds the instruction to the list (at the first place!)
 	 * @param instruction: the instruction to add to the BlocInstruction
 	 */
 	public void addInstruction(Instruction instruction){
@@ -35,6 +35,18 @@ public class BlocInstruction extends Instruction implements Iterable<Instruction
 			System.err.printf("BlocInstruction.addInstruction(): instruction is allready a BlockInstruction. BlockInstruction should not be added to a BlockInstruction from the parser. I think it is an error.");
 		}
 		instructionList.addFirst(instruction);
+	}
+
+	/**
+	 * @description:
+	 * @param instruction
+	 */
+	public void addInstructionAtEnd(Instruction instruction){
+	 // if the instruction is a BlocInstruction, print error.
+        if(instruction.getClass().equals(BlocInstruction.class)){
+            System.err.printf("BlocInstruction.addInstruction(): instruction is allready a BlockInstruction. BlockInstruction should not be added to a BlockInstruction from the parser. I think it is an error.");
+        }
+        instructionList.add(instruction);
 	}
 
 	@Override

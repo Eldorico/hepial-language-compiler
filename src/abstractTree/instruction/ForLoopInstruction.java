@@ -89,6 +89,18 @@ public class ForLoopInstruction extends Instruction {
 	    return errorsDetected;
 	}
 
+	public Expression getLowerBoundExpression(){
+	    return lowerBound;
+	}
+
+	public Expression getUpperBoundExpression(){
+	    return upperBound;
+	}
+
+	public Identifier getIdentifier(){
+	    return i;
+	}
+
 	public BlocInstruction getInstructions(){
 	    return instructions;
 	}
