@@ -1,26 +1,25 @@
-programme hepial
+programme hepial5
 
-entier max;
-constante entier x=20;
-constante entier y=30;
+entier result;
+entier x;
+entier facto( entier n)
 
-entier fonction1(entier int1, entier int2)
-
-entier z;
+entier asdf;
 
 debutfonc
-	si int1 >= int2 alors 
-		retourne int1;
+
+	si n == 0 alors
+		retourne 1;
 	sinon 
-		retourne int2;
+		retourne n * facto( (n-1) );
 	finsi
 finfonc
-
+	
 debutprg
 
-	max = fonction1(x, y);
-	ecrire max;
-
+	x = facto(3);
+	ecrire x;
+	
 finprg
 
 /*

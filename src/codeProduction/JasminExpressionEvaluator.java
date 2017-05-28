@@ -288,6 +288,10 @@ class JasminExpressionEvaluator implements JEvaluator {
         toReturn.addIndentedLine("new "+fonctionName);
         toReturn.addIndentedLine("dup");
         toReturn.addIndentedLine("aload 0");
+        if(!SymbolTable.getInstance().getCurrentBlockLocation().equals(SymbolTable.getInstance().getMainBlockName())){ // to avoid problems with function recursive calls
+            String currentBlockNameWithCapitals = CodeProducer.capitaliseFirstChar(SymbolTable.getInstance().getCurrentBlockLocation());
+            toReturn.addIndentedLine("getfield "+currentBlockNameWithCapitals+"/mainBlock LMainBlock;");
+        }
         toReturn.addIndentedLine("invokespecial "+fonctionName+"/<init>(L"+mainBlockName+";)V");
 
         // load parameters
