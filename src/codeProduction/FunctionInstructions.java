@@ -133,6 +133,7 @@ class FunctionInstructions extends JasminCodeProducer{
         VariableSymbol destinationSymbol =  (VariableSymbol)SymbolTable.getInstance().getSymbol(instruction.getDestination().getName());
         Identifier destinationIdentifier = instruction.getDestination();
         String currentBlockName = SymbolTable.getInstance().getCurrentBlockLocation();
+        String currentBlockNameWithCapital = CodeProducer.capitaliseFirstChar(currentBlockName);
         boolean destinationInParentBlock = (!destinationSymbol.getBlockName().equals(currentBlockName)) ? true : false;
         String destinationBlockName = destinationInParentBlock ? SymbolTable.getInstance().getMainBlockName() : CodeProducer.capitaliseFirstChar(currentBlockName);
 
@@ -146,9 +147,9 @@ class FunctionInstructions extends JasminCodeProducer{
 
         // if the destination is in the parent block, load the parent
         if(destinationInParentBlock){
+            String mainBlockWithLowerCase = CodeProducer.lowerCaseFirstChar(SymbolTable.getInstance().getMainBlockName());
             jtext.addIndentedLine("aload 0");
-            jtext.addIndentedLine("aload 0");
-            jtext.addIndentedLine("getfield "+SymbolTable.getInstance().getMainBlockName()+"/"+destinationIdentifier.getName()+" "+Block.getJTypeAsStr(destinationSymbol, destinationSymbol.type()));
+            jtext.addIndentedLine("getfield "+currentBlockNameWithCapital+"/"+mainBlockWithLowerCase+" LMainBlock;");
             stackSizeNeededForInstruction = Math.max(stackSizeNeededForInstruction, 2);
 
         // else load this
