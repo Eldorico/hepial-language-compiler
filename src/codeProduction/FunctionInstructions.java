@@ -42,10 +42,13 @@ class FunctionInstructions extends JasminCodeProducer{
     protected String blockFunctionSignature;
     protected Type returnType;
 
+    protected ArrayList<SimpleEntry<String, VariableSymbol>> parameters;
+
     FunctionInstructions(ArrayList<SimpleEntry<String, VariableSymbol>> parameters, Type returnType){
         this.blockMainFunctionName = SymbolTable.getInstance().getMainFunctionName();
         this.blockFunctionSignature = this.computeBlockFunctionSignature(parameters, returnType);
         this.returnType = returnType;
+        this.parameters = parameters;
         localsSizeNeeded = parameters.size()+1;
     }
 
@@ -375,11 +378,40 @@ class FunctionInstructions extends JasminCodeProducer{
      */
     @Override
     String getJCodeAsString(){
+        // write the method begining
         String linesBefore = "\n; main function declaration\n";
         linesBefore += ".method public "+blockMainFunctionName+blockFunctionSignature+"\n";
         linesBefore += (stackSizeNeeded > 0) ? jtext.indent()+".limit stack "+stackSizeNeeded+"\n" : "";
         linesBefore += (localsSizeNeeded > 0) ? jtext.indent()+".limit locals "+localsSizeNeeded+"\n" : "";
+
+        // load the parameters values and put it on the fields (if any)
+        linesBefore += "\n";
+        linesBefore += jtext.indent()+"; load parameters and put their values to the correct field\n";
+        if(parameters != null){
+            int parameterNumber = 1;
+            for(SimpleEntry<String, VariableSymbol> parameterEntry : parameters){
+                String blockNameOfFunction = CodeProducer.capitaliseFirstChar(parameterEntry.getValue().getBlockName());
+                String parameterJType = Block.getJTypeAsStr(parameterEntry.getValue());
+                linesBefore += jtext.indent()+"aload 0\n";
+                linesBefore += jtext.indent()+"iload "+parameterNumber+"\n";
+                linesBefore += jtext.indent()+"putfield "+blockNameOfFunction+"/"+parameterEntry.getKey()+" "+parameterJType+"\n";
+                parameterNumber ++;
+            }
+        }
+
+        // these lines before the jasmin instructions of the function
         jtext.insertBefore(linesBefore);
+
+        // append return here to avoid java.lang.VerifyErrors launching the JVM
+        jtext.addIndentedLine("; append default return here (it will be unused, but will some avoid java.lang.VerifyErrors launching the JVM");
+        if(returnType == Type.VOID){
+            jtext.addIndentedLine("return");
+        }else{
+            jtext.addIndentedLine("ldc 0");
+            jtext.addIndentedLine("ireturn");
+        }
+
+        // append the end of the method
         jtext.addLine(".end method");
 
         return jtext.getJCodeAsString();

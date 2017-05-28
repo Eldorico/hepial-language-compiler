@@ -59,6 +59,10 @@ class Block {
         }
     }
 
+    static String getJTypeAsStr(VariableSymbol symbol){
+        return getJTypeAsStr(symbol, symbol.type());
+    }
+
     /**
      * @description:
      */

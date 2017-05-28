@@ -9,9 +9,11 @@ entier fonction1(entier int1, entier int2)
 entier z;
 
 debutfonc
-	ecrire int1;
-	ecrire int2;
-	retourne 1;
+	si int1 >= int2 alors 
+		retourne int1;
+	sinon 
+		retourne int2;
+	finsi
 finfonc
 
 debutprg
