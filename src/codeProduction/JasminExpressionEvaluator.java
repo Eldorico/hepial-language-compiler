@@ -1,7 +1,6 @@
 package codeProduction;
 
 import symbol.ArraySymbol;
-import symbol.FunctionSymbol;
 import symbol.IntBoolSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -245,7 +244,12 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(BooleanKeyword evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
+        if(evaluable.getValue()){
+            toReturn.addIndentedLine("ldc 1");
+        }else{
+            toReturn.addIndentedLine("ldc 0");
+        }
+        toReturn.maxStackSizeNeeded = 1;
         return toReturn;
 
     }
@@ -354,11 +358,6 @@ class JasminExpressionEvaluator implements JEvaluator {
 
             return toReturn;
 
-        // if identifier represents a FunctionSymbol
-        }else if(identifierSymbol instanceof FunctionSymbol){
-            toReturn.addIndentedLine(";TODO! JasminExpressionEvaluator.jEvaluate(Identifier evaluable): Identifier FunctionSymbol");
-            return toReturn;
-
         // hope we dont arrive here...
         }else{
             System.err.println("JasminExpressionEvaluator.jEvaluate(Idenfifier evaluable): symbol could not been identified. Program will exit now.");
@@ -385,7 +384,11 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(NotExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
+        JasminExpression jExpression = jEvaluate(evaluable.getExpression());
+        toReturn.addText(jExpression.getJCodeAsString());
+        toReturn.addIndentedLine("ldc 1");
+        toReturn.addIndentedLine("ixor");
+        toReturn.maxStackSizeNeeded = Math.max(jExpression.maxStackSizeNeeded, 2);
         return toReturn;
 
     }

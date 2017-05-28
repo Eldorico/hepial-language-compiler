@@ -19,26 +19,25 @@ public class HepialCompilateur {
 			// parse the code and check for syntax errors
 			try {myP.parse();}
 			catch (Exception e) {
-				//System.out.println("parse error");
 				System.exit(-1);
 			}
 
 			// the abstractTreeStack generated from the parser has to have a size of 1
 			if(myP.abstractTreeStack.size() != 1){
 			    System.err.println("The abstractTreeStack has not a size of 1. It has a size of "+myP.abstractTreeStack.size()+". Compilation will exit");
-			    System.exit(-2);
+			    System.exit(-4);
 			}
 			// the abstractTreeStack generated from the parser has to be an instance of Instruction
 			BlocInstruction abstractTreeElement = null;
 			if(!(myP.abstractTreeStack.peek() instanceof BlocInstruction)){
                 System.err.println("The element in the abstractTreeStack is not an instance of BlocInstruction. Compilation will exit");
-                System.exit(-2);
+                System.exit(-4);
 			}else{
 			    abstractTreeElement = (BlocInstruction) myP.abstractTreeStack.peek();
 			}
 
 			// debug
-			System.out.println("\n\ndectecting semantic errors...");
+			System.out.println("\n\ndetecting semantic errors...");
 
 			// check for semantic errors and print errors if any
 			boolean errorsDetected = false;

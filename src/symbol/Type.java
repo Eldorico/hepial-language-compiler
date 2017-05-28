@@ -16,9 +16,7 @@ public enum Type {
 	}
 
 	public static String jTypeObject(Type type){
-	    if(type == Type.BOOLEAN){
-	        return "B";
-	    }else if(type == Type.INTEGER){
+	    if(type == Type.INTEGER || type == Type.BOOLEAN){
 	        return "I";
 	    }else if(type == Type.CST_STRING){
 	        return "Ljava/lang/String;";

@@ -29,4 +29,8 @@ public class BooleanKeyword extends Expression {
     public void accept(JEvaluator visitor) {
         visitor.jEvaluate(this);
     }
+
+    public boolean getValue(){
+        return value;
+    }
 }
