@@ -41,6 +41,7 @@ class JasminExpressionEvaluator implements JEvaluator {
 
     //int nbLocalsUsed = 1; // we have to start to 2 to leave some place for the this, and parent
     int orSuffixesUsed = 0;
+    int conversionSuffixesUsed = 0;
 
     private static JasminExpressionEvaluator instance = new JasminExpressionEvaluator();
     public static JasminExpressionEvaluator getInstance(){
@@ -140,13 +141,16 @@ class JasminExpressionEvaluator implements JEvaluator {
             toReturn.addIndentedLine("imul ");
             toReturn.addIndentedLine("ldc 1");
             toReturn.addIndentedLine("ixor");
+            return convertPositiveNegative0To1or0(toReturn);
         }else if(evaluable instanceof DifferentThanExpression){
             toReturn.addIndentedLine("lcmp ");
             toReturn.addIndentedLine("dup ");
             toReturn.addIndentedLine("imul ");
+            return convertPositiveNegative0To1or0(toReturn);
         }else if(evaluable instanceof LesserThanExpression){
             toReturn.addIndentedLine("lcmp ");
             toReturn.addIndentedLine("ineg ");
+            return convertPositiveNegative0To1or0(toReturn);
         }else if(evaluable instanceof LesserEqualExpression){
             toReturn.addIndentedLine("lcmp");
             toReturn.addIndentedLine("ineg");
@@ -154,14 +158,17 @@ class JasminExpressionEvaluator implements JEvaluator {
             toReturn.addIndentedLine("imul");
             toReturn.addIndentedLine("ldc 1");
             toReturn.addIndentedLine("iadd");
+            return convertPositiveNegative0To1or0(toReturn);
         }else if(evaluable instanceof GreaterThanExpression){
             toReturn.addIndentedLine("lcmp");
+            return convertPositiveNegative0To1or0(toReturn);
         }else if(evaluable instanceof GreaterEqualExpression){
             toReturn.addIndentedLine("lcmp ");
             toReturn.addIndentedLine("ldc 2");
             toReturn.addIndentedLine("imul");
             toReturn.addIndentedLine("ldc 1");
             toReturn.addIndentedLine("iadd");
+            return convertPositiveNegative0To1or0(toReturn);
         }
         return toReturn;
     }
@@ -169,13 +176,14 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(RelationalBooleanExpression evaluable){
         JasminExpression toReturn = new JasminExpression();
+        toReturn.maxStackSizeNeeded = 4;
 
 
         if(evaluable instanceof AndExpression){
             // compute the left assignment.
             JasminExpression jleft = jEvaluate(evaluable.getLeftOperand());
             toReturn.maxLocalsSizeNeeded = Math.max(toReturn.maxLocalsSizeNeeded, jleft.maxLocalsSizeNeeded);
-            toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, jleft.maxStackSizeNeeded);
+            toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, jleft.maxStackSizeNeeded+1);
             toReturn.addText(jleft.getJCodeAsString());
             // on the stack, we should have a negative, positive, or 0 value. convert it to -1, 0, 1
             toReturn.addIndentedLine("i2l");
@@ -235,7 +243,7 @@ class JasminExpressionEvaluator implements JEvaluator {
             toReturn.addLine("OrNext"+orSuffix+":");
         }
 
-        return toReturn;
+        return convertPositiveNegative0To1or0(toReturn);
     }
 
     /**
@@ -391,6 +399,19 @@ class JasminExpressionEvaluator implements JEvaluator {
         toReturn.maxStackSizeNeeded = Math.max(jExpression.maxStackSizeNeeded, 2);
         return toReturn;
 
+    }
+
+    JasminExpression convertPositiveNegative0To1or0(JasminExpression jExpression){
+        int suffixNbUsed = conversionSuffixesUsed;
+        conversionSuffixesUsed ++;
+        jExpression.addIndentedLine("ifgt cOk"+suffixNbUsed);
+        jExpression.addIndentedLine("ldc 0");
+        jExpression.addIndentedLine("goto cEnd"+suffixNbUsed);
+        jExpression.addLine("cOk"+suffixNbUsed+":");
+        jExpression.addIndentedLine("ldc 1");
+        jExpression.addLine("cEnd"+suffixNbUsed+":");
+        jExpression.maxStackSizeNeeded = Math.max(jExpression.maxStackSizeNeeded, 7);
+        return jExpression;
     }
 
 
