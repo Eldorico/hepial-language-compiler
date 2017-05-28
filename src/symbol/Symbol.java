@@ -23,4 +23,8 @@ public abstract class Symbol {
 	public String getBlockName(){
 	    return blockName;
 	}
+
+	void setBlockName(String currentBlockName){
+	    blockName = currentBlockName;
+	}
 }

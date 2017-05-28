@@ -1,18 +1,23 @@
 programme hepial
 
-entier i;
-entier asdf;
+entier max;
+constante entier x=20;
+constante entier y=30;
+
+entier fonction1(entier int1, entier int2)
+
+entier z;
+
+debutfonc
+	ecrire int1;
+	ecrire int2;
+	retourne 1;
+finfonc
 
 debutprg
 
-asdf = 0;
-i = 20;
-
-tantque asdf < 10 et i > 10 faire
-	ecrire asdf;
-	asdf = asdf+1;
-	i = i -2;	
-fintantque
+	max = fonction1(x, y);
+	ecrire max;
 
 finprg
 

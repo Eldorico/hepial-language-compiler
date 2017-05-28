@@ -21,6 +21,10 @@ public class ReturnInstruction extends Instruction{
         return String.format("Return expression: %s", returnExpression.toString());
     }
 
+    public Expression getReturnExpression(){
+        return returnExpression;
+    }
+
     /**
      * @description: checks for errors into the return expression
      */

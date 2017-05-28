@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import symbol.FunctionSymbol;
 import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
+import abstractTree.expression.Identifier;
 import abstractTree.instruction.BlocInstruction;
 import abstractTree.instruction.Instruction;
 
@@ -76,6 +78,17 @@ public class CodeProducer {
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
 
+    public static String getFunctionSignature(Identifier functionIdentifier){
+        String functionSignature = "(";
+        FunctionSymbol functionSymbol = (FunctionSymbol)SymbolTable.getInstance().getSymbol(functionIdentifier.getName());
+        ArrayList<SimpleEntry<String, VariableSymbol>> parametersSymbol = functionSymbol.getParameters();
+        for(Entry<String, VariableSymbol> parameterSymbol : parametersSymbol){
+            functionSignature += Block.getJTypeAsStr(parameterSymbol.getValue(), parameterSymbol.getValue().type());
+        }
+        functionSignature += ")"+Type.jTypeObject(functionSymbol.returnType());
+        return functionSignature;
+    }
+
     public static String getTab(){
         return "   ";
     }
@@ -100,13 +113,15 @@ public class CodeProducer {
             block = new Block(blockName, parentBlockName, fSymbol.getParameters(), outputFolderName, false, fSymbol.returnType());
         }
 
-        // add fields
+        // enter in correct block
         SymbolTable.getInstance().enterBloc(blockName);
+
+        // add fields
         ArrayList<SimpleEntry<String, VariableSymbol>> fieldsList = SymbolTable.getInstance().getNormalFieldsOf(blockName);
         for(SimpleEntry<String, VariableSymbol> entry : fieldsList){
             block.localFields.addField(entry.getKey(), entry.getValue());
         }
-        SymbolTable.getInstance().exitCurrentBloc();
+
 
         // add instructions
         BlocInstruction instructionsList;
@@ -126,6 +141,8 @@ public class CodeProducer {
             block.instructions.addReturnInstruction(null);
         }
 
+        // exit from current block
+        SymbolTable.getInstance().exitCurrentBloc();
 
         // produce block
         block.produceJasminFile();

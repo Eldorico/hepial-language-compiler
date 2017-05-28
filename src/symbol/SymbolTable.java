@@ -74,6 +74,9 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	 * @return
 	 */
 	public boolean addSymbol(String symbolIdentifier, Symbol symbol){
+	    // debug
+	    String debug = symbolIdentifier;
+
 	    // if symbol allready added, log error
 	    if(symbolTable.get(currentBlocName).containsKey(symbolIdentifier)){
 			System.err.printf("SymbolTable: duplicate symbol: %s\n", symbolIdentifier);
@@ -102,6 +105,9 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	        symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
 	        symbolsList.add(symbol);
 	        System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
+
+	        // set the owner of the symbol
+	        symbol.setBlockName(currentBlocName);
 
 			return true;
 		}

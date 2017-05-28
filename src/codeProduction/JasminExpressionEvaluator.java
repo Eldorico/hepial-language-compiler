@@ -260,7 +260,6 @@ class JasminExpressionEvaluator implements JEvaluator {
         toReturn.addIndentedLine("ldc "+evaluable.toString());
         toReturn.maxStackSizeNeeded = 1;
         return toReturn;
-
     }
 
     /**
@@ -281,9 +280,28 @@ class JasminExpressionEvaluator implements JEvaluator {
     @Override
     public JasminExpression jEvaluate(FctCallExpression evaluable) {
         JasminExpression toReturn = new JasminExpression();
-        toReturn.addIndentedLine("TODO!");
-        return toReturn;
+        toReturn.maxStackSizeNeeded = 4;
 
+        // construct Function object
+        String mainBlockName = CodeProducer.capitaliseFirstChar(SymbolTable.getInstance().getMainBlockName());
+        String fonctionName = CodeProducer.capitaliseFirstChar(evaluable.getFctName().getName());
+        toReturn.addIndentedLine("new "+fonctionName);
+        toReturn.addIndentedLine("dup");
+        toReturn.addIndentedLine("aload 0");
+        toReturn.addIndentedLine("invokespecial "+fonctionName+"/<init>(L"+mainBlockName+";)V");
+
+        // load parameters
+        for(Expression parameter: evaluable.getParameters()){
+            JasminExpression parameterValue = jEvaluate(parameter);
+            toReturn.addLine(parameterValue.getJCodeAsString());
+            toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, parameterValue.maxLocalsSizeNeeded+4);
+        }
+
+        // invoke functionObject.mainFunction()
+        String functionSignature = CodeProducer.getFunctionSignature(evaluable.getFctName());
+        toReturn.addIndentedLine("invokevirtual "+fonctionName+"/"+SymbolTable.getInstance().getMainFunctionName()+functionSignature);
+
+        return toReturn;
     }
 
 

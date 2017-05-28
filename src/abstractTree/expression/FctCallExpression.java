@@ -50,6 +50,10 @@ public class FctCallExpression extends Expression {
         return fctName;
     }
 
+    public ExpressionList getParameters(){
+        return parameters;
+    }
+
     /**
      * @description: calls the semanticExpressions on all parameters
      * checks that the function is defined and it correspond to a FunctionSymbol

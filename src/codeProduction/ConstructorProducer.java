@@ -9,10 +9,13 @@ class ConstructorProducer extends JasminCodeProducer {
     int stackSizeNeeded = 0;
     int localsSizeNeeded = 0;
     String parentNameWithCapital = null;
+    String parentNameWithLowerCase = null;
     String blockNameWithCapital = null;
 
     public ConstructorProducer(String blockName, String parentBlockName, FunctionInstructions blockInstructions, Fields blockFields)  {
         blockNameWithCapital = CodeProducer.capitaliseFirstChar(blockName);
+        parentNameWithCapital = parentBlockName == null ? null : CodeProducer.capitaliseFirstChar(parentBlockName);
+        parentNameWithLowerCase = parentBlockName == null ? null : CodeProducer.lowerCaseFirstChar(parentBlockName);
         this.blockFields = blockFields;
 
         // write the constructor here
@@ -26,13 +29,13 @@ class ConstructorProducer extends JasminCodeProducer {
         if(parentBlockName != null){
             // add the field for the parent. (to manage the variables scope)
             String parentNameWithCapital = CodeProducer.capitaliseFirstChar(parentBlockName);
-            blockFields.jtext.addLine(".field "+parentBlockName+" L"+parentNameWithCapital+";");
+            blockFields.jtext.addLine(".field "+parentNameWithLowerCase+" L"+parentNameWithCapital+";");
 
             // add the parent to the field
-            jtext.addIndentedLine(";load the parent block and put it on the field "+parentBlockName);
+            jtext.addIndentedLine(";load the parent block and put it on the field "+parentNameWithLowerCase);
             jtext.addIndentedLine("aload 0");
             jtext.addIndentedLine("aload 1");
-            jtext.addIndentedLine("putfield "+blockNameWithCapital+"/"+parentBlockName+" L"+parentNameWithCapital+";");
+            jtext.addIndentedLine("putfield "+blockNameWithCapital+"/"+parentNameWithLowerCase+" L"+parentNameWithCapital+";");
             localsSizeNeeded = 3;
             stackSizeNeeded = 2;
         }

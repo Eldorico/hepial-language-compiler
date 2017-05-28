@@ -7,7 +7,6 @@ import symbol.SymbolTable;
 import symbol.Type;
 import symbol.VariableSymbol;
 import abstractTree.expression.AdditionExpression;
-import abstractTree.expression.Expression;
 import abstractTree.expression.ExpressionList;
 import abstractTree.expression.Identifier;
 import abstractTree.expression.IntNumber;
@@ -20,6 +19,7 @@ import abstractTree.instruction.GoToInstruction;
 import abstractTree.instruction.IfInstruction;
 import abstractTree.instruction.Instruction;
 import abstractTree.instruction.ReadInstruction;
+import abstractTree.instruction.ReturnInstruction;
 import abstractTree.instruction.WhileLoopInstrcution;
 import abstractTree.instruction.WriteInstruction;
 
@@ -46,6 +46,7 @@ class FunctionInstructions extends JasminCodeProducer{
         this.blockMainFunctionName = SymbolTable.getInstance().getMainFunctionName();
         this.blockFunctionSignature = this.computeBlockFunctionSignature(parameters, returnType);
         this.returnType = returnType;
+        localsSizeNeeded = parameters.size()+1;
     }
 
     // default constructor needed by the child StaticMainInstructions
@@ -74,6 +75,11 @@ class FunctionInstructions extends JasminCodeProducer{
             addGoToInstruction((GoToInstruction)instruction);
         }else if(instruction instanceof WhileLoopInstrcution){
             addWhileLoopInstruction((WhileLoopInstrcution)instruction);
+        }else if(instruction instanceof ReturnInstruction){
+            addReturnInstruction((ReturnInstruction)instruction);
+        }else{
+            System.err.println("FunctionInstructions : instruction type not found : "+instruction.getClass().getName());
+            System.exit(-2);
         }
     }
 
@@ -101,12 +107,18 @@ class FunctionInstructions extends JasminCodeProducer{
         stackSizeNeeded = Math.max(stackSizeNeeded, nbOfElementsOnStackNeeded);
     }
 
-    protected void addReturnInstruction(Expression returnExpression){
-        String returnExpressionStrRepresentation = (returnExpression == null) ? "null" : returnExpression.toString();
+    protected void addReturnInstruction(ReturnInstruction instruction){
+        String returnExpressionStrRepresentation = (instruction == null) ? "null" : instruction.toString();
         jtext.addLine("");
         jtext.addIndentedLine("; return the following expression: "+returnExpressionStrRepresentation);
-        // TODO: addReturnInstruction(): evaluate expression!
-        // put the return value on the stack
+
+        // load the value of the expression on the stack
+        if(instruction != null){
+            JasminExpression jReturnExpression = JasminExpressionEvaluator.getInstance().jEvaluate(instruction.getReturnExpression());
+            jtext.addText(jReturnExpression.getJCodeAsString());
+            stackSizeNeeded = Math.max(stackSizeNeeded, jReturnExpression.maxStackSizeNeeded+1);
+            localsSizeNeeded = Math.max(localsSizeNeeded, jReturnExpression.maxLocalsSizeNeeded);
+        }
 
         // add the correct return expression
         jtext.addIndentedLine(getReturnKeyWord());
@@ -314,7 +326,6 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addLine("EndWhile"+suffixLabel+":");
 
     }
-
 
     /**
      * @description: returns the signature of the block's main function.
