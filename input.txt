@@ -5,15 +5,14 @@ entier asdf;
 
 debutprg
 
-pour i allantde 0 a 10 faire
+asdf = 0;
+i = 20;
 
-	si i == 0 ou i == 2 ou i == 4  ou i== 6 ou i == 8 ou i == 10 alors
-		ecrire i;
-	sinon
-		asdf = 1;
-	finsi
-
-finpour
+tantque asdf < 10 et i > 10 faire
+	ecrire asdf;
+	asdf = asdf+1;
+	i = i -2;	
+fintantque
 
 finprg
 

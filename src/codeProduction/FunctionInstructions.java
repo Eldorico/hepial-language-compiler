@@ -20,6 +20,7 @@ import abstractTree.instruction.GoToInstruction;
 import abstractTree.instruction.IfInstruction;
 import abstractTree.instruction.Instruction;
 import abstractTree.instruction.ReadInstruction;
+import abstractTree.instruction.WhileLoopInstrcution;
 import abstractTree.instruction.WriteInstruction;
 
 
@@ -35,6 +36,7 @@ class FunctionInstructions extends JasminCodeProducer{
 
     protected int nbThenLabelsUsed = 0;
     protected int nbForLabelsUsed = 0;
+    protected int nbWhileLabelsUsed = 0;
 
     protected String blockMainFunctionName;
     protected String blockFunctionSignature;
@@ -70,6 +72,8 @@ class FunctionInstructions extends JasminCodeProducer{
             addForLoopInstruction((ForLoopInstruction)instruction);
         }else if(instruction instanceof GoToInstruction){
             addGoToInstruction((GoToInstruction)instruction);
+        }else if(instruction instanceof WhileLoopInstrcution){
+            addWhileLoopInstruction((WhileLoopInstrcution)instruction);
         }
     }
 
@@ -288,6 +292,27 @@ class FunctionInstructions extends JasminCodeProducer{
         jtext.addLine("");
         jtext.addIndentedLine("; Go to: "+instruction.getLabel());
         jtext.addIndentedLine("goto "+instruction.getLabel());
+    }
+
+    protected void addWhileLoopInstruction(WhileLoopInstrcution instruction){
+        jtext.addLine("");
+        jtext.addIndentedLine("; compute while loop: "+instruction.getCondition().toString());
+
+        // add label While
+        int suffixLabel = nbWhileLabelsUsed;
+        nbWhileLabelsUsed ++;
+        jtext.addLine("While"+suffixLabel+":");
+
+        // update then instructions adding :  goto while
+        BlocInstruction thenInstructions = instruction.getInstructions();
+        thenInstructions.addInstructionAtEnd(new GoToInstruction(-1, "While"+suffixLabel));
+
+        // create condition: if true->instructions else goto endwhile
+        BlocInstruction elseInstructions = new BlocInstruction(new GoToInstruction(-1, "EndWhile"+suffixLabel));
+        addIfInstruction( new IfInstruction(instruction.getCondition(), thenInstructions, elseInstructions, -1));
+        // add the endFor label
+        jtext.addLine("EndWhile"+suffixLabel+":");
+
     }
 
 

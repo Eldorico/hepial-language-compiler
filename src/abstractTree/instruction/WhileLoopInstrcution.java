@@ -55,4 +55,8 @@ public class WhileLoopInstrcution extends Instruction { // TODO: correct the spe
     public BlocInstruction getInstructions(){
         return instructions;
     }
+
+    public Expression getCondition(){
+        return condition;
+    }
 }

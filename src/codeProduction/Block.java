@@ -21,9 +21,11 @@ class Block {
     private String outputFolderPath;
     private boolean isStaticMainBlock;
 
-    FunctionInstructions instructions;
-    Fields localFields;  // represents the variables that we declare in a block declaration.
     ConstructorProducer constructor;
+    Fields localFields;  // represents the variables that we declare in a block declaration.
+    FunctionInstructions instructions;
+
+
 
     Block(String blockName, String parentName, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, String outputFolderPath, boolean isStaticMainBlock, Type returnType) {
         this.blockName = CodeProducer.capitaliseFirstChar(blockName);
