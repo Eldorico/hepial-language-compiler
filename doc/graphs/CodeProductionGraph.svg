@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="CodeProductionGraph.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="EmptyTriangleOutL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="EmptyTriangleOutL"
+       style="overflow:visible">
+      <path
+         id="path4104"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;fill:#FFFFFF;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(-6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3947"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="494.32695"
+     inkscape:cy="637.58784"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.7267859;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985"
+       width="182.46684"
+       height="137.72493"
+       x="41.746273"
+       y="96.792297" />
+    <text
+       xml:space="preserve"
+       style="font-size:24.72589684px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="41.690899"
+       y="81.336601"
+       id="text2987"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989"
+         x="41.690899"
+         y="81.336601">CodeProducer:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.33936691px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="48.554356"
+       y="127.60293"
+       id="text2987-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-6"
+         x="48.554356"
+         y="127.60293">produceProgram()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.12041569px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="67.116165"
+       y="152.026"
+       id="text2987-3-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-6-5"
+         x="67.116165"
+         y="152.026">produce static main block...</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.12041569px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="66.994476"
+       y="177.7849"
+       id="text2987-3-7-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-6-5-5"
+         x="66.994476"
+         y="177.7849">produce main block </tspan><tspan
+         sodipodi:role="line"
+         x="66.994476"
+         y="189.18541"
+         id="tspan3054">and functions block</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.17845154px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="66.486198"
+       y="212.17418"
+       id="text2987-3-7-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-6-5-2"
+         x="66.486198"
+         y="212.17418">compile each block file </tspan><tspan
+         sodipodi:role="line"
+         x="66.486198"
+         y="223.64725"
+         id="tspan3077">with jasmin</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:1.06975079;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9"
+       width="307.83813"
+       height="176.85863"
+       x="366.79517"
+       y="160.81407" />
+    <text
+       xml:space="preserve"
+       style="font-size:24.72589684px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="366.02252"
+       y="149.43721"
+       id="text2987-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2"
+         x="366.02252"
+         y="149.43721">Block:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.33936691px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="388.46661"
+       y="198.46095"
+       id="text2987-3-70"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-6-9"
+         x="388.46661"
+         y="198.46095">Constructor constructor;</tspan><tspan
+         sodipodi:role="line"
+         x="388.46661"
+         y="216.38516"
+         id="tspan3158">Fields fields; </tspan><tspan
+         sodipodi:role="line"
+         x="388.46661"
+         y="234.30937"
+         id="tspan3160">FunctionInstructions instructions;</tspan><tspan
+         sodipodi:role="line"
+         x="388.46661"
+         y="252.23358"
+         id="tspan4794" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.02087021px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="480.72995"
+       y="216.10458"
+       id="text3162"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3164"
+         x="480.72995"
+         y="216.10458"
+         style="font-style:italic">(variables declared into block)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.7919445px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="224.48129"
+       y="156.06902"
+       id="text3166"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99536212,-0.09619899,0.09619899,0.99536212,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3168"
+         x="224.48129"
+         y="156.06902">new Block()</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 164.28571,174.50504 C 286.42857,111.6479 360,143.07647 360,143.07647"
+       id="path3170"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 165.71429,179.50504 C 271.76488,165.92739 356.173,176.17321 385.13742,212.11708"
+       id="path4384"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 165.71429,187.36218 c 159.0406,0.69942 217.14285,42.14286 217.14285,42.14286"
+       id="path4568"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.90557575px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="245.95966"
+       y="144.68227"
+       id="text3166-3"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99645585,0.08411746,-0.08411746,0.99645585,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3168-6"
+         x="245.95966"
+         y="144.68227">block.fields.addFields()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.69922256px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="227.32239"
+       y="159.9212"
+       id="text3166-3-0"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.98424926,0.17678631,-0.17678631,0.98424926,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3168-6-6"
+         x="227.32239"
+         y="159.9212">block.instructions.addInstructions()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.33936691px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="391.66721"
+       y="278.577"
+       id="text2987-3-70-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="391.66721"
+         y="278.577"
+         id="tspan4794-7">produceJasminFile(): </tspan><tspan
+         sodipodi:role="line"
+         x="391.66721"
+         y="296.50119"
+         id="tspan5267" /></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.97484684;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9-9"
+       width="262.93304"
+       height="171.95354"
+       x="72.462044"
+       y="369.95688" />
+    <text
+       xml:space="preserve"
+       style="font-size:21.17493439px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="72.969894"
+       y="356.73929"
+       id="text2987-1-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2-0"
+         x="72.969894"
+         y="356.73929">FunctionInstructions:</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.57683533;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9-9-2"
+       width="225.47391"
+       height="70.208694"
+       x="436.54874"
+       y="398.80975" />
+    <text
+       xml:space="preserve"
+       style="font-size:24.72589684px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="436.9071"
+       y="388.48911"
+       id="text2987-1-2-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2-0-7"
+         x="436.9071"
+         y="388.48911">Fields:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.33936691px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="447.24905"
+       y="428.46097"
+       id="text2987-3-70-2-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="447.24905"
+         y="428.46097"
+         id="tspan4794-7-9">addField();</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.22020912px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="528.11768"
+       y="426.91107"
+       id="text3162-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3164-2"
+         x="528.11768"
+         y="426.91107"
+         style="font-style:italic">(add variable) declared.</tspan><tspan
+         sodipodi:role="line"
+         x="528.11768"
+         y="439.68634"
+         style="font-style:italic"
+         id="tspan5259">It writes a field into the </tspan><tspan
+         sodipodi:role="line"
+         x="528.11768"
+         y="452.46161"
+         style="font-style:italic"
+         id="tspan5261">jasmin file)</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.54067993;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9-9-2-8"
+       width="225.51007"
+       height="61.67342"
+       x="435.81638"
+       y="536.29175" />
+    <text
+       xml:space="preserve"
+       style="font-size:24.72589684px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="436.19281"
+       y="525.98914"
+       id="text2987-1-2-3-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2-0-7-7"
+         x="436.19281"
+         y="525.98914">Constructor:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.22020912px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="450.54211"
+       y="555.57098"
+       id="text3162-2-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3164-2-3"
+         x="450.54211"
+         y="555.57098"
+         style="font-style:italic">adds function 's parameter: writes fields </tspan><tspan
+         sodipodi:role="line"
+         x="450.54211"
+         y="568.34625"
+         style="font-style:italic"
+         id="tspan5265">to the jasmin file in order to manage</tspan><tspan
+         sodipodi:role="line"
+         x="450.54211"
+         y="581.12152"
+         style="font-style:italic"
+         id="tspan5263">the parameters identifiers</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.22020912px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="411.32498"
+       y="296.69217"
+       id="text3162-2-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="411.32498"
+         y="296.69217"
+         style="font-style:italic"
+         id="tspan5301">create a jasmin file with the jasmin code created</tspan><tspan
+         sodipodi:role="line"
+         x="411.32498"
+         y="309.46744"
+         style="font-style:italic"
+         id="tspan5305">by the fields, instructions and constructor.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 166.42857,193.07647 c 79.74881,46.46341 173.82114,53.45001 217.85714,81.42857"
+       id="path5307"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:9.69922256px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="288.35077"
+       y="170.95888"
+       id="text3166-3-0-7"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.96377459,0.26671809,-0.26671809,0.96377459,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3168-6-6-6"
+         x="288.35077"
+         y="170.95888">block.produceJasminFile()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.33936691px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="89.481026"
+       y="408.29282"
+       id="text2987-3-70-2-5-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="89.481026"
+         y="408.29282"
+         id="tspan4794-7-9-6">addInstruction();</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.22020912px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="107.75355"
+       y="431.69217"
+       id="text3162-2-93"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="107.75355"
+         y="431.69217"
+         style="font-style:italic"
+         id="tspan5261-5">adds instructions into the mainFunction()</tspan><tspan
+         sodipodi:role="line"
+         x="107.75355"
+         y="444.46744"
+         style="font-style:italic"
+         id="tspan5565">of the block, with the help of the </tspan><tspan
+         sodipodi:role="line"
+         x="107.75355"
+         y="457.24271"
+         style="font-style:italic"
+         id="tspan5567">JasminExpressionEvaluator class. </tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.58067477;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9-9-25"
+       width="263.32724"
+       height="60.919136"
+       x="76.907829"
+       y="651.31171" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.22264862px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="77.459961"
+       y="636.04816"
+       id="text2987-1-2-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2-0-74"
+         x="77.459961"
+         y="636.04816">JasminExpressionEvaluator:</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.74654484px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="101.34325"
+       y="677.27393"
+       id="text3162-2-93-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="101.34325"
+         y="677.27393"
+         style="font-style:italic"
+         id="tspan5567-7">converts an hepial expression </tspan><tspan
+         sodipodi:role="line"
+         x="101.34325"
+         y="695.70709"
+         style="font-style:italic"
+         id="tspan5625">into jasmin code</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.8479799;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2985-9-9-25-8"
+       width="281.63138"
+       height="121.47132"
+       x="343.52042"
+       y="780.73114" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.22264862px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="343.93887"
+       y="765.33392"
+       id="text2987-1-2-4-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2989-2-0-74-8"
+         x="343.93887"
+         y="765.33392">JasminExpression</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.74654484px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="381.39355"
+       y="829.41687"
+       id="text3162-2-93-4-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="381.39355"
+         y="829.41687"
+         style="font-style:italic"
+         id="tspan5625-3">string containing jasmin code</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.74654484px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="356.82892"
+       y="808.5733"
+       id="text3162-2-93-4-8-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="356.82892"
+         y="808.5733"
+         style="font-style:italic"
+         id="tspan5625-3-4">String jInstructions;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.74654484px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="358.22937"
+       y="862.14478"
+       id="text3162-2-93-4-8-1-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="358.22937"
+         y="862.14478"
+         style="font-style:italic"
+         id="tspan5625-3-4-2">int maxStackSizeNeeded;</tspan><tspan
+         sodipodi:role="line"
+         x="358.22937"
+         y="880.57794"
+         style="font-style:italic"
+         id="tspan5704">int maxLocalsSizeNeeded;</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:1, 4;stroke-dashoffset:0;marker-end:url(#EmptyTriangleOutL)"
+       d="M 385.71429,237.36218 C 300,353.07647 300,353.07647 300,353.07647"
+       id="path6640"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:1, 3;stroke-dashoffset:0;marker-end:url(#EmptyTriangleOutL)"
+       d="m 665.71429,212.36218 c 35,19.28572 34.28572,111.42857 31.42857,134.28571 -2.85714,22.85715 -27.85715,47.14286 -27.85715,47.14286"
+       id="path6828"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0;marker-end:url(#EmptyTriangleOutL)"
+       d="M 571.42857,190.50033 C 680,178.35747 713.18891,218.06904 713.18891,218.06904 c -0.0384,163.9146 1.10402,101.85091 -2.06172,166.82587 -0.52994,10.87674 -0.33632,71.88219 -0.82516,89.04198 -2.3157,81.28735 -44.58774,88.42529 -44.58774,88.42529"
+       id="path7014"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccssc" />
+  </g>
+</svg>

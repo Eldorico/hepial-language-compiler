@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg4997"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="BlockJavaStyle.svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:document-units="mm"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="282.00649"
+     inkscape:cy="510.46784"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:45.79578781px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="86.574036"
+       y="315.33704"
+       id="text5003"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5005"
+         x="86.574036"
+         y="315.33704">Block.j</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.9872092;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5007"
+       width="538.58417"
+       height="592.23206"
+       x="88.565033"
+       y="363.78433" />
+    <text
+       xml:space="preserve"
+       style="font-size:21.61509514px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="100.48626"
+       y="637.55499"
+       id="text5009"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5011"
+         x="100.48626"
+         y="637.55499">Block(blockName, parameters, returnType, ...){  </tspan><tspan
+         sodipodi:role="line"
+         x="100.48626"
+         y="664.57385"
+         id="tspan5013">   parameters = parameters;  </tspan><tspan
+         sodipodi:role="line"
+         x="100.48626"
+         y="691.59271"
+         id="tspan5019">   returnType = returnType;</tspan><tspan
+         sodipodi:role="line"
+         x="100.48626"
+         y="718.61157"
+         id="tspan5068">   [...]</tspan><tspan
+         sodipodi:role="line"
+         x="100.48626"
+         y="745.63049"
+         id="tspan5017">}</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.48577499px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="104.10327"
+       y="402.49466"
+       id="text5040"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5042"
+         x="104.10327"
+         y="402.49466">Parameters parameters;</tspan><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="430.60187"
+         id="tspan5058" /><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="458.70911"
+         id="tspan5048" /><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="486.81631"
+         id="tspan5046"></tspan><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="514.92352"
+         id="tspan5064">Fields localFields;</tspan><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="543.03076"
+         id="tspan5060" /><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="571.138"
+         id="tspan5050" /><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="599.24518"
+         id="tspan5044"></tspan><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="627.35242"
+         id="tspan5066" /><tspan
+         sodipodi:role="line"
+         x="104.10327"
+         y="655.45966"
+         id="tspan5188" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.17443275px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="170.03177"
+       y="430.75479"
+       id="text5052"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5054"
+         x="170.03177"
+         y="430.75479"
+         style="font-style:italic">parameters fields are </tspan><tspan
+         sodipodi:role="line"
+         x="170.03177"
+         y="454.72284"
+         style="font-style:italic"
+         id="tspan5056">inserted into constructor </tspan><tspan
+         sodipodi:role="line"
+         x="170.03177"
+         y="478.69086"
+         style="font-style:italic"
+         id="tspan5062">from CodeProducer</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:23.43668938px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="270.80344"
+       y="294.77832"
+       id="text5052-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="270.80344"
+         y="294.77832"
+         style="font-style:italic"
+         id="tspan5062-7">(MainBlock or Function</tspan><tspan
+         sodipodi:role="line"
+         x="270.80344"
+         y="324.07419"
+         style="font-style:italic"
+         id="tspan5102"> of Hepial language)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.17443275px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="173.13629"
+       y="542.89465"
+       id="text5052-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="173.13629"
+         y="542.89465"
+         style="font-style:italic"
+         id="tspan5062-0">variables declared into the block. </tspan><tspan
+         sodipodi:role="line"
+         x="173.13629"
+         y="566.86273"
+         style="font-style:italic"
+         id="tspan5136">They are added from CodeProducer</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:21.61509514px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="104.64632"
+       y="796.37195"
+       id="text5009-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5011-6"
+         x="104.64632"
+         y="796.37195">mainFunction(parameters){  </tspan><tspan
+         sodipodi:role="line"
+         x="104.64632"
+         y="823.39081"
+         id="tspan5178">   function instructions...</tspan><tspan
+         sodipodi:role="line"
+         x="104.64632"
+         y="850.40967"
+         id="tspan5190" /><tspan
+         sodipodi:role="line"
+         x="104.64632"
+         y="877.42853"
+         id="tspan5222" /><tspan
+         sodipodi:role="line"
+         x="104.64632"
+         y="904.44745"
+         id="tspan5017-3">}   </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="95.714287"
+       y="73.790756"
+       id="text5180"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5182"
+         x="95.714287"
+         y="73.790756">f1 function call: </tspan><tspan
+         sodipodi:role="line"
+         x="95.714287"
+         y="123.79076"
+         id="tspan5184">   new F1()</tspan><tspan
+         sodipodi:role="line"
+         x="95.714287"
+         y="173.79076"
+         id="tspan5186">   f1.mainFunction()</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.17443275px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="174.77895"
+       y="849.95374"
+       id="text5052-8-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="174.77895"
+         y="849.95374"
+         style="font-style:italic"
+         id="tspan5136-6">instructions are written </tspan><tspan
+         sodipodi:role="line"
+         x="174.77895"
+         y="873.92175"
+         style="font-style:italic"
+         id="tspan5224">by CodeProducer</tspan></text>
+  </g>
+</svg>
