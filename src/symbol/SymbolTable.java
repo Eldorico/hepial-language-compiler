@@ -84,11 +84,17 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	        ErrorPrinter.getInstance().logError(symbolIdentifier+" : function allready defined on line "+declaredFunctionsNameList.get(symbolIdentifier), symbol.declarationLineNumber);
 	        duplicateSymbolsFound = true;
 	        return false;
+        // if a function is defined in another function, prohibit it
+	    }else if(symbol instanceof FunctionSymbol && !currentBlocName.equals(mainBlocName)){
+            ErrorPrinter.getInstance().logError(symbolIdentifier+" : cannot declare a function into another function.", symbol.declarationLineNumber);
+            duplicateSymbolsFound = true;
+            return false;
 		// else, add the symbol into the table
 		}else{
 
 		    // if the symbol is a function
 			if(symbol instanceof FunctionSymbol){
+
 			    // add the parameters of the function
 			    addFunctionParameters(symbolIdentifier, (FunctionSymbol)symbol);
 			    // register function name to avoid functions redefinitions

@@ -6,6 +6,14 @@ entier x;
 
 entier facto( entier n)
 entier asdf;
+
+entier facto2()
+
+entier asdf2;
+debutfonc
+	retourne 1;
+finfonc
+
 debutfonc
 	x=0;
 	si n == 0 alors
