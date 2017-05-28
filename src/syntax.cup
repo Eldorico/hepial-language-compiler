@@ -113,7 +113,7 @@ PROGRAMME  ::= ENTETE:e LISTE_DECLA:l keyword_debutprg CORPS keyword_finprg {:
                   for(int i=l.size()-1; i>=0; i--){
                       SymbolTable.getInstance().addSymbol(l.get(i).getKey(), l.get(i).getValue());
                   }
-                  System.out.printf("Terminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
+                  //System.out.printf("Terminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
               :}
               ;
 

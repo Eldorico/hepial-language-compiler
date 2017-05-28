@@ -1,11 +1,12 @@
 programme hepial5
 
-booleen b;
+entier asdf;
 
 debutprg
-	b = faux;
-	ecrire non b;
+	lire asdf;
+	ecrire asdf;
 finprg
+
 
 /*
 

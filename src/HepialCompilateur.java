@@ -17,6 +17,7 @@ public class HepialCompilateur {
 			parser myP = new parser(myLexical);
 
 			// parse the code and check for syntax errors
+			System.out.println("Detecting syntax errors...");
 			try {myP.parse();}
 			catch (Exception e) {
 				System.exit(-1);
@@ -37,7 +38,7 @@ public class HepialCompilateur {
 			}
 
 			// debug
-			System.out.println("\n\ndetecting semantic errors...");
+			System.out.println("Detecting semantic errors...");
 
 			// check for semantic errors and print errors if any
 			boolean errorsDetected = false;

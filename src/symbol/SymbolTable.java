@@ -110,7 +110,7 @@ public class SymbolTable {
 			// add the symbol to the table
 	        symbolTable.get(currentBlocName).put(symbolIdentifier, symbol);
 	        symbolsList.add(symbol);
-	        System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
+	        //System.out.printf("SymbolTable in bloc %s: added %s: %s\n", currentBlocName, symbolIdentifier, symbol.toString());
 
 	        // set the owner of the symbol
 	        symbol.setBlockName(currentBlocName);

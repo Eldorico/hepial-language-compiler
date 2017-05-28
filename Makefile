@@ -7,7 +7,6 @@ JFLEXFILENAME=Lexical
 bin/${PROGRAMFILENAME}.class: bin/$(JFLEXFILENAME).java bin/sym.class bin/${JFLEXFILENAME}.class
 	javac -d bin -cp lib/java-cup-11a.jar:bin src/$(PROGRAMFILENAME).java
 
-
 # Cup ...
 bin/sym.class : src/${CUPFILENAME}.cup src/$(JFLEXFILENAME).flex
 	# compile every java class
@@ -36,7 +35,7 @@ bin/$(JFLEXFILENAME).java: src/$(JFLEXFILENAME).flex
 
 # Clean
 clean:
-	rm -f -r bin sources.txt compiledBin
+	rm -f -r bin sources.txt compiledBin 
 
 # Remake 
 remake: 

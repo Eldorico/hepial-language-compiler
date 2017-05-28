@@ -10,3 +10,21 @@
 
 - CUP: a java version of Yacc, a syntaxic analyser.  JFlex is compatible with Cup.  [http://www2.cs.tum.edu/projects/cup/](http://www2.cs.tum.edu/projects/cup/)
 
+- Jasmin:  an assembler for the JVM.  [http://jasmin.sourceforge.net/](http://jasmin.sourceforge.net/)
+
+  ​
+
+
+## Usage:
+
+```bash
+# compile the hepial compilator
+make
+
+# compile the hepal file
+bash hepiaCompile <fileName>    # if no filename entered: will compile input.txt
+
+# execute the hepial executable
+bash <programName> 
+```
+

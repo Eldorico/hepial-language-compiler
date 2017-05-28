@@ -1,7 +1,9 @@
 package codeProduction;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -63,10 +65,24 @@ public class CodeProducer {
             produceJasminToClass(capitaliseFirstChar(blocName)+".j", outputFolderName, jasminLibPath);
         }
 
+        // create the "executable" file
+        String fileName = capitaliseFirstChar(programName);
+        try{
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            writer.println("#/bin/sh");
+            writer.println("java -cp "+outputFolderName+" "+fileName);
+            writer.close();
+        } catch (IOException e) {
+           System.err.println("Error on creating the executable: "+fileName);
+           System.err.print(e.getMessage());
+           System.exit(-2);
+        }
+        System.out.println("Generated executable program: "+fileName+" : to execute it: bash "+fileName);
+
         // debug
-        System.out.println("\nLaunch compiled program for debugging...");
-        System.out.println("------------------------------------------");
-        executeShellProcess("java -cp "+outputFolderName+" "+capitaliseFirstChar(programName));
+        //System.out.println("\nLaunch compiled program for debugging...");
+        //System.out.println("------------------------------------------");
+        //executeShellProcess("java -cp "+outputFolderName+" "+capitaliseFirstChar(programName));
 
     }
 
