@@ -1,19 +1,20 @@
 programme hepial
 
 entier i;
-entier b;
+entier asdf;
 
 debutprg
 
 pour i allantde 0 a 10 faire
 
-	pour b allantde 0 a 10 faire
+	si i == 0 ou i == 2 ou i == 4  ou i== 6 ou i == 8 ou i == 10 alors
 		ecrire i;
-	finpour
-
-	ecrire i;
+	sinon
+		asdf = 1;
+	finsi
 
 finpour
+
 finprg
 
 /*

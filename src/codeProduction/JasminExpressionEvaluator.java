@@ -41,6 +41,7 @@ import abstractTree.expression.TabValueIdentifier;
 class JasminExpressionEvaluator implements JEvaluator {
 
     //int nbLocalsUsed = 1; // we have to start to 2 to leave some place for the this, and parent
+    int orSuffixesUsed = 0;
 
     private static JasminExpressionEvaluator instance = new JasminExpressionEvaluator();
     public static JasminExpressionEvaluator getInstance(){
@@ -200,22 +201,18 @@ class JasminExpressionEvaluator implements JEvaluator {
             toReturn.addIndentedLine("ldc 1");
             toReturn.addIndentedLine("isub");
         }else if(evaluable instanceof OrExpression){
+            // book an 'or suffix'
+            int orSuffix = orSuffixesUsed;
+            orSuffixesUsed ++;
+
             // compute the left assignment.
             JasminExpression jleft = jEvaluate(evaluable.getLeftOperand());
             toReturn.maxLocalsSizeNeeded = Math.max(toReturn.maxLocalsSizeNeeded, jleft.maxLocalsSizeNeeded);
             toReturn.maxStackSizeNeeded = Math.max(toReturn.maxStackSizeNeeded, jleft.maxStackSizeNeeded);
             toReturn.addText(jleft.getJCodeAsString());
-            // on the stack, we should have a negative, positive, or 0 value. convert it to -1, 0, 1
-            toReturn.addIndentedLine("i2l");
-            toReturn.addIndentedLine("ldc 0");
-            toReturn.addIndentedLine("i2l");
-            toReturn.addIndentedLine("lcmp");
 
-            // multiply by 2, and add 1
-            toReturn.addIndentedLine("ldc 2");
-            toReturn.addIndentedLine("imul");
-            toReturn.addIndentedLine("ldc 1");
-            toReturn.addIndentedLine("iadd");
+            // if we have a positive value, got to ok label
+            toReturn.addIndentedLine("ifgt OrOk"+orSuffix);
 
             // compute the right assignment.
             JasminExpression jright = jEvaluate(evaluable.getRightOperand());
@@ -223,20 +220,20 @@ class JasminExpressionEvaluator implements JEvaluator {
             toReturn.maxStackSizeNeeded += jright.maxStackSizeNeeded;
             toReturn.addText(jright.getJCodeAsString());
 
-            // on the stack, we should have two negative, positive, or 0 value. Convert the first it to -1, 0, 1
-            toReturn.addIndentedLine("i2l");
+            // if we have a positive value, got to ok label
+            toReturn.addIndentedLine("ifgt OrOk"+orSuffix);
+
+            // else load 0 and go to 'next' label
             toReturn.addIndentedLine("ldc 0");
-            toReturn.addIndentedLine("i2l");
-            toReturn.addIndentedLine("lcmp");
+            toReturn.addIndentedLine("goto OrNext"+orSuffix);
 
-             // multiply by 2, and add 1
-            toReturn.addIndentedLine("ldc 2");
-            toReturn.addIndentedLine("imul");
+            // write the orOk part (load 1 and go to next)
+            toReturn.addLine("OrOk"+orSuffix+":");
             toReturn.addIndentedLine("ldc 1");
-            toReturn.addIndentedLine("iadd");
+            toReturn.addIndentedLine("goto OrNext"+orSuffix);
 
-            // add the two numbers
-            toReturn.addIndentedLine("iadd");
+            // write the next label
+            toReturn.addLine("OrNext"+orSuffix+":");
         }
 
         return toReturn;
