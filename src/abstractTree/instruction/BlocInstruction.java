@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class BlocInstruction extends Instruction implements Iterable<Instruction> {
 
-	LinkedList<Instruction> instructionList; // TODO: change this to an ArrayList
+	LinkedList<Instruction> instructionList;
 
 	public BlocInstruction(Instruction instruction) {
 	    super(-1); // we should not use the declarationLineNumber of the bloc instruction. Only the declarationNumber of the instructions into the instructionList...

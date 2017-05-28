@@ -38,7 +38,6 @@ public class FunctionSymbol extends Symbol {
 	}
 
 	/**
-	 * TODO: this function shoud be removed...
 	 * @description: returns the returnType as a string
 	 * @return
 	 */

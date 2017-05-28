@@ -39,7 +39,6 @@ import abstractTree.expression.TabValueIdentifier;
  */
 class JasminExpressionEvaluator implements JEvaluator {
 
-    //int nbLocalsUsed = 1; // we have to start to 2 to leave some place for the this, and parent
     int orSuffixesUsed = 0;
     int conversionSuffixesUsed = 0;
 

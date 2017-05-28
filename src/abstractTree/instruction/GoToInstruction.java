@@ -11,8 +11,7 @@ public class GoToInstruction extends Instruction {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return null;
+        return "goto "+label;
     }
 
     public String getLabel(){

@@ -14,7 +14,6 @@ public class IntBoolSymbol extends VariableSymbol {
 
 	@Override
 	public boolean semanticErrorsDetected(){
-	    //TODO IntBoolSymbol.semanticErrorsDetected(): je sais pas si faut la faire celle ci
 	    return false;
 	}
 

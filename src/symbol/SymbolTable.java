@@ -12,9 +12,7 @@ import utils.ErrorPrinter;
  * @description: The symbol Table Instance. It uses the singleton pattern
  *
  */
-public class SymbolTable {  // TODO: avoid declaration of blocks called programName
-                            // TODO: avoid declaration of blocks called 'mainFunction' (because it is reserved for the code production)
-                            // TODO: avoid function declaration in function declaration
+public class SymbolTable {
 
     private String programName;
     private String mainFunctionName = new String("mainFunction");
@@ -87,6 +85,11 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
         // if a function is defined in another function, prohibit it
 	    }else if(symbol instanceof FunctionSymbol && !currentBlocName.equals(mainBlocName)){
             ErrorPrinter.getInstance().logError(symbolIdentifier+" : cannot declare a function into another function.", symbol.declarationLineNumber);
+            duplicateSymbolsFound = true;
+            return false;
+        // avoid variable/function declaration with the names 'mainFunction'
+	    }else if(symbolIdentifier.equals(mainFunctionName)){
+            ErrorPrinter.getInstance().logError(symbolIdentifier+" : cannot declare a function with the name "+mainFunctionName, symbol.declarationLineNumber);
             duplicateSymbolsFound = true;
             return false;
 		// else, add the symbol into the table
@@ -169,6 +172,16 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	 */
 	public boolean semanticErrorsDetected(){
 	    boolean returnValue = duplicateSymbolsFound;
+	    if(symbolTable.containsKey(programName)){
+	        ErrorPrinter.getInstance().logError(programName+": cannot define a function with the same name as the program name", 0);
+	        returnValue = true;
+	    }
+	    for(HashMap<String, Symbol> blockTable : symbolTable.values() ){
+	        if(blockTable.containsKey(programName)){
+	            ErrorPrinter.getInstance().logError(programName+": cannot define a variable with the same name as the program name", blockTable.get(programName).declarationLineNumber);
+	            returnValue = true;
+	        }
+	    }
 	    for(Symbol symbol: symbolsList){
 	        if(symbol.semanticErrorsDetected()){
 	            returnValue = true;

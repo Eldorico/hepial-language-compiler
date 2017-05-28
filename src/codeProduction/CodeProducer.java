@@ -141,8 +141,11 @@ public class CodeProducer {
             block.instructions.addReturnInstruction(null);
         }
 
-        // exit from current block
-        SymbolTable.getInstance().exitCurrentBloc();
+        // exit from current block (if we are not into the main block)
+        if(!SymbolTable.getInstance().getCurrentBlockLocation().equals(SymbolTable.getInstance().getMainBlockName())){
+            SymbolTable.getInstance().exitCurrentBloc();
+        }
+
 
         // produce block
         block.produceJasminFile();

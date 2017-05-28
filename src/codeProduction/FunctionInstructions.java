@@ -369,7 +369,6 @@ class FunctionInstructions extends JasminCodeProducer{
     }
 
     private String getFunctionCallSignature(ExpressionList parameters, Type returnType){
-        // TODO: getFunctionCallSignature()
         return new String("()"+Type.jTypeObject(returnType));
     }
 
