@@ -14,8 +14,8 @@ public class CstIntBoolSymbol extends IntBoolSymbol {
 
 	Expression value;
 
-	public CstIntBoolSymbol(int declarationLinesNumber, Type type, Expression value, String blockName) {
-		super(declarationLinesNumber, type, blockName);
+	public CstIntBoolSymbol(int declarationLinesNumber, Type type, Expression value) {
+		super(declarationLinesNumber, type);
 		this.value = value;
 	}
 

@@ -13,8 +13,8 @@ public class ArraySymbol extends VariableSymbol {
 	ArrayList<Integer> upperBoundValues = new ArrayList<Integer>();
 
 
-	public ArraySymbol(int declarationLinesNumber, Type type, ArrayList< SimpleEntry< Expression, Expression>> dimensionsList, String blockName) {
-		super(declarationLinesNumber, type, blockName);
+	public ArraySymbol(int declarationLinesNumber, Type type, ArrayList< SimpleEntry< Expression, Expression>> dimensionsList) {
+		super(declarationLinesNumber, type);
 		this.dimensionsList = dimensionsList;
 	}
 

@@ -173,7 +173,7 @@ DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgul
                    Type type = s.type();
                    int line = s.getDeclarationLinesNumber();
                    Expression expression = (Expression) parser.abstractTreeStack.pop();
-                   CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression, SymbolTable.getInstance().getCurrentBlockLocation());
+                   CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression);
 
                    declarationsList.add(new SimpleEntry<String, symbol.Symbol>(i.getKey(), symbol));
                    RESULT = declarationsList;
@@ -198,7 +198,7 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
-                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions, fctIdentifier.getKey(), SymbolTable.getInstance().getCurrentBlockLocation())));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions, fctIdentifier.getKey())));
                   RESULT = declarationsList;
               :}
               | TYPE:t ident:fctIdentifier char_par_ouvr char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
@@ -217,7 +217,7 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
                   VariableSymbol type = (VariableSymbol)t;
                   Type ftcReturnType = type.type();
                   ArrayList<SimpleEntry<String, VariableSymbol>> emptyParamsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
-                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions, fctIdentifier.getKey(), SymbolTable.getInstance().getCurrentBlockLocation())));
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions, fctIdentifier.getKey())));
                   RESULT = declarationsList;
               :}
               ;
@@ -225,7 +225,7 @@ DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_fe
 TYPE       ::= TYPEBASE:t {:
                   int lineNumber = t.getKey();
                   Type type = t.getValue();
-                  RESULT = new IntBoolSymbol(lineNumber, type, SymbolTable.getInstance().getCurrentBlockLocation());
+                  RESULT = new IntBoolSymbol(lineNumber, type);
               :}
               | TABLEAU:t {:
                   RESULT = t;
@@ -243,7 +243,7 @@ TYPEBASE   ::=  keyword_entier:k {:
 TABLEAU    ::= TYPEBASE:t char_crochet_ouvr DIM:d char_crochet_ferm {:
                   int lineNumber = t.getKey();
                   Type type = t.getValue();
-                  RESULT = new ArraySymbol(lineNumber, type, d, SymbolTable.getInstance().getCurrentBlockLocation());
+                  RESULT = new ArraySymbol(lineNumber, type, d);
               :}
               ;
 

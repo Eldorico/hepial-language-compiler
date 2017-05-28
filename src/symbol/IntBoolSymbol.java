@@ -3,8 +3,8 @@ package symbol;
 
 public class IntBoolSymbol extends VariableSymbol {
 
-	public IntBoolSymbol(int declarationLineNumber, Type type, String blockName) {
-		super(declarationLineNumber, type, blockName);
+	public IntBoolSymbol(int declarationLineNumber, Type type) {
+		super(declarationLineNumber, type);
 	}
 
 	@Override

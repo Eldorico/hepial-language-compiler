@@ -74,9 +74,6 @@ public class SymbolTable {  // TODO: avoid declaration of blocks called programN
 	 * @return
 	 */
 	public boolean addSymbol(String symbolIdentifier, Symbol symbol){
-	    // debug
-	    String debug = symbolIdentifier;
-
 	    // if symbol allready added, log error
 	    if(symbolTable.get(currentBlocName).containsKey(symbolIdentifier)){
 			System.err.printf("SymbolTable: duplicate symbol: %s\n", symbolIdentifier);

@@ -19,8 +19,8 @@ public class FunctionSymbol extends Symbol {
 	ArrayList<SimpleEntry<String, VariableSymbol>> parameters;
 	BlocInstruction instructions;
 
-	public FunctionSymbol(int declarationLinesNumber, Type returnType, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, BlocInstruction instructions, String functionName, String blockName) {
-		super(declarationLinesNumber, blockName);
+	public FunctionSymbol(int declarationLinesNumber, Type returnType, ArrayList<SimpleEntry<String, VariableSymbol>> parameters, BlocInstruction instructions, String functionName) {
+		super(declarationLinesNumber);
 		this.functionName = functionName;
 		this.returnType = returnType;
 		this.parameters = parameters;
