@@ -74,7 +74,7 @@ public class SymbolTable {
 	public boolean addSymbol(String symbolIdentifier, Symbol symbol){
 	    // if symbol allready added, log error
 	    if(symbolTable.get(currentBlocName).containsKey(symbolIdentifier)){
-			System.err.printf("SymbolTable: duplicate symbol: %s\n", symbolIdentifier);
+			//System.err.printf("SymbolTable: duplicate symbol: %s\n", symbolIdentifier);
 			ErrorPrinter.getInstance().logError(symbolIdentifier+" : symbol allready defined on line "+getSymbol(symbolIdentifier).declarationLineNumber, symbol.declarationLineNumber);
 			duplicateSymbolsFound = true;
 			return false;
