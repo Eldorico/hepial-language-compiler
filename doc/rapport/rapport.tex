@@ -1,0 +1,140 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{mathtools}
+\usepackage{gensymb}
+\usepackage{fontspec}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage[french]{babel}
+\usepackage{indentfirst}
+\usepackage{multicol}
+%\usepackage{float}
+\usepackage{mdwlist}
+\usepackage{bnf}
+\usepackage{listliketab}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\renewcommand{\lstlistingname}{}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{gray},
+  keywordstyle=\color{blue}
+}
+
+
+
+\newcommand\vartitle{Implémentation d'un compilateur simplifié}
+\newcommand\varauthor{Federico Pfeiffer}
+\newcommand\vardate{\today}
+
+\title{\vartitle}
+\author{\varauthor}
+\date{\vardate}
+
+\pagestyle{fancyplain}
+\lhead[\vartitle]{\vartitle}
+\chead[]{}
+\rhead[\varauthor]{\varauthor}
+\lfoot[]{}
+\cfoot[\thepage\ of \pageref{LastPage}]{\thepage\ of \pageref{LastPage}}
+\rfoot[]{}
+
+\renewcommand{\headrulewidth}{0.2mm}
+\renewcommand{\footrulewidth}{0mm}
+
+\setlength{\headsep}{40pt}
+
+\setlength{\columnsep}{30pt}
+
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{2mm}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+
+\hypersetup{
+  hidelinks,
+  pdfstartview={FitV},
+  pdftitle={\vartitle},
+  pdfauthor={\varauthor}
+}
+
+\begin{document}
+
+  \begin{titlepage}
+    \maketitle
+
+    \thispagestyle{empty}
+
+    \begin{abstract}
+    Ce rapport décrit l'implémentation d'un compilateur du langage Hepial, défini les spécifications en annexe.
+    \end{abstract}
+
+    \vspace{1cm}
+
+    \tableofcontents
+
+  \end{titlepage}
+
+  \newpage
+
+  \section{Présentation}
+  
+  \subsection{État général de l'implémentation}  
+  
+    \par Le compilateur a pu être implémenté selon le cahier des charges demandé: il analyse syntaxiquement un code source en créant un arbre abstrait et une table des symbole, puis recherche les erreurs sémantiques possibles au sein de l'arbre abstrait et la table des symboles. Si aucune erreur a été détectée, le compilateur produit un code source en jasmin, qui est ensuite compilé en byte code .class. 
+    
+     \par La notion de récursivité de fonctions, et de portée des variables a également pu être implémentée. De même, des expressions complexes telles que celles-ci ont également pu être implémentées. \textit{if( a < b || 2*6+4 > 0)}. Enfin, des imbrications de boucles (telles que while et for) sont également possible. 
+     
+     \par Bien que les tableaux aient été ajoutés, ceux-ci n'ont été que très peu testés. Plusieurs dimensions sont en théories possibles, mais cela n'a pas été testé non plus. La gestion des tableaux a été définie de la sorte: array[5 .. 10] crée un tableau de 5 cases, dont l'index va de 0 à 5. 
+     
+     \par Enfin, les expressions \textit{non} et \textit{innégal} s'écrivent respectivement \textit{!} et \textit{!=} au lieu de \textit{non} et \textit{<>}. Par ailleurs, la déclaration de fonction au sein d'une fonction est interdite.
+     
+  \subsection{Utilisation}
+  
+  \par L'utilisation du compilateur se fait de la manière suivante: 
+
+  \begin{enumerate}
+  \item Compilez le compilateur avec la commande \textit{make}. Cela va générer un dossier \textit{/bin/} contenant le byte code du compilateur. L'exécutable nommé \textit{hepiaCompile} sera généré dans le même dossier où se trouve le fichier \textit{make}. (Pas besoin de changer de dossier avec \textit{cd}).  
+  \item Compilez ensuite le fichier hepial avec la commande \textit{bash hepiaCompile} suivit du nom du fichier Hepial à compiler. Cela va générer un dossier \textit{compiledBin} contenant le byteCode du programme Hepial, ainsi que ses sources en jasmin. L’exécutable du programme sera généré dans le même dossier où se trouve le fichier \textit{make}.
+  \end{enumerate}
+  
+  \begin{lstlisting}[language=bash,caption={Utilisation du compilateur}]
+    
+    # compiler le compilateur
+    $ make 
+    
+    # compiler le fichier hepial
+    $ bash hepiaCompile <fileName>  # fileName = input.txt par défaut
+    
+    # lancer l exécutable compilé
+    $ bash <programName>
+  \end{lstlisting}
+
+\newpage  
+  
+  \subsection{Vue d'ensemble}
+  
+  \par La compilation s'exécute dans cet ordre:
+  \begin{enumerate}
+    \item Génération de l'arbre abstrait, de la table des symboles pendant le parsing syntaxique de Cup. 
+    \item Vérification sémantique dans l'arbre abstrait et dans la table des symboles. 
+    \item Production du code: fichiers jasmin et fichier .class. 
+  \end{enumerate}
+  
+  \par  Les diverses étapes de la compilation sont exécutées depuis le fichier \textit{HepialCompilateur.java}, à l'intérieur de la fonction \textit{main}.
+  
+  
+
+   
+   
+\end{document}

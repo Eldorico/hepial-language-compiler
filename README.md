@@ -2,7 +2,7 @@
 
 - jflex: a lexical analyser generator for java. (equivalent to Lex for C) [(http://jflex.de/download.html)](http://jflex.de/download.html) 
 
-- java 7 (jdk and jvm) 
+- java 8 (jdk and jvm)  _(I think java 7 works but I'm not sure)_
 
   ​
 
@@ -21,7 +21,7 @@
 # compile the hepial compilator
 make
 
-# compile the hepal file
+# compile the hepial file
 bash hepiaCompile <fileName>    # if no filename entered: will compile input.txt
 
 # execute the hepial executable
