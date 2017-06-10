@@ -361,13 +361,39 @@
   
   \begin{itemize}
     \item constructor: de type ConstructorProducer
-    \item localFiels: de type Fileds
+    \item localFields: de type Fields
     \item instructions : de type FunctionInstructions
   \end{itemize}
   
-  \subsubsection{Block}
+  \par \textit{ConstructorProducer} s'occupe de créer le code jasmin concernant le constructeur d'une fonction ou du bloc main, \textit{Field} s'occupe de créer la partie liée aux variables déclarées, et \textit{FunctionInstruction} s'occupe de convertir les instructions du bloc en instructions jasmin. Chacune de ces classes crée son code jasmin dans une "string" de type \textit{JasminExpression}. Cette string sera utilisée par \textit{Block.produceJasminFile()} pour écrire le fichier jasmin. 
+  
+  \subsubsection{JasminExpressionEvaluator}
+  
+  \par Enfin, pour convertir une classe Expression en du code jasmin, la classe \textit{JasminExpressionEvaluator}. Je voulais regrouper toutes les fonctions pour convertir une expression en jasmin, afin d'éviter d'implémenter ces fonctions dans chaque classe Expression et gagner en lisibilité. Ce fut l'occasion de tester le \textit{VisitorPattern}: \textit{JasminExpressionEvaluator} implémente l'interface permettant d'accéder à toutes les classes d'expression afin de les convertir en code jasmin. 
   
   \section{Exemples de compilation / exécution}
+  
+  \par Afin d'illustrer le bon fonctionnement du compilateur, j'ai choisi les 4 cas suivants en essayant de regrouper la plus large palette de concepts définis dans le langage Hepial. 
+  
+  \par Le premier exemple ne produit pas de code, mais indique certaines erreurs de syntaxe principales à relever: l'affectation sur une constante, une expression entière dans une affectation booléenne, une double déclaration de variable, et l'utilisation d'une variable indéfinie. 
+  
+   \begin{lstlisting}[caption={Code Hepial pour tester les erreurs sémantiques}]
+   1:   programme hepialProgramName
+   2:   
+   3:   constante entier const = 1;
+   4:   booleen bool;
+   5:   entier bool;
+   6:   
+   7:   debutprg
+   8:      const = 123;
+   9:      bool = bool + 321;
+   10:     bool = indefini;
+   11:  finprg
+   \end{lstlisting} 
+   
+   \begin{lstlisting}[language=bash,caption={Code Hepial pour tester les erreurs sémantiques}]
+   $ bash hepiaCompile
+   \end{lstlisting} 
   
   \section{Améliorations possibles}
    
