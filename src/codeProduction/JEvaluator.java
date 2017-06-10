@@ -11,7 +11,10 @@ import abstractTree.expression.IntNumber;
 import abstractTree.expression.NotExpression;
 import abstractTree.expression.RelationalBooleanExpression;
 import abstractTree.expression.RelationalExpression;
-
+/**
+*@description: this provides an interface to evaluate each 
+*   Expression and convert it into a JasminExpression. 
+*/
 public interface JEvaluator {
     public JasminExpression jEvaluate(Expression evaluable);
     public JasminExpression jEvaluate(ArithmeticExpression evaluable);

@@ -1,5 +1,11 @@
 package codeProduction;
 
+/**
+ * @description: this class is used to keep jasmin code in a single String.
+ * (This string will be printed "as is" into a jasmin file)
+ * The attributes jInstructions contains the jasmin code.
+ * The class provides simple API to addLines, addIndentedLine, etc...
+ */
 class JasminCodeText {
     protected String jInstructions = new String();
 
