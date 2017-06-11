@@ -93,9 +93,9 @@
   
   \subsection{État général de l'implémentation}  
   
-    \par Le compilateur a pu être implémenté selon le cahier des charges demandé: il analyse syntaxiquement un code source en créant un arbre abstrait et une table des symbole, puis recherche les erreurs sémantiques possibles au sein de l'arbre abstrait et la table des symboles. Si aucune erreur a été détectée, le compilateur produit un code source en jasmin, qui est ensuite compilé en byte code .class. 
+    \par Le compilateur a pu être implémenté selon le cahier des charges demandé: il analyse syntaxiquement un code source en créant un arbre abstrait et une table des symboles, puis recherche les erreurs sémantiques possibles au sein de l'arbre abstrait et la table des symboles. Si aucune erreur a été détectée, le compilateur produit un code source en jasmin, qui est ensuite compilé en byte code .class. 
     
-     \par La notion de récursivité de fonctions, et de portée des variables ont également pu être implémentée. De même, des expressions complexes telles que celles-ci ont également pu être implémentées. \textit{if( a < b || 2*6+4 > 0)}. Enfin, des imbrications de boucles (telles que while et for) sont également possible. 
+     \par La notion de récursivité de fonctions, et de portée des variables ont également pu être implémentée. De même, des expressions complexes telles que celles-ci ont également pu être implémentées. \textit{if( a < b || 2*6+4 > 0)}. Enfin, la priorité des opérateurs correspond à celle demandée, et il est possible d'imbriquer des boucles dans des boucles (telles que while et for).
      
      \par Bien que les tableaux aient été ajoutés, ceux-ci n'ont été que très peu testés. Plusieurs dimensions sont en théories possibles, mais cela n'a pas été testé non plus. La gestion des tableaux a été définie de la sorte: array[5 .. 10] crée un tableau de 5 cases, dont l'index va de 0 à 5. 
      
@@ -128,7 +128,7 @@
   
   \par La compilation s'exécute dans cet ordre:
   \begin{enumerate}
-    \item Génération de l'arbre abstrait, de la table des symboles pendant le parsing syntaxique de Cup. 
+    \item Génération de l'arbre abstrait et de la table des symboles pendant le parsing syntaxique de CUP. 
     \item Vérification sémantique dans l'arbre abstrait et dans la table des symboles. 
     \item Production du code: fichiers jasmin et fichier .class. 
   \end{enumerate}
@@ -168,7 +168,7 @@
   :};
   \end{lstlisting}
   
-  \par À la fin du parsing, on obtient un seul élément dans la pile d'arbre abstrait: un BlocInstruction contenant toutes les instructions du programme. Les instructions des fonctions se trouvent dans le symbol FunctionSymbol, ajouté dans la table des symboles. 
+  \par À la fin du parsing, on obtient un seul élément dans la pile d'arbre abstrait: un \textit{BlocInstruction} contenant toutes les instructions du programme. (Les instructions des fonctions se trouvent dans des classes \textit{FunctionSymbol}, ajoutées dans la table des symboles). 
   
     \begin{figure}[h]
     \includegraphics[width=1\textwidth,center]{../ressources/classesDExpressions.eps}
@@ -182,9 +182,9 @@
   
   \subsection{Table des symboles}
   
-  \par Les déclarations (telles que déclaration de fonction ou de variables) détectées pendant le parsing cup sont transmises de règles en règles à l'aide du RETURN de chaque règle. Elles sont transmises en tant que \textit{ArrayList<VarName, Symbol>}, ou plus précisément \textit{ArrayList<SimpleEntry<String, Symbol> >}. \\
+  \par Les déclarations (telles que déclaration de fonction ou de variable) détectées pendant le parsing CUP sont transmises de règles en règles à l'aide du RETURN de chaque règle grammaticale. Elles sont transmises en tant que \textit{ArrayList<VarName, Symbol>}, ou plus précisément \textit{ArrayList<SimpleEntry<String, Symbol> >}. \\
   Ces éléments sont ensuite insérés dans la table des symboles par la règle adéquate. \\
-  La table des symboles, de classe \textit{SymbolTable} est un singleton qui peut être accédée de manière statique à n'importe quel endroit du programme. 
+  La table des symboles, de type \textit{SymbolTable}, est un singleton qui peut être accédée de manière statique à n'importe quel endroit du programme. 
   
    \begin{figure}[h]
     \includegraphics[width=1\textwidth,center]{../ressources/classesDesSymboles.eps}
@@ -200,9 +200,9 @@
 
   \subsection{Pattern utilisé}
   
-  \par La vérification sémantique se fait une fois le parsing cup effectué. Nous nous retrouvons avec une tables des symboles complète, et une pile d'arbre abstrait contenant uniquement un bloc d'instructions \textit{(BlockInstruction)}. 
+  \par La vérification sémantique se fait une fois le parsing cup effectué: nous nous retrouvons avec une tables des symboles complète, et une pile d'arbre abstrait contenant uniquement un bloc d'instructions \textit{(BlockInstruction)}. 
   
-  \par A partir de là, le plus simple pour moi était d'utiliser le pattern \textit{Controller} défini dans les documents de cours. Si j'ai bien compris, il se rapproche du pattern \textit{Template method pattern} défini sur Wikipedia. Chaque classe de l'arbre abstrait comporte la méthode \textit{semanticErrorsDetected()}. Cette fonction vérifie si l'instance comporte des erreurs syntaxiques, et appelle la fonction  \textit{semanticErrorsDetected()} de tous les attributs de type arbre abstrait que l'instance contient. \\
+  \par A partir de là, le plus simple pour moi était d'utiliser le pattern \textit{Controller} décrit dans les documents de cours. (Si j'ai bien compris, il se rapproche du pattern \textit{Template method pattern} décrit sur Wikipedia). Chaque classe de l'arbre abstrait comporte la méthode \textit{semanticErrorsDetected()}. Cette fonction vérifie si l'instance comporte des erreurs syntaxiques, et appelle la fonction  \textit{semanticErrorsDetected()} de tous les attributs de type arbre abstrait que l'instance contient. \\
   Elle renvoie faux si une erreur a été détectée soit au sein de l'instance, soit au sein d'un de ses attributs. 
 
   \par Par exemple, la fonction \textit{WhileLoopInstruction.semanticErrorsDetected()} va vérifier que son attribut \textit{WhileLoopInstruction.condition} est bien de type booléen. La fonction va ensuite appeler \textit{WhileLoopInstruction.condition.semanticErrorsDetected()} et \\ \textit{WhileLoopInstruction.instructions.semanticErrorsDetected()}. 
@@ -232,7 +232,9 @@
   \newpage
   \subsection{Affichage des erreurs}
   
-  \par L'instance \textit{ErrorPrinter}, un singleton, permet aux fonctions \textit{semanticErrorsDetected()} d'y logger les erreurs trouvées lors de la vérifiacation sémantique. Une fois la vérification sémantique terminée, on peut appeler la fonction \textit{ErrorPrinter.getInstance().printErrors()} pour afficher les erreurs une à une. Cela permet d'effectuer une vérification sémantique complète, tout en loguant des erreurs, sans avoir à stopper la vérification sémantique à chaque fois qu'une erreur est trouvée. 
+  \par L'instance \textit{ErrorPrinter}, un singleton, permet aux fonctions \textit{semanticErrorsDetected()} d'y logger les erreurs trouvées lors de la vérifiacation sémantique. Une fois la vérification sémantique terminée, on peut appeler la fonction \textit{ErrorPrinter.getInstance().printErrors()} pour afficher les erreurs une à une. Ce système permet d'effectuer une vérification sémantique complète, tout en loguant des erreurs, sans avoir à stopper la vérification sémantique à chaque fois qu'une erreur est trouvée. 
+  
+  \par Afin de connaître le numéro de ligne de chaque expression/symbol, la partie JFlex s'occupe d'envoyer le numéro de la ligne correspondante dans les tokens fournis à CUP.
   
   \section{Production du code}
   
@@ -240,9 +242,9 @@
   
   \subsection{Architecture de base d'un programme Hepial}
   
-  \par Le code ayant pour finalité d'être décrite comme du byteCode java, il parait approprié d'illustrer l'architecture d'un programme Hepial en une représentation java. 
+  \par Le code ayant pour finalité d'être décrite comme du byteCode java, il parait approprié d'illustrer l'architecture d'un programme Hepial en une représentation java: 
   
-  \par Une première classe est créée, contenant la méthode \textit{static main()}. Cette classe est nommée avec le nom du programme définit dans l'entête du code Hepial . La méthode \textit{static main()} sert uniquement à lancer une deuxième instance, \textit{MainBlock}, contenant comme attributs les variables définies dans le bloc principal. Les instructions du bloc principal sont définis dans la fonction \textit{MainBlock.mainFunction()}.
+  \par Une première classe est créée, contenant la méthode \textit{static main()}. Cette classe est nommée avec le nom du programme définit dans l'entête du code Hepial. La méthode \textit{static main()} sert uniquement à lancer une deuxième instance, \textit{MainBlock}, contenant comme attributs les variables définies dans le bloc principal. Les instructions du bloc principal sont définis dans la fonction \textit{MainBlock.mainFunction()}.
   
     \begin{lstlisting}[language=java,caption={Architecture de base d'un programme Hepial}]
     public class HepialProgramName{
@@ -253,15 +255,17 @@
     }
     
    public class MainBlock{
-      // variables defined in main block go here
+      // Hepial variables defined in main block go here
    
       public void mainFunction(){
-          // main instructions go here
+          // Hepial main instructions go here
       }
     }
    \end{lstlisting}  
    
   \par Lors de la production du code, les fichier jasmin et .class du programme sont créées dans un dossier \textit{compiledBin}. L'exécutable en tant que tel du programme Hepial est un fichier bash créé dans le dossier parent de \textit{compiledBin}. Il se présente sous cette forme: 
+  
+  \newpage
   
   \begin{lstlisting}[language=bash,caption={Exécutable programme Hepial}]
    #/bin/sh
@@ -274,7 +278,7 @@
   
   \par Une première difficulté fut de trouver un moyen relativement simple de debugger les fichiers jasmin produits. L'utilisation des locales de la JVM ne permettaient pas de savoir quelle variable était réellement appelée. Appeler un attribut (une variable) par son nom se révéla beaucoup plus pratique pour debugger. Je me suis donc penché sur l'utilisation de classes java afin de représenter les variables déclarées, comme attributs d'une classe. 
   
-  \par La notion de portée des variables entre les fonctions fut également un enjeu majeur. La possibilité de créer des variables locales à la fonction déclarée, tout en pouvant appeler des variables déclarées hors de cette fonction était un deuxième argument pour utiliser des classes java pour chaque Bloc: Une classe pour le bloc principal, et une classe par fonction est une solution viable que j'ai choisi pour répondre à la notion de portée des variables. \\
+  \par La notion de portée des variables entre les fonctions fut également un enjeu majeur. La possibilité de créer des variables locales à la fonction déclarée, tout en pouvant appeler des variables déclarées hors de cette fonction était un deuxième argument pour utiliser des classes java pour chaque bloc: une classe pour le bloc principal, et une classe par fonction est une solution viable que j'ai choisi pour répondre à la notion de portée des variables. \\
   Chaque fonction créée peut être représentée sous forme d'une classe, dont le constructeur est appelé avec \textit{MainBlock} comme référence. 
   
   \par Un dernier enjeu était la notion de récursivité: une fonction pouvant s'appeler elle même, il fallait trouver un moyen de garder la portée des variables intègre. 
@@ -287,7 +291,7 @@
   
   \par Dans la classe fonction, des attributs supplémentaires sont ajoutés aux variables déclarées dans la fonction: les paramètres de la fonction elle même. 
   
-  \par Afin d'illustrer ceci, prenons ce code Hepial de la figure suivante comme exemple. On crée une variable globale égale à 1. On définit une fonction prenant en paramètre un entier. Cette fonction a une variable locale. La fonction prends la valeur entré en paramètre, fait la somme entre celle-ci et la variable globale, puis affecte le résultat dans sa variable locale. Elle retourne ensuite la valeur de sa variable locale. 
+  \par Afin d'illustrer ceci, prenons ce code Hepial de la figure suivante comme exemple. On crée une variable globale égale à 1. On définit une fonction prenant en paramètre un entier. Cette fonction a une variable locale. La fonction prends la valeur entrée en paramètre, fait la somme entre celle-ci et la variable globale, puis affecte le résultat dans sa variable locale. Elle retourne ensuite la valeur de sa variable locale. 
   \newpage
     \begin{lstlisting}[caption={Architecture d'une fonction et de son appel}]
    programme hepialProgramName
@@ -347,7 +351,7 @@
   
   \subsubsection{Block}  
   
-  \par Afin de créer les fichiers jasmin, \textit{CodeProducer} s'aide de la classe \textit{Block}. Cette dernière contient l'API nécessaire pour créer un fichier jasmin représentant chaque bloc du programme Hepial: à savoir le bloc principal, et les blocs représentant les fonctions déclarées. 
+  \par Afin de créer les fichiers jasmin, \textit{CodeProducer} s'aide de la classe \textit{Block}. Cette dernière contient l'API nécessaire pour créer un fichier jasmin représentant chaque bloc du programme Hepial: le bloc principal, et les blocs représentant les fonctions déclarées. 
   
   \par Le schéma suivant illustre la manière dont la classe \textit{CodeProducer} crée les fichiers jasmin: 
   
@@ -357,7 +361,7 @@
     \caption{Schéma général d'une production de code jasmin}
   \end{figure}
   
-  \par Pour produire le code jasmin, la classe \textit{Block} a comme attributs des classes spécialisées dans la "vraie" production du code jasmin: à savoir produire un  texte jasmin en fonction de leur spécialité. Les attributs en question de la classe \textit{Block} sont les suivants: 
+  \par Pour produire le code jasmin, la classe \textit{Block} a comme attributs des classes spécialisées dans la "vraie" production du code jasmin, c'est à dire produire un  texte jasmin en fonction de leur spécialité. Les attributs en question de la classe \textit{Block} sont les suivants: 
   
   \begin{itemize}
     \item constructor: de type ConstructorProducer
@@ -391,10 +395,146 @@
    11:  finprg
    \end{lstlisting} 
    
-   \begin{lstlisting}[language=bash,caption={Code Hepial pour tester les erreurs sémantiques}]
+   \begin{lstlisting}[language=bash,caption={Résultat du test des erreurs sémantiques}]
    $ bash hepiaCompile
+   Detecting syntax errors...
+   Detecting semantic errors...
+   bool : symbol allready defined on line 5 near line 6
+   Left assignment cannot be a constant near line 8
+   bool : Operand has to be an Integer near line 9
+   indefini : expresssion undefined. near line 10
    \end{lstlisting} 
+   
+   \newpage
+   \par Le deuxième exemple illustre la gestion des conditions booléennes. 
+   
+   \begin{lstlisting}[caption={Code Hepial pour tester la gestion booléenne}]
+   programme hepialProgramName
+   
+   constante booleen true = vrai;
+   constante booleen false = faux;
+   
+   debutprg
+      si true ou false alors
+         ecrire "OK1";
+      sinon 
+         ecrire "KO";
+      finsi
+      
+      si true et false alors
+         ecrire "KO";
+      sinon 
+         ecrire "OK2";
+      finsi
+      
+      si true ou false et 1 < 2 alors
+         ecrire "OK3";
+      sinon 
+         ecrire "KO";
+      finsi
+      
+      si true et false ou 1 < 2 alors 
+         ecrire "OK4";
+      sinon 
+         ecrire "KO";
+      finsi
+   finprg
+   \end{lstlisting} 
+   
+   \begin{lstlisting}[language=bash,caption={Résultat du test de la gestion booléenne}]
+   $ bash HepialProgramName
+   OK1
+   OK2
+   OK3
+   OK4
+   \end{lstlisting} 
+   
+   \newpage
+   \par Le troisième exemple illustre la notion de portée.
+   
+   \begin{lstlisting}[caption={Code Hepial pour tester la notion de portée}]
+   programme hepialProgramName
+
+   entier globale;
+   entier memeNom;
+
+   entier fct()
+      entier memeNom;
+      debutfonc
+         ecrire "globale depuis fct():";
+         ecrire globale;
+   
+         memeNom = 3;
+         ecrire "memeNom depuis fct():";
+         ecrire memeNom;
+   
+         retourne memeNom;
+      finfonc
+      
+   debutprg
+      globale = 1;
+      memeNom = 2;
+   
+      ecrire "memeNom dans main:";
+      ecrire memeNom;
+   
+      memeNom = fct();
+      ecrire "memeNom dans main après fct() call:";
+      ecrire memeNom;
+   finprg
+   \end{lstlisting} 
+   
+   \begin{lstlisting}[language=bash,caption={Résultat du test de la notion de portée}]
+   $ bash HepialProgramName
+   memeNom dans main:
+   2
+   globale depuis fct():
+   1
+   memeNom depuis fct():
+   3
+   memeNom dans main après fct() call:
+   3
+   \end{lstlisting} 
+   
+  \newpage
+  \par Le dernier exemple illustre la notion de récursivité. (inspiré d'un exemple de code fourni en cours). 
   
-  \section{Améliorations possibles}
+   \begin{lstlisting}[caption={Code Hepial pour tester la récursivité}]
+   programme HepialProgramName
+   
+   constante entier n = 4;
+   entier result;
+   
+   entier facto( entier n)
+      entier asdf; // déclaration ici sinon la grammaire ne fonctionne pas. 
+      debutfonc
+         si n == 0 alors
+            retourne(1);
+         sinon 
+            retourne(n*facto(n-1));
+         finsi
+      finfonc
+   
+   debutprg
+      si n<20 alors
+         result = facto(n);
+      sinon
+         ecrire " votre nombre est trop grand ! ";
+      finsi
+   
+      ecrire "factorielle de ";
+      ecrire n;
+      ecrire " est égale à : ";
+      ecrire result; 
+   finprg
+   \end{lstlisting} 
+   
+   \begin{lstlisting}[language=bash,caption={Résultat du test de la récursivité}]
+   $ bash HepialProgramName
+   factorielle de 
+   4
+   est égale à : 
+   24
+   \end{lstlisting} 
    
 \end{document}
