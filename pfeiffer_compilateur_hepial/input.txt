@@ -1,0 +1,12 @@
+programme MonProgramme
+
+entier result;
+
+debutprg
+
+	ecrire "Hello World!";    
+
+finprg
+
+
+

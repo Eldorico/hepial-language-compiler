@@ -1,0 +1,28 @@
+programme MonProgramme
+	constante booleen true = vrai;
+	constante booleen false = faux;
+debutprg
+	si true ou false alors
+		ecrire "OK1";
+	sinon
+		ecrire "KO";
+	finsi
+
+	si true et false alors
+		ecrire "KO";
+	sinon
+		ecrire "OK2";
+	finsi
+
+	si true ou false et 1 < 2 alors
+		ecrire "OK3";
+	sinon
+		ecrire "KO";
+	finsi
+
+	si true et false ou 1 < 2 alors
+		ecrire "OK4";
+	sinon
+		ecrire "KO";
+	finsi
+finprg

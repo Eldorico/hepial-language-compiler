@@ -1,0 +1,9 @@
+programme MonProgramme
+	constante entier const = 1;
+	booleen bool;
+	entier bool;
+debutprg
+	const = 123;
+	bool = bool + 321;
+	bool = indefinit;
+finprg

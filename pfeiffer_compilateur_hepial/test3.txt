@@ -1,0 +1,27 @@
+programme MonProgramme
+	entier globale;
+	entier memeNom;
+	entier fct ()
+		entier memeNom;
+		debutfonc
+			// afficher la variable globale depuis une fonction
+			ecrire "globale depuis fct() :";
+			ecrire globale;    
+
+			// afficher la variable locale au même nom qu'une globale
+			memeNom = 3;
+			ecrire "memeNom depuis fct() :";
+			ecrire memeNom;
+
+			// retourner la valeur de la variable locale (3)
+			retourne memeNom;
+		finfonc
+debutprg
+	globale = 1;
+	memeNom = 2;
+	ecrire "memeNom dans main :";
+	ecrire memeNom;
+	memeNom = fct();
+	ecrire "memeNom dans main après fct () call :";
+	ecrire memeNom;
+finprg

@@ -1,0 +1,570 @@
+import java_cup.runtime.*;
+import java.util.Stack;
+import java.util.ArrayList;
+import java.util.AbstractMap.SimpleEntry;
+import abstractTree.AbstractTree;
+import abstractTree.expression.*;
+import abstractTree.instruction.*;
+import symbol.*;
+
+init with {:
+  abstractTreeStack = new Stack<AbstractTree>();
+:};
+
+parser code {:
+  Stack<AbstractTree> abstractTreeStack;
+:};
+
+terminal SimpleEntry<String, Integer>  ident;
+terminal SimpleEntry<String, Integer>  constanteEnt;
+terminal SimpleEntry<String, Integer>  constanteChaine;
+
+terminal SimpleEntry<String, Integer> keyword_debutprg;
+terminal SimpleEntry<String, Integer> keyword_finprg;
+terminal SimpleEntry<String, Integer> keyword_programme;
+terminal SimpleEntry<String, Integer> keyword_constante;
+terminal SimpleEntry<String, Integer> keyword_debutfonc;
+terminal SimpleEntry<String, Integer> keyword_finfonc;
+terminal SimpleEntry<String, Integer> keyword_entier;
+terminal SimpleEntry<String, Integer> keyword_booleen;
+terminal SimpleEntry<String, Integer> keyword_lire;
+terminal SimpleEntry<String, Integer> keyword_ecrire;
+terminal SimpleEntry<String, Integer> keyword_retourne;
+terminal SimpleEntry<String, Integer> keyword_si;
+terminal SimpleEntry<String, Integer> keyword_alors;
+terminal SimpleEntry<String, Integer> keyword_sinon;
+terminal SimpleEntry<String, Integer> keyword_finsi;
+terminal SimpleEntry<String, Integer> keyword_tantque;
+terminal SimpleEntry<String, Integer> keyword_faire;
+terminal SimpleEntry<String, Integer> keyword_fintantque;
+terminal SimpleEntry<String, Integer> keyword_pour;
+terminal SimpleEntry<String, Integer> keyword_allantde;
+terminal SimpleEntry<String, Integer> keyword_a;
+terminal SimpleEntry<String, Integer> keyword_finpour;
+terminal SimpleEntry<String, Integer> keyword_vrai;
+terminal SimpleEntry<String, Integer> keyword_faux;
+terminal SimpleEntry<String, Integer> keyword_et;
+terminal SimpleEntry<String, Integer> keyword_ou;
+terminal SimpleEntry<String, Integer> keyword_non;
+
+terminal SimpleEntry<String, Integer> char_plus;
+terminal SimpleEntry<String, Integer> char_moins;
+terminal SimpleEntry<String, Integer> char_fois;
+terminal SimpleEntry<String, Integer> char_div;
+terminal SimpleEntry<String, Integer> char_egal;
+terminal SimpleEntry<String, Integer> char_egal_egal;
+terminal SimpleEntry<String, Integer> char_different;
+terminal SimpleEntry<String, Integer> char_ppetit;
+terminal SimpleEntry<String, Integer> char_pgrand;
+//terminal SimpleEntry<String, Integer> char_ppetit_pgrand;
+terminal SimpleEntry<String, Integer> char_ppetit_egal;
+terminal SimpleEntry<String, Integer> char_pgrand_egal;
+terminal SimpleEntry<String, Integer> char_non;
+terminal SimpleEntry<String, Integer> char_par_ouvr;
+terminal SimpleEntry<String, Integer> char_par_ferm;
+terminal SimpleEntry<String, Integer> char_crochet_ouvr;
+terminal SimpleEntry<String, Integer> char_crochet_ferm;
+terminal SimpleEntry<String, Integer> char_virgule;
+terminal SimpleEntry<String, Integer> char_point_virgule;
+terminal SimpleEntry<String, Integer> char_point_point;
+
+non terminal AXIOME;
+non terminal PROGRAMME;
+non terminal String ENTETE;
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>>  DECLA; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLAVAR; // ArrayList<VarName, Symbol>
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>>  LISTE_DECLA; // ArrayList<VarName, Symbol>
+non terminal ArrayList<String> LIDENT;
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLACONST;
+non terminal ArrayList<SimpleEntry<String, symbol.Symbol>> DECLAFONCT;
+non terminal symbol.Symbol TYPE;
+non terminal SimpleEntry<Integer, Type> TYPEBASE; // lineNumber, Type
+non terminal ArraySymbol TABLEAU;
+non terminal ArrayList<SimpleEntry<Expression, Expression>> DIM;
+non terminal ArrayList<SimpleEntry<String, VariableSymbol>> PARAM;
+non terminal Instruction INSTR;
+non terminal BlocInstruction CORPS;
+non terminal LIRE;
+non terminal ECRIRE;
+non terminal AFFECTATION;
+non terminal RETOUR;
+non terminal CONDITION;
+non terminal TANTQUE;
+non terminal POUR;
+non terminal Expression EXPR;
+non terminal ACCES;
+non terminal INDEX;
+non terminal LISTE_INDEX;
+non terminal OPERANDE;
+non terminal SimpleEntry<String, Integer> OPEUN; // <String value, lineNumber>
+non terminal APPELFCT;
+non terminal PAREFF;
+
+precedence left keyword_ou, char_plus, char_moins; // less prioritar
+precedence left keyword_et, char_fois, char_div;
+precedence left char_ppetit, char_pgrand, char_ppetit_egal, char_pgrand_egal, char_egal_egal, char_different; // most prioritar
+
+
+/***************************
+ *        GRAMMAR          *
+ ***************************/
+
+PROGRAMME  ::= ENTETE:e LISTE_DECLA:l keyword_debutprg CORPS keyword_finprg {:
+                  // At this point, the parsing is finished. Add each declaration contained in LISTE_DECLA into the symbol Table.
+                  // (As a declared variable in the main block)
+                  for(int i=l.size()-1; i>=0; i--){
+                      SymbolTable.getInstance().addSymbol(l.get(i).getKey(), l.get(i).getValue());
+                  }
+                  //System.out.printf("Terminé. stackSize = %d. \n\nNom du programme: %s. Corps: \n%s", parser.abstractTreeStack.size(), e, parser.abstractTreeStack.peek().toString());
+              :}
+              ;
+
+ENTETE     ::= keyword_programme ident:i {:
+                  // Once we have the name of the program, set it in the symbol table
+                  SymbolTable.getInstance().setProgramName(i.getKey());
+                  RESULT = i.getKey();
+              :}
+              ;
+
+// LIST_DECLA represents a list of declaration variables. The LISTE_DECLA and DECLA are returned as an ArrayList<VarName, Symbol> (string, symbol)
+LISTE_DECLA  ::= DECLA:d {:
+                  RESULT = d;
+              :}
+              | DECLA:d LISTE_DECLA:l {:
+                  for(int i=0; i<d.size(); i++){
+                    l.add(d.get(i));
+                  }
+                  RESULT = l;
+              :}
+              ;
+
+// DECLA is returned as ArrayList<VarName, Symbol> (string, symbol)
+DECLA      ::= DECLAVAR:d {:
+                  RESULT = d;
+              :}
+              | DECLACONST:d {:
+                  RESULT = d;
+              :}
+              | DECLAFONCT:d {:
+                  RESULT = d;
+              :}
+              ;
+
+// DECLAVAR is returned as an ArrayList<VarName, Symbol> (string, symbol). Create the array list and put the <VarName, Symbol> entry into it
+DECLAVAR   ::= TYPE:t LIDENT:l char_point_virgule {:
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
+
+                  // for each variable name of LIDENT, add it to the declaration list as a new Entry<varName, Symbol>
+                  for(int i=0; i<l.size(); i++){
+                      declarationsList.add(new SimpleEntry<String, symbol.Symbol>(l.get(i), t));
+                  }
+                  RESULT = declarationsList;
+             :}
+             ;
+
+// LIDENT is returned as an ArrayList<String> (varName)
+LIDENT     ::= ident:i {:
+                  ArrayList identifiersList = new ArrayList<String>();
+                  identifiersList.add(i.getKey());
+                  RESULT = identifiersList;
+              :}
+              | LIDENT:l char_virgule ident:i {:
+                  l.add(i.getKey());
+                  RESULT = l;
+              :}
+              ;
+
+// DECLACONST is returned as an ArrayList<VarName, Symbol>
+DECLACONST ::= keyword_constante TYPE:t ident:i char_egal EXPR char_point_virgule {:
+
+                 // If we received an IntBoolSymbol from TYPE, create a new CstIntBoolSymbol and add it to DECLACONST
+                 if(t.getClass().equals(IntBoolSymbol.class)){
+                   ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
+
+                   IntBoolSymbol s = (IntBoolSymbol)t;
+                   Type type = s.type();
+                   int line = s.getDeclarationLinesNumber();
+                   Expression expression = (Expression) parser.abstractTreeStack.pop();
+                   CstIntBoolSymbol symbol = new CstIntBoolSymbol(line, type, expression);
+
+                   declarationsList.add(new SimpleEntry<String, symbol.Symbol>(i.getKey(), symbol));
+                   RESULT = declarationsList;
+
+                 // else print an error
+                 }else{
+                   System.err.println("DECLACONST: TYPE:t received is not an varBool or varInt! Dont know what to do");
+                 }
+              :}
+              ;
+
+// DECLAFONCT is returned as  an ArrayList<VarName, Symbol>.
+DECLAFONCT ::= TYPE:t ident:fctIdentifier char_par_ouvr PARAM:params char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
+                  // If we have a declaration of function with a list of parameters
+
+                  // add the declarations inside the function to the SymbolTable in the function Block.
+                  SymbolTable.getInstance().enterBloc(fctIdentifier.getKey());
+                  for(int i=0; i<fctDeclarationsList.size(); i++){
+                    SymbolTable.getInstance().addSymbol(fctDeclarationsList.get(i).getKey(), fctDeclarationsList.get(i).getValue());
+                  }
+                  SymbolTable.getInstance().exitCurrentBloc();
+
+                  // create declarationList to return
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
+
+                  // add the function to the declarationsList and return the declarationList
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  VariableSymbol type = (VariableSymbol)t;
+                  Type ftcReturnType = type.type();
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, params, instructions, fctIdentifier.getKey())));
+                  RESULT = declarationsList;
+              :}
+              | TYPE:t ident:fctIdentifier char_par_ouvr char_par_ferm LISTE_DECLA:fctDeclarationsList keyword_debutfonc CORPS keyword_finfonc {:
+                  // If we have a function declaration without parameters
+
+                  // add the declarations inside the function to the SymbolTable in the function Block.
+                  SymbolTable.getInstance().enterBloc(fctIdentifier.getKey());
+                  for(int i=0; i<fctDeclarationsList.size(); i++){
+                    SymbolTable.getInstance().addSymbol(fctDeclarationsList.get(i).getKey(), fctDeclarationsList.get(i).getValue());
+                  }
+                  SymbolTable.getInstance().exitCurrentBloc();
+
+                  // create declarationList to return
+                  ArrayList<SimpleEntry<String, symbol.Symbol>> declarationsList = new ArrayList<SimpleEntry<String, symbol.Symbol>>();
+
+                  // add the function to the SymbolTable
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  VariableSymbol type = (VariableSymbol)t;
+                  Type ftcReturnType = type.type();
+                  ArrayList<SimpleEntry<String, VariableSymbol>> emptyParamsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
+                  declarationsList.add(new SimpleEntry<String, symbol.Symbol>(fctIdentifier.getKey(), new FunctionSymbol(fctIdentifier.getValue(), ftcReturnType, emptyParamsList, instructions, fctIdentifier.getKey())));
+                  RESULT = declarationsList;
+              :}
+              ;
+
+// TYPE is returned as a Symbol class.
+TYPE       ::= TYPEBASE:t {:
+                  int lineNumber = t.getKey();
+                  Type type = t.getValue();
+                  RESULT = new IntBoolSymbol(lineNumber, type);
+              :}
+              | TABLEAU:t {:
+                  RESULT = t;
+              :}
+              ;
+// TYPEBASE is processed into the TYPE rule. Here, we just get the type and the declaration line number and return it.
+TYPEBASE   ::=  keyword_entier:k {:
+                  RESULT = new SimpleEntry<Integer, Type>(k.getValue(), Type.INTEGER);
+              :}
+              |  keyword_booleen:k {:
+                  RESULT = new SimpleEntry<Integer, Type>(k.getValue(), Type.BOOLEAN);
+              :}
+              ;
+
+// TYPE is returned as a Symbol class.
+TABLEAU    ::= TYPEBASE:t char_crochet_ouvr DIM:d char_crochet_ferm {:
+                  int lineNumber = t.getKey();
+                  Type type = t.getValue();
+                  RESULT = new ArraySymbol(lineNumber, type, d);
+              :}
+              ;
+
+// DIM is returned as an ArrayList<<Expression, Expression>>
+DIM        ::= EXPR char_point_point EXPR {:
+                  ArrayList<SimpleEntry<Expression, Expression>> dimensionsList = new ArrayList<SimpleEntry<Expression, Expression>>();
+                  Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop();
+                  dimensionsList.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
+                  RESULT = dimensionsList;
+              :}
+              |  DIM:d char_virgule EXPR char_point_point EXPR {:
+                  Expression  expr2 = (Expression) parser.abstractTreeStack.pop();
+                  Expression  expr1 = (Expression) parser.abstractTreeStack.pop();
+                  d.add(new SimpleEntry<Expression, Expression>(expr1, expr2));
+                  RESULT = d;
+              :}
+              ;
+// PARAM is returned as an ArrayList<<varName, VariableSymbol>> (String, Symbol)
+PARAM      ::= TYPE:t ident:i {:
+                  // if it is the first param encountered, create an arrayList and return it
+                  ArrayList<SimpleEntry<String, VariableSymbol>> paramsList = new ArrayList<SimpleEntry<String, VariableSymbol>>();
+                  paramsList.add(new SimpleEntry<String, VariableSymbol>(i.getKey() ,(VariableSymbol)t));
+                  RESULT = paramsList;
+              :}
+              |  PARAM:p char_virgule TYPE:t ident:i {:
+                  // else, add the new param to the paramList (arraylist) and return the paramList
+                  p.add(new SimpleEntry<String, VariableSymbol>(i.getKey() ,(VariableSymbol)t));
+                  RESULT = p;
+              :}
+              ;
+
+// CORPS is considered as a BlocInstruction. It is a list of instructions, and it is added the the abstract tree stack
+CORPS      ::= INSTR {:
+                  // if it is the first instruction encountered, create an new BlocInstruction with the instruction on it and return BlocInstruction
+                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new BlocInstruction(instruct));
+              :}
+              | INSTR CORPS {:
+                  // else add the instruction to the CORPS and put it on the top of the abstractTreeStack
+                  BlocInstruction block = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Instruction instruct = (Instruction) parser.abstractTreeStack.pop();
+                  block.addInstruction(instruct);
+                  parser.abstractTreeStack.add(block);
+              :}
+              ;
+
+INSTR      ::= AFFECTATION
+              | ECRIRE
+              | LIRE
+              | CONDITION
+              | RETOUR
+              | TANTQUE
+              | POUR
+              ;
+
+// LIRE is a ReadInstruction to add to the abstractTreeStack
+ LIRE       ::= keyword_lire ident:i char_point_virgule {:
+                  parser.abstractTreeStack.add(new ReadInstruction(new Identifier(i.getKey()), i.getValue()));
+              :}
+              ;
+
+// ECRIRE is a WriteInstruction to add to the abstractTreeStack
+ ECRIRE     ::= keyword_ecrire:k EXPR char_point_virgule {:
+                  Expression output = (Expression) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new WriteInstruction(output, k.getValue()));
+              :}
+              | keyword_ecrire constanteChaine:c char_point_virgule {:
+                 parser.abstractTreeStack.add(new WriteInstruction(new CstString(c.getKey()), c.getValue()));
+              :}
+              ;
+
+// ECRIRE is an AffectationInstruction to add to the abstractTreeStack
+AFFECTATION ::= ACCES:a char_egal:c EXPR char_point_virgule  {:
+                  // pop the expression
+                  Expression src = (Expression) parser.abstractTreeStack.pop();
+
+                  // pop the ACCES
+                  Identifier dst = (Identifier) parser.abstractTreeStack.pop();
+
+                  // add the affectation to the stack as a new Instruction
+                  parser.abstractTreeStack.add(new AffectationInstruction(dst, src, c.getValue()));
+              :}
+              ;
+
+// RETOUR is a ReturnInstruction to add to the asbtractTreeStack
+RETOUR     ::= keyword_retourne:k EXPR char_point_virgule {:
+                  // pop the expression
+                  Expression returnExpression = (Expression) parser.abstractTreeStack.pop();
+
+                  // add the return expression to the stack as a new Instruction
+                  parser.abstractTreeStack.add(new ReturnInstruction(returnExpression, k.getValue()));
+              :}
+              ;
+
+// CONDITION is a IfInstruction to add to the abstractTreeStack
+CONDITION  ::= keyword_si:k EXPR keyword_alors CORPS keyword_sinon CORPS keyword_finsi {:
+                  // pop the two blocs instructions
+                  BlocInstruction elseBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  BlocInstruction thenBlocInstructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression conditionExpression = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a conditionInstruction and put it on the top of the stack
+                  parser.abstractTreeStack.add(new IfInstruction(conditionExpression, thenBlocInstructions, elseBlocInstructions, k.getValue()));
+              :}
+              ;
+
+// TANTQUE is a WhileLoopInstrcution to add to the abstractTreeStack
+TANTQUE    ::= keyword_tantque:k EXPR keyword_faire CORPS keyword_fintantque {:
+                  // pop the needed blocs
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression condition = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a while instruction
+                  parser.abstractTreeStack.add(new WhileLoopInstrcution(condition, instructions, k.getValue()));
+              :}
+              ;
+
+// POUR is a ForLoopInstruction to add to the abstractTreeStack
+POUR       ::= keyword_pour ident:id keyword_allantde EXPR keyword_a EXPR keyword_faire CORPS keyword_finpour {:
+                  // pop the needed blocs
+                  Identifier i = new Identifier(id.getKey());
+                  BlocInstruction instructions = (BlocInstruction) parser.abstractTreeStack.pop();
+                  Expression upperBound = (Expression) parser.abstractTreeStack.pop();
+                  Expression lowerBound = (Expression) parser.abstractTreeStack.pop();
+
+                  // create a for loop Instruction
+                  parser.abstractTreeStack.add(new ForLoopInstruction(i, lowerBound, upperBound, instructions, id.getValue()));
+              :}
+              ;
+
+// EXPR is an Expression to add to the abstractTreeStack
+EXPR       ::=  EXPR char_plus EXPR {:
+                  // AdditionExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new AdditionExpression(expr1, expr2));
+              :}
+              | EXPR char_moins EXPR {:
+                  //SubstractionExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new SubstractionExpression(expr1, expr2));
+              :}
+              | EXPR char_fois EXPR {:
+                  // MultiplyExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new MultiplyExpression(expr1, expr2));
+              :}
+              | EXPR char_div EXPR {:
+                  // DivideExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new DivideExpression(expr1, expr2));
+              :}
+              | EXPR char_egal_egal EXPR {:
+                  // EqualEqualExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new EqualEqualExpression(expr1, expr2));
+              :}
+              | EXPR char_different EXPR {:
+                  // DifferentThanExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new DifferentThanExpression(expr1, expr2));
+              :}
+              | EXPR char_ppetit EXPR {:
+                  // LesserThanExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new LesserThanExpression(expr1, expr2));
+              :}
+              | EXPR char_pgrand EXPR {:
+                  // GreaterThanExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new GreaterThanExpression(expr1, expr2));
+              :}
+              | EXPR char_ppetit_egal EXPR {:
+                  // LesserEqualExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new LesserEqualExpression(expr1, expr2));
+              :}
+              | EXPR char_pgrand_egal EXPR {:
+                  // GreaterEqualExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new GreaterEqualExpression(expr1, expr2));
+              :}
+              | EXPR keyword_et EXPR {:
+                  // AndExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new AndExpression(expr1, expr2));
+              :}
+              | EXPR keyword_ou EXPR {:
+                  // OrExpression
+                  Expression expr2 = (Expression)parser.abstractTreeStack.pop();
+                  Expression expr1 = (Expression)parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new OrExpression(expr1, expr2));
+              :}
+              | OPEUN:o EXPR:e {:
+                  // NotExpression
+                  Expression expression = (Expression)parser.abstractTreeStack.pop();
+                  String strOperatorValue = o.getKey();
+                  switch(strOperatorValue){
+                    case "!":
+                    case "non":
+                      parser.abstractTreeStack.add(new NotExpression(expression));
+                      break;
+                  }
+              :}
+              | char_par_ouvr EXPR char_par_ferm
+              | OPERANDE
+              ;
+
+// ACCES is added to the asbtractTreeStack as an Identifier (Expression)
+ACCES      ::= ident:i{:
+                  // add ident to the stack
+                  parser.abstractTreeStack.add(new Identifier(i.getKey()));
+              :}
+              | ident:i LISTE_INDEX {:
+                  // pop the ExpressionListpression from the stack and create a new TabValueIdentifier
+                  ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
+                  parser.abstractTreeStack.add(new TabValueIdentifier(i.getKey(), indexes));
+              :}
+              ;
+
+// LISTE_INDEX is added to the asbtractTreeStack as an ExpressionList (a list of expression)
+LISTE_INDEX  ::= INDEX {:
+                  // pop the first index and create an ExpressionList
+                  Expression index = (Expression) parser.abstractTreeStack.pop();
+                  // place the ExpressionList on the top of the stack
+                  parser.abstractTreeStack.add(new ExpressionList(index));
+              :}
+              | INDEX LISTE_INDEX {:
+                  // add the index to the ExpressionList and put it on the top of the stack
+                  ExpressionList indexes = (ExpressionList) parser.abstractTreeStack.pop();
+                  Expression index = (Expression) parser.abstractTreeStack.pop();
+                  indexes.addExpression(index);
+                  parser.abstractTreeStack.add(indexes);
+              :}
+              ;
+
+INDEX      ::= char_crochet_ouvr EXPR char_crochet_ferm {:
+                  // do nothing. The expression of the index should be placed on the stack in the EXPR reduction
+              :}
+              ;
+
+// OPERANDE is added to the stack as an IntNumber or a BooleanKeyword
+OPERANDE   ::= ACCES
+              | APPELFCT
+              | constanteEnt:c {:
+                  parser.abstractTreeStack.add(new IntNumber(Integer.valueOf(c.getKey())));
+              :}
+              | keyword_vrai {:
+                  parser.abstractTreeStack.add(new BooleanKeyword(true));
+              :}
+              | keyword_faux {:
+                  parser.abstractTreeStack.add(new BooleanKeyword(false));
+              :}
+              ;
+
+// OPEUN is returned as a it. It will be processed in parent rules.
+OPEUN      ::= char_non:c {:
+                  RESULT = c;
+              :}
+              | keyword_non:c {:
+                  RESULT = c;
+              :}
+              ;
+
+// APPELFCT is added to the abstractTreeStack as a FctCallExpression
+APPELFCT   ::= ident:i char_par_ouvr char_par_ferm {:
+                  parser.abstractTreeStack.add(new FctCallExpression(new Identifier(i.getKey())));
+              :}
+              | ident:i char_par_ouvr PAREFF:p char_par_ferm {:
+                  // Pop the parameters
+                  ExpressionList parameters = (ExpressionList) parser.abstractTreeStack.pop();
+
+                  // add new fct call
+                  parser.abstractTreeStack.add(new FctCallExpression(new Identifier(i.getKey()), parameters));
+              :}
+              ;
+
+// PAREF is returned as an ExpressionList
+PAREFF     ::= EXPR:e {:
+                  // pop the first index and create an ExpressionList
+                  Expression parameter = (Expression) parser.abstractTreeStack.pop();
+                  // place the ExpressionList on the top of the stack
+                  parser.abstractTreeStack.add(new ExpressionList(parameter));
+              :}
+              | PAREFF:p char_virgule EXPR:e {:
+                  // add the index to the ExpressionList and put it on the top of the stack
+                  Expression parameter = (Expression) parser.abstractTreeStack.pop();
+                  ExpressionList parameters = (ExpressionList) parser.abstractTreeStack.pop();
+                  parameters.addExpression(parameter);
+                  parser.abstractTreeStack.add(parameters);
+              :}
+              ;
